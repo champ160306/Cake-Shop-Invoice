@@ -677,9 +677,146 @@
         color: var(--primary);
         pointer-events: none;
       }
+        :focus {
+    outline: 3px solid var(--accent) !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 5px rgba(157, 78, 221, 0.3) !important;
+  }
+
+  /* Skip link for accessibility */
+  .skip-to-content {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: var(--primary);
+    color: white;
+    padding: 8px;
+    z-index: 10000;
+    text-decoration: none;
+    border-radius: 0 0 4px 0;
+  }
+
+  .skip-to-content:focus {
+    top: 0;
+  }
+
+  /* Keyboard shortcut indicator */
+  .keyboard-shortcut {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: var(--accent);
+    color: white;
+    font-size: 11px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    opacity: 0.7;
+  }
+
+  /* Focus ring for all interactive elements */
+  button:focus,
+  input:focus,
+  select:focus,
+  a:focus {
+    outline: 3px solid var(--accent) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Visually hidden but accessible labels */
+  .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* Quick navigation menu */
+  .quick-nav {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: white;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    display: none;
+    z-index: 1000;
+  }
+
+  .quick-nav.show {
+    display: block;
+  }
+
+  .quick-nav-item {
+    display: block;
+    padding: 8px 12px;
+    margin: 5px 0;
+    background: #f5f5f5;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--dark);
+    font-weight: 500;
+  }
+
+  .quick-nav-item:hover,
+  .quick-nav-item:focus {
+    background: var(--primary);
+    color: white;
+  }
+
+  /* Current focus indicator */
+  .focus-highlight {
+    position: relative;
+  }
+
+  .focus-highlight::after {
+    content: "✓";
+    position: absolute;
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--success);
+    font-weight: bold;
+  }
+
+  /* Tab navigation */
+  [tabindex="0"]:focus {
+    transform: scale(1.02);
+    transition: transform 0.2s;
+  }
+
+  /* Improved dropdown keyboard navigation */
+  .dropdown-option:focus {
+    background-color: var(--primary) !important;
+    color: white !important;
+  }
+
+  /* Button keyboard states */
+  .btn:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2) !important;
+  }
     </style>
   </head>
   <body>
+    <!-- Add this right after <body> tag -->
+<a href="#main-content" class="skip-to-content">Skip to main content</a>
+
+<!-- Quick Navigation Menu -->
+<div id="quickNav" class="quick-nav">
+  <a href="#purchaserPhone" class="quick-nav-item">Phone Field (Alt+1)</a>
+  <a href="#cakeName" class="quick-nav-item">Select Cake (Alt+2)</a>
+  <a href="#cakePrice" class="quick-nav-item">Price Field (Alt+3)</a>
+  <a href="#submitBill" class="quick-nav-item">Submit Bill (Alt+4)</a>
+  <a href="#resetForm" class="quick-nav-item">Reset Form (Alt+5)</a>
+  <a href="#helpModal" class="quick-nav-item">Show Help (Alt+H)</a>
+</div>
     <!-- Decorative cake icons in background -->
     <div class="cake-decoration cake-1">
       <i class="fas fa-birthday-cake"></i>
@@ -736,7 +873,7 @@
           </ul>
         </nav>
       </header>
-
+<main id="main-content" aria-label="Main content"></main>
       <div class="main-content">
         <!-- Billing Form -->
         <div class="billing-card">
@@ -997,6 +1134,7 @@
           </div>
         </div>
       </div>
+    </main>
 
       <!-- Database Info Modal (Hidden by default) -->
       <div
@@ -1212,6 +1350,276 @@
     supabaseUrl: "https://vdbwzmutxjonnpfwfpbn.supabase.co",
     supabaseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkYnd6bXV0eGpvbm5wZndmcGJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTcwMjQsImV4cCI6MjA4MDU3MzAyNH0.n0ERxgLgYU1Tvw5QONihv1C3A7o7rcxrcn5MjZ5UnEM",
   };
+  let currentFieldIndex = 0;
+  let formFields = [];
+  let isQuickNavVisible = false;
+  let activeDropdown = null;
+  let dropdownIndex = -1;
+
+  // Enhanced keyboard shortcuts initialization
+  function initializeKeyboardNavigation() {
+    console.log("Initializing enhanced keyboard navigation...");
+    
+    // Collect all form fields for tab navigation
+    formFields = Array.from(document.querySelectorAll(
+      'input:not([type="hidden"]), select, button:not([type="hidden"]), textarea, [tabindex]'
+    )).filter(el => el.tabIndex >= 0);
+    
+    formFields.sort((a, b) => (a.tabIndex || 0) - (b.tabIndex || 0));
+    
+    // Set up improved tab navigation
+    document.addEventListener('keydown', function(e) {
+      // Alt+H - Toggle quick navigation
+      if (e.altKey && e.key.toLowerCase() === 'h') {
+        e.preventDefault();
+        toggleQuickNav();
+        return;
+      }
+      
+      // Alt+Number - Quick jump to fields
+      if (e.altKey && e.key >= '1' && e.key <= '5') {
+        e.preventDefault();
+        const fieldMap = {
+          '1': 'purchaserPhone',
+          '2': 'cakeName',
+          '3': 'cakePrice',
+          '4': 'submitBill',
+          '5': 'resetForm'
+        };
+        const fieldId = fieldMap[e.key];
+        if (fieldId) {
+          const field = document.getElementById(fieldId);
+          if (field) {
+            field.focus();
+            if (field.tagName === 'INPUT') field.select();
+          }
+        }
+        return;
+      }
+      
+      // Tab navigation with better handling
+      if (e.key === 'Tab') {
+        e.preventDefault();
+        
+        if (e.shiftKey) {
+          // Shift+Tab - move backward
+          moveToPreviousField();
+        } else {
+          // Tab - move forward
+          moveToNextField();
+        }
+        return;
+      }
+      
+      // Esc key to clear fields or close dropdowns
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        if (activeDropdown) {
+          closeDropdown();
+        } else if (document.activeElement.type === 'text' || 
+                   document.activeElement.type === 'tel' || 
+                   document.activeElement.type === 'number') {
+          document.activeElement.value = '';
+        }
+        return;
+      }
+      
+      // Enter key behavior
+      if (e.key === 'Enter' && !e.ctrlKey) {
+        e.preventDefault();
+        const activeEl = document.activeElement;
+        
+        if (activeEl.type === 'submit' || activeEl.id === 'submitBill') {
+          // Already handled by button click
+          return;
+        }
+        
+        if (activeEl.tagName === 'SELECT' && activeEl.id === 'cakeName') {
+          // Handle cake selection
+          selectCakeFromDropdown();
+          return;
+        }
+        
+        // Move to next field for other inputs
+        moveToNextField();
+      }
+      
+      // Arrow keys in dropdown
+      if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && 
+          document.activeElement.tagName === 'SELECT') {
+        handleDropdownNavigation(e.key);
+      }
+      
+      // Ctrl+ shortcuts
+      if (e.ctrlKey) {
+        switch(e.key.toLowerCase()) {
+          case 's': // Ctrl+S to save
+            e.preventDefault();
+            document.getElementById('submitBill').click();
+            break;
+          case 'n': // Ctrl+N to new form
+            e.preventDefault();
+            document.getElementById('resetForm').click();
+            break;
+          case 'l': // Ctrl+L to load recent bills
+            e.preventDefault();
+            loadRecentBills();
+            break;
+          case 'k': // Ctrl+K to check customer
+            e.preventDefault();
+            manualCheckCustomer();
+            break;
+        }
+      }
+      
+      // Function keys
+      if (e.key.startsWith('F')) {
+        handleFunctionKeys(e.key, e);
+      }
+    });
+    
+    // Improved focus management
+    document.addEventListener('focusin', function(e) {
+      // Scroll focused element into view with padding
+      e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Highlight current field
+      formFields.forEach(field => field.classList.remove('focus-highlight'));
+      e.target.classList.add('focus-highlight');
+      
+      // Update current field index
+      currentFieldIndex = formFields.indexOf(e.target);
+    });
+    
+    // Auto-select text when focusing on input fields
+    document.addEventListener('focusin', function(e) {
+      if (e.target.tagName === 'INPUT' && 
+          (e.target.type === 'text' || e.target.type === 'tel' || e.target.type === 'number')) {
+        setTimeout(() => e.target.select(), 50);
+      }
+    });
+  }
+  
+  function moveToNextField() {
+    currentFieldIndex = (currentFieldIndex + 1) % formFields.length;
+    const nextField = formFields[currentFieldIndex];
+    nextField.focus();
+    if (nextField.tagName === 'INPUT' && nextField.type !== 'button') {
+      nextField.select();
+    }
+  }
+  
+  function moveToPreviousField() {
+    currentFieldIndex = currentFieldIndex > 0 ? currentFieldIndex - 1 : formFields.length - 1;
+    const prevField = formFields[currentFieldIndex];
+    prevField.focus();
+    if (prevField.tagName === 'INPUT' && prevField.type !== 'button') {
+      prevField.select();
+    }
+  }
+  
+  function toggleQuickNav() {
+    const quickNav = document.getElementById('quickNav');
+    isQuickNavVisible = !isQuickNavVisible;
+    quickNav.classList.toggle('show', isQuickNavVisible);
+    
+    if (isQuickNavVisible) {
+      // Focus first item in quick nav
+      const firstItem = quickNav.querySelector('.quick-nav-item');
+      firstItem.focus();
+    }
+  }
+  
+  function handleDropdownNavigation(key) {
+    const select = document.activeElement;
+    if (!select || select.tagName !== 'SELECT') return;
+    
+    if (key === 'ArrowDown') {
+      select.selectedIndex = Math.min(select.options.length - 1, select.selectedIndex + 1);
+    } else if (key === 'ArrowUp') {
+      select.selectedIndex = Math.max(0, select.selectedIndex - 1);
+    }
+    
+    // Trigger change event to update price
+    const event = new Event('change');
+    select.dispatchEvent(event);
+  }
+  
+  function selectCakeFromDropdown() {
+    const cakeSelect = document.getElementById('cakeName');
+    if (cakeSelect.value) {
+      moveToNextField(); // Move to price field
+      document.getElementById('cakePrice').select();
+    }
+  }
+  
+  function handleFunctionKeys(key, event) {
+    event.preventDefault();
+    
+    switch(key) {
+      case 'F1':
+        const toggleHelp = document.getElementById('toggleHelp');
+        if (toggleHelp) toggleHelp.click();
+        break;
+      case 'F2':
+        manualCheckCustomer();
+        break;
+      case 'F3':
+        const cakeSelect = document.getElementById('cakeName');
+        cakeSelect.focus();
+        cakeSelect.click();
+        break;
+      case 'F4':
+        const priceField = document.getElementById('cakePrice');
+        priceField.focus();
+        priceField.select();
+        break;
+      case 'F5':
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('birthdayPersonBirthdate').value = today;
+        document.getElementById('purchaserPhone').focus();
+        break;
+      case 'F6':
+        // Focus on coupon code
+        document.getElementById('couponCode').focus();
+        document.getElementById('couponCode').select();
+        break;
+      case 'F7':
+        // View recent bills
+        loadRecentBills();
+        break;
+      case 'F8':
+        if (lastCustomerData) {
+          if (confirm('Repeat last customer details?')) {
+            autofillCustomerForm(lastCustomerData);
+          }
+        }
+        break;
+      case 'F9':
+        // Quick save
+        document.getElementById('submitBill').click();
+        break;
+      case 'F10':
+        // Quick reset
+        document.getElementById('resetForm').click();
+        break;
+      case 'F11':
+        // Toggle fullscreen
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen();
+          }
+        }
+        break;
+      case 'F12':
+        // Open developer tools (can't override fully, but we can prevent default)
+        event.preventDefault();
+        break;
+    }
+  }
+  
 
   // Load configuration from localStorage
   let config = JSON.parse(localStorage.getItem("cakeBlissConfig")) || DEFAULT_CONFIG;
@@ -1427,57 +1835,61 @@
     }
   }
 
-  // Autofill form with customer data
-  function autofillCustomerForm(customerData) {
-    console.log("Autofilling with:", customerData);
-    
-    document.getElementById("purchaserName").value = customerData.purchaser_name || "";
-    document.getElementById("birthdayPersonName").value = customerData.birthday_person_name || "";
+// Find this function and add the focus at the end:
+function autofillCustomerForm(customerData) {
+  console.log("Autofilling with:", customerData);
+  
+  document.getElementById("purchaserName").value = customerData.purchaser_name || "";
+  document.getElementById("birthdayPersonName").value = customerData.birthday_person_name || "";
 
-    if (customerData.purchaser_birthdate) {
-      document.getElementById("purchaserBirthdate").value = customerData.purchaser_birthdate;
-    }
-
-    if (customerData.birthday_person_birthdate) {
-      document.getElementById("birthdayPersonBirthdate").value = customerData.birthday_person_birthdate;
-    }
-
-    document.getElementById("birthdayPersonPhone").value = customerData.birthday_person_phone || "";
-
-    // Set cake name if it exists in our options
-    if (customerData.cake_name) {
-      const cakeSelect = document.getElementById("cakeName");
-      const options = Array.from(cakeSelect.options);
-      const matchingOption = options.find(
-        (option) => option.value.toLowerCase() === customerData.cake_name.toLowerCase()
-      );
-      if (matchingOption) {
-        cakeSelect.value = matchingOption.value;
-
-        // Trigger price update
-        const cakePrices = {
-          "Chocolate Fudge Delight": "45.99",
-          "Vanilla Dream": "39.50",
-          "Red Velvet Supreme": "52.50",
-          "Strawberry Heaven": "42.25",
-          "Caramel Crunch": "48.75",
-          "Rainbow Sprinkles": "38.75",
-        };
-
-        if (cakePrices[customerData.cake_name]) {
-          document.getElementById("cakePrice").value = cakePrices[customerData.cake_name];
-          updateTotalPrice();
-        }
-      }
-    }
-
-    if (customerData.coupon_code) {
-      document.getElementById("couponCode").value = customerData.coupon_code || "";
-    }
-
-    showNotification("Welcome back! Your details have been auto-filled.", "success");
+  if (customerData.purchaser_birthdate) {
+    document.getElementById("purchaserBirthdate").value = customerData.purchaser_birthdate;
   }
 
+  if (customerData.birthday_person_birthdate) {
+    document.getElementById("birthdayPersonBirthdate").value = customerData.birthday_person_birthdate;
+  }
+
+  document.getElementById("birthdayPersonPhone").value = customerData.birthday_person_phone || "";
+
+  // Set cake name if it exists in our options
+  if (customerData.cake_name) {
+    const cakeSelect = document.getElementById("cakeName");
+    const options = Array.from(cakeSelect.options);
+    const matchingOption = options.find(
+      (option) => option.value.toLowerCase() === customerData.cake_name.toLowerCase()
+    );
+    if (matchingOption) {
+      cakeSelect.value = matchingOption.value;
+
+      // Trigger price update
+      const cakePrices = {
+        "Chocolate Fudge Delight": "45.99",
+        "Vanilla Dream": "39.50",
+        "Red Velvet Supreme": "52.50",
+        "Strawberry Heaven": "42.25",
+        "Caramel Crunch": "48.75",
+        "Rainbow Sprinkles": "38.75",
+      };
+
+      if (cakePrices[customerData.cake_name]) {
+        document.getElementById("cakePrice").value = cakePrices[customerData.cake_name];
+        updateTotalPrice();
+      }
+    }
+  }
+
+  if (customerData.coupon_code) {
+    document.getElementById("couponCode").value = customerData.coupon_code || "";
+  }
+
+  showNotification("Welcome back! Your details have been auto-filled.", "success");
+  
+  // ADD THIS LINE TO FOCUS ON NEXT FIELD AFTER AUTO-FILL
+  document.getElementById("birthdayPersonPhone").focus();
+  document.getElementById("birthdayPersonPhone").select();
+}
+  
   // Clear customer info display
   function clearCustomerInfo() {
     const customerInfoDiv = document.getElementById("customerInfo");
@@ -1541,59 +1953,63 @@
   }
 
   // SIMPLIFIED: Manual check for returning customers
-  async function manualCheckCustomer() {
-    console.log("manualCheckCustomer called");
-    
-    const phoneNumber = document.getElementById("purchaserPhone").value.trim();
-    console.log("Phone number:", phoneNumber);
+  // Find this function in your script:
+async function manualCheckCustomer() {
+  console.log("manualCheckCustomer called");
+  
+  const phoneNumber = document.getElementById("purchaserPhone").value.trim();
+  console.log("Phone number:", phoneNumber);
 
-    if (!phoneNumber) {
-      showNotification("Please enter a phone number first", "error");
-      return;
-    }
-
-    const returningCustomer = await checkReturningCustomer(phoneNumber);
-
-    if (returningCustomer) {
-      const customerInfoDiv = document.getElementById("customerInfo");
-      customerInfoDiv.innerHTML = `
-        <div style="background-color: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid var(--success);">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <strong style="color: var(--success);">
-              <i class="fas fa-user-check"></i> Returning Customer Found
-            </strong>
-            <button id="autofillBtn" class="btn" style="padding: 5px 15px; background-color: var(--success); color: white; font-size: 12px;">
-              <i class="fas fa-magic"></i> Auto-fill
-            </button>
-          </div>
-          <div style="font-size: 14px;">
-            <div><strong>Name:</strong> ${returningCustomer.purchaser_name}</div>
-            <div><strong>Last Order:</strong> ${returningCustomer.cake_name} ($${returningCustomer.cake_price})</div>
-            <div><strong>Last Order Date:</strong> ${new Date(returningCustomer.created_at).toLocaleDateString()}</div>
-          </div>
-        </div>
-      `;
-      customerInfoDiv.style.display = "block";
-
-      document.getElementById("autofillBtn").addEventListener("click", function () {
-        autofillCustomerForm(returningCustomer);
-        customerInfoDiv.style.display = "none";
-      });
-
-      showNotification(`Found returning customer: ${returningCustomer.purchaser_name}`, "success");
-    } else {
-      const customerInfoDiv = document.getElementById("customerInfo");
-      customerInfoDiv.innerHTML = `
-        <div style="background-color: #fff3cd; padding: 15px; border-radius: 10px; border-left: 4px solid var(--warning); color: #856404;">
-          <strong><i class="fas fa-user-plus"></i> New Customer</strong>
-          <div style="font-size: 14px; margin-top: 5px;">No previous orders found with this phone number.</div>
-        </div>
-      `;
-      customerInfoDiv.style.display = "block";
-      showNotification("No previous customer found with this phone number", "info");
-    }
+  if (!phoneNumber) {
+    showNotification("Please enter a phone number first", "error");
+    return;
   }
 
+  const returningCustomer = await checkReturningCustomer(phoneNumber);
+
+  if (returningCustomer) {
+    const customerInfoDiv = document.getElementById("customerInfo");
+    customerInfoDiv.innerHTML = `
+      <div style="background-color: #f8f9fa; padding: 15px; border-radius: 10px; border-left: 4px solid var(--success);">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+          <strong style="color: var(--success);">
+            <i class="fas fa-user-check"></i> Returning Customer Found
+          </strong>
+          <button id="autofillBtn" class="btn" style="padding: 5px 15px; background-color: var(--success); color: white; font-size: 12px;">
+            <i class="fas fa-magic"></i> Auto-fill
+          </button>
+        </div>
+        <div style="font-size: 14px;">
+          <div><strong>Name:</strong> ${returningCustomer.purchaser_name}</div>
+          <div><strong>Last Order:</strong> ${returningCustomer.cake_name} ($${returningCustomer.cake_price})</div>
+          <div><strong>Last Order Date:</strong> ${new Date(returningCustomer.created_at).toLocaleDateString()}</div>
+        </div>
+      </div>
+    `;
+    customerInfoDiv.style.display = "block";
+
+    document.getElementById("autofillBtn").addEventListener("click", function () {
+      autofillCustomerForm(returningCustomer);
+      customerInfoDiv.style.display = "none";
+    });
+
+    showNotification(`Found returning customer: ${returningCustomer.purchaser_name}`, "success");
+  } else {
+    const customerInfoDiv = document.getElementById("customerInfo");
+    customerInfoDiv.innerHTML = `
+      <div style="background-color: #fff3cd; padding: 15px; border-radius: 10px; border-left: 4px solid var(--warning); color: #856404;">
+        <strong><i class="fas fa-user-plus"></i> New Customer</strong>
+        <div style="font-size: 14px; margin-top: 5px;">No previous orders found with this phone number.</div>
+      </div>
+    `;
+    customerInfoDiv.style.display = "block";
+    showNotification("No previous customer found with this phone number", "info");
+    
+    // ADD THIS LINE TO FOCUS ON NEXT FIELD
+    document.getElementById("birthdayPersonPhone").focus();
+    document.getElementById("birthdayPersonPhone").select();
+  }
+}
   // DOM Ready
   document.addEventListener("DOMContentLoaded", function () {
     console.log("DOM loaded, initializing...");
