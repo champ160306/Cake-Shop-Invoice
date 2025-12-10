@@ -634,37 +634,40 @@
   <body>
     <div class="container">
       <header>
-  <div class="logo-container">
-    <div class="logo">
-      <i class="fas fa-birthday-cake"></i>
-    </div>
-    <div class="logo-text">
-      <h1>Cake Bliss</h1>
-      <p>Reports & Analytics Dashboard</p>
-      <div id="dbStatus" class="db-status disconnected">
-        <div class="status-dot disconnected"></div>
-        <span>Supabase: Disconnected</span>
-      </div>
-    </div>
-  </div>
-  <nav>
-    <ul>
-      <li>
-        <a href="billing.html"><i class="fas fa-receipt"></i> Billing</a>
-      </li>
-      <li>
-        <a href="#" class="active"><i class="fas fa-chart-bar"></i> Reports</a>
-      </li>
-      <li>
-        <a href="#" id="viewCustomersBtn"><i class="fas fa-users"></i> Customers</a>
-      </li>
-      <li>
-        <a href="#"><i class="fas fa-cog"></i> Settings</a>
-      </li>
-    </ul>
-  </nav>
-</header>
-
+        <div class="logo-container">
+          <div class="logo">
+            <i class="fas fa-birthday-cake"></i>
+          </div>
+          <div class="logo-text">
+            <h1>Cake Bliss</h1>
+            <p>Reports & Analytics Dashboard</p>
+            <div id="dbStatus" class="db-status disconnected">
+              <div class="status-dot disconnected"></div>
+              <span>Supabase: Disconnected</span>
+            </div>
+          </div>
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <a href="billing.html"><i class="fas fa-receipt"></i> Billing</a>
+            </li>
+            <li>
+              <a href="#" class="active"
+                ><i class="fas fa-chart-bar"></i> Reports</a
+              >
+            </li>
+            <li>
+              <a href="#" id="viewCustomersBtn"
+                ><i class="fas fa-users"></i> Customers</a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-cog"></i> Settings</a>
+            </li>
+          </ul>
+        </nav>
+      </header>
 
       <div class="main-content">
         <!-- Date Range Selector -->
@@ -691,7 +694,11 @@
             <button id="applyDateRange" class="apply-btn">
               <i class="fas fa-filter"></i> Apply Filter
             </button>
-            <button id="refreshReports" class="apply-btn" style="background-color: var(--info)">
+            <button
+              id="refreshReports"
+              class="apply-btn"
+              style="background-color: var(--info)"
+            >
               <i class="fas fa-sync-alt"></i> Refresh
             </button>
           </div>
@@ -701,9 +708,9 @@
         <div class="stats-container">
           <div class="stat-card revenue">
             <div class="stat-icon">
-              <i class="fas fa-dollar-sign"></i>
+              <i class="fas fa-rupee-sign"></i>
             </div>
-            <div class="stat-value" id="totalRevenue">$0.00</div>
+            <div class="stat-value" id="totalRevenue">₹0.00</div>
             <div class="stat-label">Total Revenue</div>
             <div class="stat-change positive">
               <i class="fas fa-arrow-up"></i>
@@ -727,7 +734,7 @@
             <div class="stat-icon">
               <i class="fas fa-calculator"></i>
             </div>
-            <div class="stat-value" id="averageOrder">$0.00</div>
+            <div class="stat-value" id="averageOrder">₹0.00</div>
             <div class="stat-label">Average Order Value</div>
             <div class="stat-change positive">
               <i class="fas fa-arrow-up"></i>
@@ -784,7 +791,11 @@
             <button id="searchBtn" class="search-btn">
               <i class="fas fa-search"></i> Search
             </button>
-            <button id="clearSearch" class="search-btn" style="background-color: #666">
+            <button
+              id="clearSearch"
+              class="search-btn"
+              style="background-color: #666"
+            >
               <i class="fas fa-times"></i> Clear
             </button>
           </div>
@@ -793,7 +804,9 @@
               <label>Filter by Cake</label>
               <select id="filterCake">
                 <option value="">All Cakes</option>
-                <option value="Chocolate Fudge Delight">Chocolate Fudge Delight</option>
+                <option value="Chocolate Fudge Delight">
+                  Chocolate Fudge Delight
+                </option>
                 <option value="Vanilla Dream">Vanilla Dream</option>
                 <option value="Red Velvet Supreme">Red Velvet Supreme</option>
                 <option value="Strawberry Heaven">Strawberry Heaven</option>
@@ -805,10 +818,10 @@
               <label>Filter by Price Range</label>
               <select id="filterPrice">
                 <option value="">All Prices</option>
-                <option value="0-40">Under $40</option>
-                <option value="40-50">$40 - $50</option>
-                <option value="50-100">$50 - $100</option>
-                <option value="100+">Over $100</option>
+                <option value="0-40">Under ₹40</option>
+                <option value="40-50">₹40 - ₹50</option>
+                <option value="50-100">₹50 - ₹100</option>
+                <option value="100+">Over ₹100</option>
               </select>
             </div>
             <div class="filter-group">
@@ -884,7 +897,11 @@
                   <!-- Data will be loaded here -->
                 </tbody>
               </table>
-              <div class="no-data" id="recentOrdersNoData" style="display: none">
+              <div
+                class="no-data"
+                id="recentOrdersNoData"
+                style="display: none"
+              >
                 <i class="fas fa-receipt"></i>
                 <p>No orders found</p>
               </div>
@@ -900,7 +917,11 @@
               <button class="export-btn" onclick="exportAllOrders()">
                 <i class="fas fa-download"></i> Export CSV
               </button>
-              <button class="export-btn" onclick="printReport()" style="background-color: var(--accent); margin-left: 10px">
+              <button
+                class="export-btn"
+                onclick="printReport()"
+                style="background-color: var(--accent); margin-left: 10px"
+              >
                 <i class="fas fa-print"></i> Print
               </button>
             </div>
@@ -946,10 +967,14 @@
       </div>
 
       <footer>
-        <p>&copy; 2023 Cake Bliss Reports System. All rights reserved.</p>
+        <p>&copy; 2025 Cake Bliss Reports System. All rights reserved.</p>
         <div class="footer-links">
-          <a href="#" id="setupDbBtn"><i class="fas fa-database"></i> Setup DB</a>
-          <a href="index.html"><i class="fas fa-receipt"></i> Back to Billing</a>
+          <a href="#" id="setupDbBtn"
+            ><i class="fas fa-database"></i> Setup DB</a
+          >
+          <a href="index.html"
+            ><i class="fas fa-receipt"></i> Back to Billing</a
+          >
           <a href="#"><i class="fas fa-question-circle"></i> Help</a>
         </div>
       </footer>
@@ -983,9 +1008,7 @@
         <h3 style="color: var(--primary); margin-bottom: 20px">
           <i class="fas fa-database"></i> Database Setup Required
         </h3>
-        <p style="margin-bottom: 15px">
-          To connect to Supabase, you need to:
-        </p>
+        <p style="margin-bottom: 15px">To connect to Supabase, you need to:</p>
         <ol style="margin-bottom: 20px; padding-left: 20px">
           <li style="margin-bottom: 10px">
             Create a free account at
@@ -1060,7 +1083,7 @@
     </div>
 
     <script>
-              // Supabase Configuration
+      // Supabase Configuration
       let supabase = null;
       let isConnected = false;
       let currentPage = 1;
@@ -1070,7 +1093,7 @@
       let currentDateRange = {
         startDate: null,
         endDate: null,
-        preset: '7' // Default to last 7 days
+        preset: "7", // Default to last 7 days
       };
 
       // Default configuration (same as main page)
@@ -1087,6 +1110,50 @@
       // Chart instances
       let salesChart = null;
       let cakesChart = null;
+
+      // Helper function to parse items from JSON
+      function parseItemsFromJSON(itemsJSON) {
+        try {
+          if (!itemsJSON) return [];
+          const items = JSON.parse(itemsJSON);
+          if (Array.isArray(items)) {
+            return items;
+          }
+          // If it's a single item string (legacy format), convert to array
+          return [
+            { name: itemsJSON, quantity: 1, unit_price: 0, total_price: 0 },
+          ];
+        } catch (e) {
+          console.error("Error parsing items JSON:", e, "Raw data:", itemsJSON);
+          // Return as single item if not JSON
+          return [
+            {
+              name: itemsJSON || "Unknown Item",
+              quantity: 1,
+              unit_price: 0,
+              total_price: 0,
+            },
+          ];
+        }
+      }
+
+      // Get all products from items in bills
+      function getAllProductsFromBills(bills) {
+        const allProducts = [];
+        bills.forEach((bill) => {
+          const items = parseItemsFromJSON(bill.cake_name);
+          items.forEach((item) => {
+            allProducts.push({
+              name: item.name,
+              code: item.code || "",
+              quantity: item.quantity || 1,
+              unit_price: item.unit_price || 0,
+              total_price: item.total_price || 0,
+            });
+          });
+        });
+        return allProducts;
+      }
 
       // Initialize Supabase if credentials exist
       function initSupabase() {
@@ -1139,9 +1206,9 @@
           notification.id = "notification";
           notification.className = "notification";
           notification.innerHTML = `
-            <i class="fas fa-check-circle"></i>
-            <span>${message}</span>
-          `;
+        <i class="fas fa-check-circle"></i>
+        <span>${message}</span>
+      `;
           document.body.appendChild(notification);
         }
 
@@ -1172,50 +1239,49 @@
       function calculateDateRange(days) {
         const endDate = new Date();
         const startDate = new Date();
-        
+
         if (days > 0) {
           startDate.setDate(startDate.getDate() - days);
         } else {
           // All time - set start date to a very old date
           startDate.setFullYear(2000, 0, 1);
         }
-        
+
         return {
           startDate: startDate,
-          endDate: endDate
+          endDate: endDate,
         };
       }
 
       // Format date for display
       function formatDate(date) {
-        return date.toISOString().split('T')[0];
+        return date.toISOString().split("T")[0];
       }
 
       // Format currency
       function formatCurrency(amount) {
-        return new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD'
-        }).format(amount);
+        return "₹" + amount.toFixed(2);
       }
 
       // Set date range inputs
       function setDateRange(days) {
         const range = calculateDateRange(days);
-        document.getElementById('startDate').value = formatDate(range.startDate);
-        document.getElementById('endDate').value = formatDate(range.endDate);
-        
+        document.getElementById("startDate").value = formatDate(
+          range.startDate
+        );
+        document.getElementById("endDate").value = formatDate(range.endDate);
+
         currentDateRange = {
           startDate: range.startDate,
           endDate: range.endDate,
-          preset: days.toString()
+          preset: days.toString(),
         };
-        
+
         // Update active preset button
-        document.querySelectorAll('.preset-btn').forEach(btn => {
-          btn.classList.remove('active');
+        document.querySelectorAll(".preset-btn").forEach((btn) => {
+          btn.classList.remove("active");
           if (btn.dataset.days === days.toString()) {
-            btn.classList.add('active');
+            btn.classList.add("active");
           }
         });
       }
@@ -1230,17 +1296,16 @@
         try {
           // Show loading states
           showLoadingStates();
-          
+
           // Load all data in parallel
           await Promise.all([
             loadSummaryStats(),
             loadSalesChartData(),
-            loadCakesChartData(),
-            loadTopCakes(),
+            loadProductsChartData(), // Changed from loadCakesChartData
+            loadTopProducts(), // Changed from loadTopCakes
             loadRecentOrders(),
-            loadAllOrders()
+            loadAllOrders(),
           ]);
-          
         } catch (error) {
           console.error("Error loading reports data:", error);
           showNotification("Failed to load reports data", "error");
@@ -1249,18 +1314,18 @@
 
       // Show loading states for all sections
       function showLoadingStates() {
-        document.getElementById('topCakesLoading').style.display = 'block';
-        document.getElementById('topCakesTable').style.display = 'none';
-        document.getElementById('topCakesNoData').style.display = 'none';
-        
-        document.getElementById('recentOrdersLoading').style.display = 'block';
-        document.getElementById('recentOrdersTable').style.display = 'none';
-        document.getElementById('recentOrdersNoData').style.display = 'none';
-        
-        document.getElementById('allOrdersLoading').style.display = 'block';
-        document.getElementById('allOrdersTable').style.display = 'none';
-        document.getElementById('allOrdersNoData').style.display = 'none';
-        document.getElementById('pagination').style.display = 'none';
+        document.getElementById("topCakesLoading").style.display = "block";
+        document.getElementById("topCakesTable").style.display = "none";
+        document.getElementById("topCakesNoData").style.display = "none";
+
+        document.getElementById("recentOrdersLoading").style.display = "block";
+        document.getElementById("recentOrdersTable").style.display = "none";
+        document.getElementById("recentOrdersNoData").style.display = "none";
+
+        document.getElementById("allOrdersLoading").style.display = "block";
+        document.getElementById("allOrdersTable").style.display = "none";
+        document.getElementById("allOrdersNoData").style.display = "none";
+        document.getElementById("pagination").style.display = "none";
       }
 
       // Load summary statistics
@@ -1268,55 +1333,81 @@
         try {
           // Build date filter
           let query = supabase
-            .from('cake_bills')
-            .select('total_price, purchaser_phone, created_at');
-            
+            .from("cake_bills")
+            .select("total_price, purchaser_phone, created_at, cake_name");
+
           if (currentDateRange.startDate && currentDateRange.endDate) {
             query = query
-              .gte('created_at', currentDateRange.startDate.toISOString())
-              .lte('created_at', currentDateRange.endDate.toISOString());
+              .gte("created_at", currentDateRange.startDate.toISOString())
+              .lte("created_at", currentDateRange.endDate.toISOString());
           }
-          
+
           const { data, error } = await query;
-          
+
           if (error) throw error;
-          
+
           if (data && data.length > 0) {
             // Calculate statistics
-            const totalRevenue = data.reduce((sum, bill) => sum + parseFloat(bill.total_price), 0);
+            const totalRevenue = data.reduce(
+              (sum, bill) => sum + parseFloat(bill.total_price || 0),
+              0
+            );
             const totalOrders = data.length;
-            const averageOrder = totalRevenue / totalOrders;
-            
+            const averageOrder =
+              totalOrders > 0 ? totalRevenue / totalOrders : 0;
+
             // Get unique customers
-            const uniquePhones = [...new Set(data.map(bill => bill.purchaser_phone))];
+            const uniquePhones = [
+              ...new Set(data.map((bill) => bill.purchaser_phone)),
+            ];
             const totalCustomers = uniquePhones.length;
-            
-            // Update UI
-            document.getElementById('totalRevenue').textContent = formatCurrency(totalRevenue);
-            document.getElementById('totalOrders').textContent = totalOrders;
-            document.getElementById('averageOrder').textContent = formatCurrency(averageOrder);
-            document.getElementById('totalCustomers').textContent = totalCustomers;
-            
+
+            // Calculate total items sold
+            let totalItemsSold = 0;
+            data.forEach((bill) => {
+              const items = parseItemsFromJSON(bill.cake_name);
+              totalItemsSold += items.reduce(
+                (sum, item) => sum + (item.quantity || 1),
+                0
+              );
+            });
+
+            // Update UI - Update labels to reflect multiple items
+            document.getElementById("totalOrders").textContent = totalOrders;
+            document.getElementById("totalCustomers").textContent =
+              totalCustomers;
+            document.getElementById(
+              "totalRevenue"
+            ).textContent = `₹${totalRevenue.toFixed(2)}`;
+            document.getElementById(
+              "averageOrder"
+            ).textContent = `₹${averageOrder.toFixed(2)}`;
+            // Update labels
+            document.querySelector(
+              ".stat-card.orders .stat-label"
+            ).textContent = "Total Bills";
+            document.querySelector(
+              ".stat-card.average .stat-label"
+            ).textContent = "Average Bill Value";
+
             // TODO: Calculate percentage changes vs previous period
             // For now, set random positive changes
-            document.getElementById('revenueChange').textContent = '+12.5%';
-            document.getElementById('ordersChange').textContent = '+8.3%';
-            document.getElementById('averageChange').textContent = '+3.9%';
-            document.getElementById('customersChange').textContent = '+15.2%';
-            
+            document.getElementById("revenueChange").textContent = "+12.5%";
+            document.getElementById("ordersChange").textContent = "+8.3%";
+            document.getElementById("averageChange").textContent = "+3.9%";
+            document.getElementById("customersChange").textContent = "+15.2%";
           } else {
             // No data
-            document.getElementById('totalRevenue').textContent = '$0.00';
-            document.getElementById('totalOrders').textContent = '0';
-            document.getElementById('averageOrder').textContent = '$0.00';
-            document.getElementById('totalCustomers').textContent = '0';
-            
-            document.getElementById('revenueChange').textContent = '0%';
-            document.getElementById('ordersChange').textContent = '0%';
-            document.getElementById('averageChange').textContent = '0%';
-            document.getElementById('customersChange').textContent = '0%';
+            document.getElementById("totalRevenue").textContent = "₹0.00";
+            document.getElementById("totalOrders").textContent = "0";
+            document.getElementById("averageOrder").textContent = "₹0.00";
+            document.getElementById("totalCustomers").textContent = "0";
+
+            document.getElementById("revenueChange").textContent = "0%";
+            document.getElementById("ordersChange").textContent = "0%";
+            document.getElementById("averageChange").textContent = "0%";
+            document.getElementById("customersChange").textContent = "0%";
           }
-          
         } catch (error) {
           console.error("Error loading summary stats:", error);
           showNotification("Failed to load summary statistics", "error");
@@ -1328,57 +1419,59 @@
         try {
           // Build query for daily sales
           let query = supabase
-            .from('cake_bills')
-            .select('total_price, created_at')
-            .order('created_at', { ascending: true });
-            
+            .from("cake_bills")
+            .select("total_price, created_at")
+            .order("created_at", { ascending: true });
+
           if (currentDateRange.startDate && currentDateRange.endDate) {
             query = query
-              .gte('created_at', currentDateRange.startDate.toISOString())
-              .lte('created_at', currentDateRange.endDate.toISOString());
+              .gte("created_at", currentDateRange.startDate.toISOString())
+              .lte("created_at", currentDateRange.endDate.toISOString());
           }
-          
+
           const { data, error } = await query;
-          
+
           if (error) throw error;
-          
+
           if (data && data.length > 0) {
             // Group by date
             const salesByDate = {};
-            data.forEach(bill => {
+            data.forEach((bill) => {
               const date = new Date(bill.created_at).toLocaleDateString();
-              const amount = parseFloat(bill.total_price);
-              
+              const amount = parseFloat(bill.total_price || 0);
+
               if (!salesByDate[date]) {
                 salesByDate[date] = 0;
               }
               salesByDate[date] += amount;
             });
-            
+
             // Prepare chart data
             const dates = Object.keys(salesByDate);
             const amounts = Object.values(salesByDate);
-            
+
             // Create or update chart
-            const ctx = document.getElementById('salesChart').getContext('2d');
-            
+            const ctx = document.getElementById("salesChart").getContext("2d");
+
             if (salesChart) {
               salesChart.destroy();
             }
-            
+
             salesChart = new Chart(ctx, {
-              type: 'line',
+              type: "line",
               data: {
                 labels: dates,
-                datasets: [{
-                  label: 'Daily Revenue',
-                  data: amounts,
-                  borderColor: '#ff7bac',
-                  backgroundColor: 'rgba(255, 123, 172, 0.1)',
-                  borderWidth: 2,
-                  fill: true,
-                  tension: 0.4
-                }]
+                datasets: [
+                  {
+                    label: "Daily Revenue",
+                    data: amounts,
+                    borderColor: "#ff7bac",
+                    backgroundColor: "rgba(255, 123, 172, 0.1)",
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                  },
+                ],
               },
               options: {
                 responsive: true,
@@ -1386,40 +1479,42 @@
                 plugins: {
                   legend: {
                     display: true,
-                    position: 'top',
-                  }
+                    position: "top",
+                  },
                 },
                 scales: {
                   y: {
                     beginAtZero: true,
                     ticks: {
-                      callback: function(value) {
-                        return '$' + value;
-                      }
-                    }
-                  }
-                }
-              }
+                      callback: function (value) {
+                        return "₹" + value;
+                      },
+                    },
+                  },
+                },
+              },
             });
           } else {
             // Create empty chart
-            const ctx = document.getElementById('salesChart').getContext('2d');
+            const ctx = document.getElementById("salesChart").getContext("2d");
             if (salesChart) {
               salesChart.destroy();
             }
-            
+
             salesChart = new Chart(ctx, {
-              type: 'line',
+              type: "line",
               data: {
                 labels: [],
-                datasets: [{
-                  label: 'Daily Revenue',
-                  data: [],
-                  borderColor: '#ff7bac',
-                  backgroundColor: 'rgba(255, 123, 172, 0.1)',
-                  borderWidth: 2,
-                  fill: true
-                }]
+                datasets: [
+                  {
+                    label: "Daily Revenue",
+                    data: [],
+                    borderColor: "#ff7bac",
+                    backgroundColor: "rgba(255, 123, 172, 0.1)",
+                    borderWidth: 2,
+                    fill: true,
+                  },
+                ],
               },
               options: {
                 responsive: true,
@@ -1427,80 +1522,112 @@
                 plugins: {
                   legend: {
                     display: true,
-                    position: 'top',
-                  }
-                }
-              }
+                    position: "top",
+                  },
+                },
+              },
             });
           }
-          
         } catch (error) {
           console.error("Error loading sales chart data:", error);
           showNotification("Failed to load sales chart data", "error");
         }
       }
 
-      // Load cakes chart data
-      async function loadCakesChartData() {
+      // Load products chart data (REPLACED loadCakesChartData)
+      async function loadProductsChartData() {
         try {
-          // Build query for cake sales
+          // Build query for all bills
           let query = supabase
-            .from('cake_bills')
-            .select('cake_name, cake_price')
-            .order('cake_name');
-            
+            .from("cake_bills")
+            .select("cake_name, total_price, created_at");
+
           if (currentDateRange.startDate && currentDateRange.endDate) {
             query = query
-              .gte('created_at', currentDateRange.startDate.toISOString())
-              .lte('created_at', currentDateRange.endDate.toISOString());
+              .gte("created_at", currentDateRange.startDate.toISOString())
+              .lte("created_at", currentDateRange.endDate.toISOString());
           }
-          
+
           const { data, error } = await query;
-          
+
           if (error) throw error;
-          
+
           if (data && data.length > 0) {
-            // Group by cake
-            const cakesData = {};
-            data.forEach(bill => {
-              const cakeName = bill.cake_name;
-              const price = parseFloat(bill.cake_price);
-              
-              if (!cakesData[cakeName]) {
-                cakesData[cakeName] = {
+            // Extract all products from bills
+            const allProducts = getAllProductsFromBills(data);
+
+            // Group by product name
+            const productsData = {};
+            allProducts.forEach((product) => {
+              const productName = product.name || "Unknown Product";
+              const quantity = product.quantity || 1;
+
+              if (!productsData[productName]) {
+                productsData[productName] = {
                   count: 0,
-                  total: 0
+                  totalQuantity: 0,
+                  totalRevenue: 0,
                 };
               }
-              cakesData[cakeName].count++;
-              cakesData[cakeName].total += price;
+              productsData[productName].count++;
+              productsData[productName].totalQuantity += quantity;
+              productsData[productName].totalRevenue +=
+                product.total_price || product.unit_price * quantity;
             });
-            
-            // Prepare chart data
-            const cakeNames = Object.keys(cakesData);
-            const cakeCounts = Object.values(cakesData).map(d => d.count);
-            
+
+            // Prepare chart data - show top 10 products by quantity
+            const sortedProducts = Object.entries(productsData)
+              .map(([name, stats]) => ({
+                name,
+                quantity: stats.totalQuantity,
+                revenue: stats.totalRevenue,
+                count: stats.count,
+              }))
+              .sort((a, b) => b.quantity - a.quantity)
+              .slice(0, 10);
+
+            const productNames = sortedProducts.map((p) => p.name);
+            const productQuantities = sortedProducts.map((p) => p.quantity);
+
             // Colors for the chart
             const backgroundColors = [
-              '#ff7bac', '#ffb347', '#9d4edd', '#4caf50', '#2196f3', '#ff9800'
+              "#ff7bac",
+              "#ffb347",
+              "#9d4edd",
+              "#4caf50",
+              "#2196f3",
+              "#ff9800",
+              "#795548",
+              "#607d8b",
+              "#e91e63",
+              "#00bcd4",
             ];
-            
+
+            // Update chart title
+            document
+              .querySelector("#cakesChart")
+              .closest(".chart-card")
+              .querySelector("h3").innerHTML =
+              '<i class="fas fa-chart-pie"></i> Top Products by Quantity Sold';
+
             // Create or update chart
-            const ctx = document.getElementById('cakesChart').getContext('2d');
-            
+            const ctx = document.getElementById("cakesChart").getContext("2d");
+
             if (cakesChart) {
               cakesChart.destroy();
             }
-            
+
             cakesChart = new Chart(ctx, {
-              type: 'pie',
+              type: "pie",
               data: {
-                labels: cakeNames,
-                datasets: [{
-                  data: cakeCounts,
-                  backgroundColor: backgroundColors,
-                  borderWidth: 1
-                }]
+                labels: productNames,
+                datasets: [
+                  {
+                    data: productQuantities,
+                    backgroundColor: backgroundColors,
+                    borderWidth: 1,
+                  },
+                ],
               },
               options: {
                 responsive: true,
@@ -1508,37 +1635,43 @@
                 plugins: {
                   legend: {
                     display: true,
-                    position: 'right',
+                    position: "right",
                   },
                   tooltip: {
                     callbacks: {
-                      label: function(context) {
-                        const cakeName = context.label;
-                        const count = context.raw;
-                        const total = cakesData[cakeName].total;
-                        return `${cakeName}: ${count} sales (${formatCurrency(total)})`;
-                      }
-                    }
-                  }
-                }
-              }
+                      label: function (context) {
+                        const productName = context.label;
+                        const quantity = context.raw;
+                        const product = sortedProducts.find(
+                          (p) => p.name === productName
+                        );
+                        return `${productName}: ${quantity} units (₹${revenue.toFixed(
+                          2
+                        )})`;
+                      },
+                    },
+                  },
+                },
+              },
             });
           } else {
             // Create empty chart
-            const ctx = document.getElementById('cakesChart').getContext('2d');
+            const ctx = document.getElementById("cakesChart").getContext("2d");
             if (cakesChart) {
               cakesChart.destroy();
             }
-            
+
             cakesChart = new Chart(ctx, {
-              type: 'pie',
+              type: "pie",
               data: {
                 labels: [],
-                datasets: [{
-                  data: [],
-                  backgroundColor: [],
-                  borderWidth: 1
-                }]
+                datasets: [
+                  {
+                    data: [],
+                    backgroundColor: [],
+                    borderWidth: 1,
+                  },
+                ],
               },
               options: {
                 responsive: true,
@@ -1546,294 +1679,393 @@
                 plugins: {
                   legend: {
                     display: true,
-                    position: 'right',
-                  }
-                }
-              }
+                    position: "right",
+                  },
+                },
+              },
             });
           }
-          
         } catch (error) {
-          console.error("Error loading cakes chart data:", error);
-          showNotification("Failed to load cakes chart data", "error");
+          console.error("Error loading products chart data:", error);
+          showNotification("Failed to load products chart data", "error");
         }
       }
 
-      // Load top cakes table
-      async function loadTopCakes() {
+      // Load top products table (REPLACED loadTopCakes)
+      async function loadTopProducts() {
         try {
-          // Build query for top cakes
+          // Build query for all bills
           let query = supabase
-            .from('cake_bills')
-            .select('cake_name, cake_price')
-            .order('cake_name');
-            
+            .from("cake_bills")
+            .select("cake_name, total_price, created_at");
+
           if (currentDateRange.startDate && currentDateRange.endDate) {
             query = query
-              .gte('created_at', currentDateRange.startDate.toISOString())
-              .lte('created_at', currentDateRange.endDate.toISOString());
+              .gte("created_at", currentDateRange.startDate.toISOString())
+              .lte("created_at", currentDateRange.endDate.toISOString());
           }
-          
+
           const { data, error } = await query;
-          
+
           if (error) throw error;
-          
-          const tbody = document.getElementById('topCakesBody');
-          tbody.innerHTML = '';
-          
+
+          const tbody = document.getElementById("topCakesBody");
+          tbody.innerHTML = "";
+
           if (data && data.length > 0) {
+            // Extract all products from bills
+            const allProducts = getAllProductsFromBills(data);
+
             // Group and calculate stats
-            const cakesStats = {};
-            data.forEach(bill => {
-              const cakeName = bill.cake_name;
-              const price = parseFloat(bill.cake_price);
-              
-              if (!cakesStats[cakeName]) {
-                cakesStats[cakeName] = {
+            const productsStats = {};
+            allProducts.forEach((product) => {
+              const productName = product.name || "Unknown Product";
+              const quantity = product.quantity || 1;
+              const unitPrice = product.unit_price || 0;
+              const totalPrice = product.total_price || unitPrice * quantity;
+
+              if (!productsStats[productName]) {
+                productsStats[productName] = {
                   count: 0,
-                  total: 0,
-                  prices: []
+                  totalQuantity: 0,
+                  totalRevenue: 0,
+                  prices: [],
                 };
               }
-              cakesStats[cakeName].count++;
-              cakesStats[cakeName].total += price;
-              cakesStats[cakeName].prices.push(price);
+              productsStats[productName].count++;
+              productsStats[productName].totalQuantity += quantity;
+              productsStats[productName].totalRevenue += totalPrice;
+              productsStats[productName].prices.push(unitPrice);
             });
-            
-            // Convert to array and sort by count
-            const sortedCakes = Object.entries(cakesStats)
+
+            // Convert to array and sort by quantity
+            const sortedProducts = Object.entries(productsStats)
               .map(([name, stats]) => ({
                 name,
-                count: stats.count,
-                total: stats.total,
-                average: stats.total / stats.count
+                quantity: stats.totalQuantity,
+                revenue: stats.totalRevenue,
+                average: stats.totalRevenue / stats.totalQuantity,
+                orders: stats.count,
               }))
-              .sort((a, b) => b.count - a.count)
+              .sort((a, b) => b.quantity - a.quantity)
               .slice(0, 10); // Top 10
-            
+
+            // Update table headers
+            document.querySelector("#topCakesTable thead tr").innerHTML = `
+          <th>Product Name</th>
+          <th>Quantity Sold</th>
+          <th>Orders</th>
+          <th>Total Revenue</th>
+          <th>Average Price</th>
+        `;
+
+            // Update card title
+            document
+              .querySelector("#topCakesTable")
+              .closest(".table-card")
+              .querySelector("h3").innerHTML =
+              '<i class="fas fa-crown"></i> Top Selling Products';
+
             // Populate table
-            sortedCakes.forEach((cake, index) => {
-              const row = document.createElement('tr');
+            sortedProducts.forEach((product, index) => {
+              const row = document.createElement("tr");
               row.innerHTML = `
-                <td class="cake-name">${cake.name}</td>
-                <td>${cake.count}</td>
-                <td class="cake-price">${formatCurrency(cake.total)}</td>
-                <td>${formatCurrency(cake.average)}</td>
-              `;
+            <td class="cake-name">${product.name}</td>
+            <td>${product.quantity}</td>
+            <td>${product.orders}</td>
+            <td class="cake-price">₹${product.revenue.toFixed(2)}</td>
+<td>₹${product.average.toFixed(2)}</td>
+          `;
               tbody.appendChild(row);
             });
-            
+
             // Show table, hide loading and no-data
-            document.getElementById('topCakesLoading').style.display = 'none';
-            document.getElementById('topCakesTable').style.display = 'table';
-            document.getElementById('topCakesNoData').style.display = 'none';
-            
+            document.getElementById("topCakesLoading").style.display = "none";
+            document.getElementById("topCakesTable").style.display = "table";
+            document.getElementById("topCakesNoData").style.display = "none";
           } else {
             // No data
-            document.getElementById('topCakesLoading').style.display = 'none';
-            document.getElementById('topCakesTable').style.display = 'none';
-            document.getElementById('topCakesNoData').style.display = 'block';
+            document.getElementById("topCakesLoading").style.display = "none";
+            document.getElementById("topCakesTable").style.display = "none";
+            document.getElementById("topCakesNoData").style.display = "block";
           }
-          
         } catch (error) {
-          console.error("Error loading top cakes:", error);
-          document.getElementById('topCakesLoading').style.display = 'none';
-          document.getElementById('topCakesTable').style.display = 'none';
-          document.getElementById('topCakesNoData').style.display = 'block';
+          console.error("Error loading top products:", error);
+          document.getElementById("topCakesLoading").style.display = "none";
+          document.getElementById("topCakesTable").style.display = "none";
+          document.getElementById("topCakesNoData").style.display = "block";
         }
       }
 
-      // Load recent orders table
+      // Load recent orders table - UPDATED for multiple items
       async function loadRecentOrders() {
         try {
           // Build query for recent orders
           let query = supabase
-            .from('cake_bills')
-            .select('*')
-            .order('created_at', { ascending: false })
+            .from("cake_bills")
+            .select("*")
+            .order("created_at", { ascending: false })
             .limit(10);
-            
+
           if (currentDateRange.startDate && currentDateRange.endDate) {
             query = query
-              .gte('created_at', currentDateRange.startDate.toISOString())
-              .lte('created_at', currentDateRange.endDate.toISOString());
+              .gte("created_at", currentDateRange.startDate.toISOString())
+              .lte("created_at", currentDateRange.endDate.toISOString());
           }
-          
+
           const { data, error } = await query;
-          
+
           if (error) throw error;
-          
-          const tbody = document.getElementById('recentOrdersBody');
-          tbody.innerHTML = '';
-          
+
+          const tbody = document.getElementById("recentOrdersBody");
+          tbody.innerHTML = "";
+
           if (data && data.length > 0) {
+            // Update table headers for multiple items
+            document.querySelector("#recentOrdersTable thead tr").innerHTML = `
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Items</th>
+          <th>Total Price</th>
+        `;
+
             // Populate table
-            data.forEach(bill => {
+            data.forEach((bill) => {
               const date = new Date(bill.created_at).toLocaleDateString();
-              const row = document.createElement('tr');
+              const items = parseItemsFromJSON(bill.cake_name);
+
+              // Create items summary
+              let itemsSummary = "";
+              if (items.length === 1) {
+                itemsSummary = items[0].name;
+              } else {
+                itemsSummary = `${items.length} items`;
+              }
+
+              const row = document.createElement("tr");
               row.innerHTML = `
-                <td>${date}</td>
-                <td>
-                  <div class="customer-name">${bill.purchaser_name}</div>
-                  <div class="customer-phone">${bill.purchaser_phone}</div>
-                </td>
-                <td class="cake-name">${bill.cake_name}</td>
-                <td class="cake-price">${formatCurrency(bill.total_price)}</td>
-              `;
+            <td>${date}</td>
+            <td>
+              <div class="customer-name">${bill.purchaser_name}</div>
+              <div class="customer-phone">${bill.purchaser_phone}</div>
+            </td>
+            <td class="cake-name">${itemsSummary}</td>
+            <td class="cake-price">₹${parseFloat(bill.total_price || 0).toFixed(
+              2
+            )}</td>
+          `;
+
+              // Add hover tooltip with item details
+              row.addEventListener("mouseenter", function () {
+                if (items.length > 1) {
+                  const tooltip = items
+                    .map(
+                      (item) =>
+                        `${item.name} x${item.quantity} - ₹${item.unit_price}`
+                    )
+                    .join("<br>");
+                  this.setAttribute("title", tooltip);
+                }
+              });
+
               tbody.appendChild(row);
             });
-            
+
             // Show table, hide loading and no-data
-            document.getElementById('recentOrdersLoading').style.display = 'none';
-            document.getElementById('recentOrdersTable').style.display = 'table';
-            document.getElementById('recentOrdersNoData').style.display = 'none';
-            
+            document.getElementById("recentOrdersLoading").style.display =
+              "none";
+            document.getElementById("recentOrdersTable").style.display =
+              "table";
+            document.getElementById("recentOrdersNoData").style.display =
+              "none";
           } else {
             // No data
-            document.getElementById('recentOrdersLoading').style.display = 'none';
-            document.getElementById('recentOrdersTable').style.display = 'none';
-            document.getElementById('recentOrdersNoData').style.display = 'block';
+            document.getElementById("recentOrdersLoading").style.display =
+              "none";
+            document.getElementById("recentOrdersTable").style.display = "none";
+            document.getElementById("recentOrdersNoData").style.display =
+              "block";
           }
-          
         } catch (error) {
           console.error("Error loading recent orders:", error);
-          document.getElementById('recentOrdersLoading').style.display = 'none';
-          document.getElementById('recentOrdersTable').style.display = 'none';
-          document.getElementById('recentOrdersNoData').style.display = 'block';
+          document.getElementById("recentOrdersLoading").style.display = "none";
+          document.getElementById("recentOrdersTable").style.display = "none";
+          document.getElementById("recentOrdersNoData").style.display = "block";
         }
       }
 
-      // Load all orders with pagination and filters
+      // Load all orders with pagination and filters - UPDATED
       async function loadAllOrders(page = 1) {
         try {
           currentPage = page;
-          
+
           // Build base query
           let query = supabase
-            .from('cake_bills')
-            .select('*', { count: 'exact' });
-          
+            .from("cake_bills")
+            .select("*", { count: "exact" });
+
           // Apply date filter
           if (currentDateRange.startDate && currentDateRange.endDate) {
             query = query
-              .gte('created_at', currentDateRange.startDate.toISOString())
-              .lte('created_at', currentDateRange.endDate.toISOString());
+              .gte("created_at", currentDateRange.startDate.toISOString())
+              .lte("created_at", currentDateRange.endDate.toISOString());
           }
-          
-          // Apply search filter
-          const searchTerm = document.getElementById('searchOrders').value.trim();
+
+          // Apply search filter - updated to search in JSON items
+          const searchTerm = document
+            .getElementById("searchOrders")
+            .value.trim();
           if (searchTerm) {
-            query = query.or(`purchaser_name.ilike.%${searchTerm}%,purchaser_phone.ilike.%${searchTerm}%,cake_name.ilike.%${searchTerm}%`);
+            query = query.or(
+              `purchaser_name.ilike.%${searchTerm}%,purchaser_phone.ilike.%${searchTerm}%,cake_name.ilike.%${searchTerm}%`
+            );
           }
-          
-          // Apply cake filter
-          const cakeFilter = document.getElementById('filterCake').value;
-          if (cakeFilter) {
-            query = query.eq('cake_name', cakeFilter);
-          }
-          
+
+          // NOTE: Cake filter removed since we now have multiple items
+          // You could implement a more complex search for items in JSON
+
           // Apply price filter
-          const priceFilter = document.getElementById('filterPrice').value;
+          const priceFilter = document.getElementById("filterPrice").value;
           if (priceFilter) {
-            const [min, max] = priceFilter.split('-');
-            if (max === '+') {
-              query = query.gt('total_price', min);
+            const [min, max] = priceFilter.split("-");
+            if (max === "+") {
+              query = query.gt("total_price", min);
             } else {
-              query = query.gte('total_price', min).lte('total_price', max);
+              query = query.gte("total_price", min).lte("total_price", max);
             }
           }
-          
+
           // Apply sorting
-          const sortBy = document.getElementById('sortBy').value;
-          switch(sortBy) {
-            case 'newest':
-              query = query.order('created_at', { ascending: false });
+          const sortBy = document.getElementById("sortBy").value;
+          switch (sortBy) {
+            case "newest":
+              query = query.order("created_at", { ascending: false });
               break;
-            case 'oldest':
-              query = query.order('created_at', { ascending: true });
+            case "oldest":
+              query = query.order("created_at", { ascending: true });
               break;
-            case 'price-high':
-              query = query.order('total_price', { ascending: false });
+            case "price-high":
+              query = query.order("total_price", { ascending: false });
               break;
-            case 'price-low':
-              query = query.order('total_price', { ascending: true });
+            case "price-low":
+              query = query.order("total_price", { ascending: true });
               break;
           }
-          
+
           // Apply pagination
           const from = (page - 1) * pageSize;
           const to = from + pageSize - 1;
           query = query.range(from, to);
-          
+
           const { data, error, count } = await query;
-          
+
           if (error) throw error;
-          
-          const tbody = document.getElementById('allOrdersBody');
-          tbody.innerHTML = '';
+
+          const tbody = document.getElementById("allOrdersBody");
+          tbody.innerHTML = "";
           totalOrders = count || 0;
-          
+
           if (data && data.length > 0) {
+            // Update table headers
+            document.querySelector("#allOrdersTable thead tr").innerHTML = `
+          <th>Bill #</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Phone</th>
+          <th>Items</th>
+          <th>Total</th>
+          <th>Coupon</th>
+          <th>Actions</th>
+        `;
+
             // Populate table
-            data.forEach(bill => {
+            data.forEach((bill) => {
               const date = new Date(bill.created_at).toLocaleDateString();
-              const row = document.createElement('tr');
+              const items = parseItemsFromJSON(bill.cake_name);
+
+              // Create items summary
+              let itemsSummary = "";
+              if (items.length === 1) {
+                itemsSummary = items[0].name;
+              } else {
+                itemsSummary = `${items.length} items`;
+              }
+
+              const row = document.createElement("tr");
               row.innerHTML = `
-                <td>${bill.bill_number || 'N/A'}</td>
-                <td>${date}</td>
-                <td>
-                  <div class="customer-name">${bill.purchaser_name}</div>
-                  <div class="customer-phone">${bill.purchaser_phone}</div>
-                </td>
-                <td>${bill.purchaser_phone}</td>
-                <td class="cake-name">${bill.cake_name}</td>
-                <td class="cake-price">${formatCurrency(bill.total_price)}</td>
-                <td>${bill.coupon_code || '-'}</td>
-                <td>
-                  <button class="view-btn" onclick="viewBill('${bill.id}')" title="View Details">
-                    <i class="fas fa-eye"></i>
-                  </button>
-                  <button class="print-btn" onclick="printBill('${bill.id}')" title="Print Receipt">
-                    <i class="fas fa-print"></i>
-                  </button>
-                </td>
-              `;
+            <td>${bill.bill_number || "N/A"}</td>
+            <td>${date}</td>
+            <td>
+              <div class="customer-name">${bill.purchaser_name}</div>
+              <div class="customer-phone">${bill.purchaser_phone}</div>
+            </td>
+            <td>${bill.purchaser_phone}</td>
+            <td class="cake-name">${itemsSummary}</td>
+            <td class="cake-price">₹${parseFloat(bill.total_price || 0).toFixed(
+              2
+            )}</td>
+            <td>${bill.coupon_code || "-"}</td>
+            <td>
+              <button class="view-btn" onclick="viewBill('${
+                bill.id
+              }')" title="View Details">
+                <i class="fas fa-eye"></i>
+              </button>
+              <button class="print-btn" onclick="printBill('${
+                bill.id
+              }')" title="Print Receipt">
+                <i class="fas fa-print"></i>
+              </button>
+            </td>
+          `;
+
+              // Add hover tooltip for items
+              if (items.length > 1) {
+                row.cells[4].addEventListener("mouseenter", function () {
+                  const tooltip = items
+                    .map(
+                      (item) =>
+                        `${item.name} x${item.quantity} - ₹${item.unit_price}`
+                    )
+                    .join("<br>");
+                  this.setAttribute("title", tooltip);
+                });
+              }
+
               tbody.appendChild(row);
             });
-            
+
             // Update pagination
             updatePagination();
-            
+
             // Show table, hide loading and no-data
-            document.getElementById('allOrdersLoading').style.display = 'none';
-            document.getElementById('allOrdersTable').style.display = 'table';
-            document.getElementById('allOrdersNoData').style.display = 'none';
-            document.getElementById('pagination').style.display = 'flex';
-            
+            document.getElementById("allOrdersLoading").style.display = "none";
+            document.getElementById("allOrdersTable").style.display = "table";
+            document.getElementById("allOrdersNoData").style.display = "none";
+            document.getElementById("pagination").style.display = "flex";
           } else {
             // No data
-            document.getElementById('allOrdersLoading').style.display = 'none';
-            document.getElementById('allOrdersTable').style.display = 'none';
-            document.getElementById('allOrdersNoData').style.display = 'block';
-            document.getElementById('pagination').style.display = 'none';
+            document.getElementById("allOrdersLoading").style.display = "none";
+            document.getElementById("allOrdersTable").style.display = "none";
+            document.getElementById("allOrdersNoData").style.display = "block";
+            document.getElementById("pagination").style.display = "none";
           }
-          
         } catch (error) {
           console.error("Error loading all orders:", error);
-          document.getElementById('allOrdersLoading').style.display = 'none';
-          document.getElementById('allOrdersTable').style.display = 'none';
-          document.getElementById('allOrdersNoData').style.display = 'block';
-          document.getElementById('pagination').style.display = 'none';
+          document.getElementById("allOrdersLoading").style.display = "none";
+          document.getElementById("allOrdersTable").style.display = "none";
+          document.getElementById("allOrdersNoData").style.display = "block";
+          document.getElementById("pagination").style.display = "none";
         }
       }
 
       // Update pagination controls
       function updatePagination() {
         const totalPages = Math.ceil(totalOrders / pageSize);
-        const pageInfo = document.getElementById('pageInfo');
-        const prevBtn = document.getElementById('prevPage');
-        const nextBtn = document.getElementById('nextPage');
-        
+        const pageInfo = document.getElementById("pageInfo");
+        const prevBtn = document.getElementById("prevPage");
+        const nextBtn = document.getElementById("nextPage");
+
         pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
         prevBtn.disabled = currentPage <= 1;
         nextBtn.disabled = currentPage >= totalPages;
@@ -1841,7 +2073,7 @@
 
       // View bill details
       function viewBill(billId) {
-        // TODO: Implement bill details view
+        // TODO: Implement bill details view with items display
         showNotification("View bill details - Feature coming soon!", "info");
       }
 
@@ -1853,7 +2085,7 @@
 
       // Export functions
       function exportTopCakes() {
-        showNotification("Export top cakes - Feature coming soon!", "info");
+        showNotification("Export top products - Feature coming soon!", "info");
       }
 
       function exportRecentOrders() {
@@ -1871,161 +2103,247 @@
       // Database setup modal functions (same as main page)
       function setupDatabaseModal() {
         // Setup database button
-        document.getElementById('setupDbBtn')?.addEventListener('click', function () {
-          document.getElementById('dbInfoModal').style.display = 'flex';
-        });
+        document
+          .getElementById("setupDbBtn")
+          ?.addEventListener("click", function () {
+            document.getElementById("dbInfoModal").style.display = "flex";
+          });
 
         // Close database modal
-        document.getElementById('closeDbModal')?.addEventListener('click', function () {
-          document.getElementById('dbInfoModal').style.display = 'none';
-        });
+        document
+          .getElementById("closeDbModal")
+          ?.addEventListener("click", function () {
+            document.getElementById("dbInfoModal").style.display = "none";
+          });
 
         // Save database configuration
-        document.getElementById('saveDbConfig')?.addEventListener('click', function () {
-          const url = document.getElementById('sbUrlInput').value;
-          const key = document.getElementById('sbKeyInput').value;
+        document
+          .getElementById("saveDbConfig")
+          ?.addEventListener("click", function () {
+            const url = document.getElementById("sbUrlInput").value;
+            const key = document.getElementById("sbKeyInput").value;
 
-          if (url && key) {
-            config.supabaseUrl = url;
-            config.supabaseKey = key;
+            if (url && key) {
+              config.supabaseUrl = url;
+              config.supabaseKey = key;
 
-            // Save to localStorage
-            localStorage.setItem('cakeBlissConfig', JSON.stringify(config));
+              // Save to localStorage
+              localStorage.setItem("cakeBlissConfig", JSON.stringify(config));
 
-            // Reinitialize Supabase
-            if (initSupabase()) {
-              showNotification('Database configuration saved successfully!', 'success');
-              document.getElementById('dbInfoModal').style.display = 'none';
+              // Reinitialize Supabase
+              if (initSupabase()) {
+                showNotification(
+                  "Database configuration saved successfully!",
+                  "success"
+                );
+                document.getElementById("dbInfoModal").style.display = "none";
+              }
+            } else {
+              showNotification("Please enter both URL and Key", "error");
             }
-          } else {
-            showNotification('Please enter both URL and Key', 'error');
-          }
-        });
+          });
       }
 
       // DOM Ready
-      document.addEventListener('DOMContentLoaded', function () {
+      document.addEventListener("DOMContentLoaded", function () {
         // Initialize date range (default to last 7 days)
         setDateRange(7);
-        
+
         // Initialize Supabase connection
         initSupabase();
-        
+
         // Setup database modal
         setupDatabaseModal();
-        
+
         // Setup event listeners
         setupEventListeners();
-        
+
         // Pre-fill database config if available
         if (config.supabaseUrl) {
-          document.getElementById('sbUrlInput').value = config.supabaseUrl;
+          document.getElementById("sbUrlInput").value = config.supabaseUrl;
         }
         if (config.supabaseKey) {
-          document.getElementById('sbKeyInput').value = config.supabaseKey;
+          document.getElementById("sbKeyInput").value = config.supabaseKey;
         }
+
+        // Update filter dropdown for items
+        updateProductFilter();
       });
+
+      // Update product filter dropdown
+      async function updateProductFilter() {
+        if (!supabase) return;
+
+        try {
+          // Query to get all unique product names from bills
+          const { data, error } = await supabase
+            .from("cake_bills")
+            .select("cake_name");
+
+          if (error) throw error;
+
+          if (data && data.length > 0) {
+            // Extract all unique product names
+            const allProducts = new Set();
+            data.forEach((bill) => {
+              const items = parseItemsFromJSON(bill.cake_name);
+              items.forEach((item) => {
+                if (item.name) {
+                  allProducts.add(item.name);
+                }
+              });
+            });
+
+            // Update filter dropdown
+            const filterSelect = document.getElementById("filterCake");
+            filterSelect.innerHTML = '<option value="">All Products</option>';
+
+            Array.from(allProducts)
+              .sort()
+              .forEach((product) => {
+                const option = document.createElement("option");
+                option.value = product;
+                option.textContent = product;
+                filterSelect.appendChild(option);
+              });
+
+            // Update label
+            filterSelect.previousElementSibling.textContent =
+              "Filter by Product";
+          }
+        } catch (error) {
+          console.error("Error updating product filter:", error);
+        }
+      }
 
       // Setup all event listeners
       function setupEventListeners() {
         // Date preset buttons
-        document.querySelectorAll('.preset-btn').forEach(btn => {
-          btn.addEventListener('click', function() {
+        document.querySelectorAll(".preset-btn").forEach((btn) => {
+          btn.addEventListener("click", function () {
             const days = parseInt(this.dataset.days);
             setDateRange(days);
           });
         });
-        
+
         // Apply date range button
-        document.getElementById('applyDateRange').addEventListener('click', function() {
-          const startDate = new Date(document.getElementById('startDate').value);
-          const endDate = new Date(document.getElementById('endDate').value);
-          
-          if (startDate && endDate && startDate <= endDate) {
-            currentDateRange = {
-              startDate: startDate,
-              endDate: endDate,
-              preset: null
-            };
-            
-            // Update preset buttons
-            document.querySelectorAll('.preset-btn').forEach(btn => {
-              btn.classList.remove('active');
-            });
-            
-            loadReportsData();
-            showNotification('Date range applied successfully', 'success');
-          } else {
-            showNotification('Please select a valid date range', 'error');
-          }
-        });
-        
+        document
+          .getElementById("applyDateRange")
+          .addEventListener("click", function () {
+            const startDate = new Date(
+              document.getElementById("startDate").value
+            );
+            const endDate = new Date(document.getElementById("endDate").value);
+
+            if (startDate && endDate && startDate <= endDate) {
+              currentDateRange = {
+                startDate: startDate,
+                endDate: endDate,
+                preset: null,
+              };
+
+              // Update preset buttons
+              document.querySelectorAll(".preset-btn").forEach((btn) => {
+                btn.classList.remove("active");
+              });
+
+              loadReportsData();
+              showNotification("Date range applied successfully", "success");
+            } else {
+              showNotification("Please select a valid date range", "error");
+            }
+          });
+
         // Refresh button
-        document.getElementById('refreshReports').addEventListener('click', function() {
-          loadReportsData();
-          showNotification('Reports refreshed', 'success');
-        });
-        
+        document
+          .getElementById("refreshReports")
+          .addEventListener("click", function () {
+            loadReportsData();
+            updateProductFilter();
+            showNotification("Reports refreshed", "success");
+          });
+
         // Search button
-        document.getElementById('searchBtn').addEventListener('click', function() {
-          currentPage = 1;
-          loadAllOrders(1);
-        });
-        
-        // Clear search button
-        document.getElementById('clearSearch').addEventListener('click', function() {
-          document.getElementById('searchOrders').value = '';
-          document.getElementById('filterCake').value = '';
-          document.getElementById('filterPrice').value = '';
-          document.getElementById('sortBy').value = 'newest';
-          currentPage = 1;
-          loadAllOrders(1);
-          showNotification('Filters cleared', 'success');
-        });
-        
-        // Filter changes
-        document.getElementById('filterCake').addEventListener('change', function() {
-          currentPage = 1;
-          loadAllOrders(1);
-        });
-        
-        document.getElementById('filterPrice').addEventListener('change', function() {
-          currentPage = 1;
-          loadAllOrders(1);
-        });
-        
-        document.getElementById('sortBy').addEventListener('change', function() {
-          currentPage = 1;
-          loadAllOrders(1);
-        });
-        
-        // Search input (enter key)
-        document.getElementById('searchOrders').addEventListener('keyup', function(e) {
-          if (e.key === 'Enter') {
+        document
+          .getElementById("searchBtn")
+          .addEventListener("click", function () {
             currentPage = 1;
             loadAllOrders(1);
-          }
-        });
-        
+          });
+
+        // Clear search button
+        document
+          .getElementById("clearSearch")
+          .addEventListener("click", function () {
+            document.getElementById("searchOrders").value = "";
+            document.getElementById("filterCake").value = "";
+            document.getElementById("filterPrice").value = "";
+            document.getElementById("sortBy").value = "newest";
+            currentPage = 1;
+            loadAllOrders(1);
+            showNotification("Filters cleared", "success");
+          });
+
+        // Filter changes
+        document
+          .getElementById("filterCake")
+          .addEventListener("change", function () {
+            currentPage = 1;
+            loadAllOrders(1);
+          });
+
+        document
+          .getElementById("filterPrice")
+          .addEventListener("change", function () {
+            currentPage = 1;
+            loadAllOrders(1);
+          });
+
+        document
+          .getElementById("sortBy")
+          .addEventListener("change", function () {
+            currentPage = 1;
+            loadAllOrders(1);
+          });
+
+        // Search input (enter key)
+        document
+          .getElementById("searchOrders")
+          .addEventListener("keyup", function (e) {
+            if (e.key === "Enter") {
+              currentPage = 1;
+              loadAllOrders(1);
+            }
+          });
+
         // Pagination buttons
-        document.getElementById('prevPage').addEventListener('click', function() {
-          if (currentPage > 1) {
-            loadAllOrders(currentPage - 1);
-          }
-        });
-        
-        document.getElementById('nextPage').addEventListener('click', function() {
-          const totalPages = Math.ceil(totalOrders / pageSize);
-          if (currentPage < totalPages) {
-            loadAllOrders(currentPage + 1);
-          }
-        });
-        
+        document
+          .getElementById("prevPage")
+          .addEventListener("click", function () {
+            if (currentPage > 1) {
+              loadAllOrders(currentPage - 1);
+            }
+          });
+
+        document
+          .getElementById("nextPage")
+          .addEventListener("click", function () {
+            const totalPages = Math.ceil(totalOrders / pageSize);
+            if (currentPage < totalPages) {
+              loadAllOrders(currentPage + 1);
+            }
+          });
+
         // View customers button
-        document.getElementById('viewCustomersBtn').addEventListener('click', function(e) {
-          e.preventDefault();
-          showNotification('Customer management feature coming soon!', 'info');
-        });
+        document
+          .getElementById("viewCustomersBtn")
+          .addEventListener("click", function (e) {
+            e.preventDefault();
+            showNotification(
+              "Customer management feature coming soon!",
+              "info"
+            );
+          });
       }
     </script>
   </body>
