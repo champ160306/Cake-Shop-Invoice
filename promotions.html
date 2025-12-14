@@ -129,8 +129,21 @@
       /* Main Content */
       .main-content {
         display: grid;
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
         gap: 30px;
+      }
+      /* Make the 3rd campaign full width */
+      .main-content .campaign-card:nth-child(3) {
+        grid-column: span 2;
+      }
+      @media (max-width: 992px) {
+        .main-content {
+          grid-template-columns: 1fr;
+        }
+
+        .main-content .campaign-card:nth-child(3) {
+          grid-column: span 1;
+        }
       }
 
       /* Campaign Cards */
@@ -313,58 +326,6 @@
 
       .btn-whatsapp.sending {
         background-color: var(--warning);
-      }
-
-      /* Message Preview */
-      .message-preview {
-        background: var(--light);
-        border-radius: 15px;
-        padding: 20px;
-        margin-top: 20px;
-        border-left: 4px solid var(--accent);
-        display: none;
-      }
-
-      .message-preview.show {
-        display: block;
-        animation: slideDown 0.3s ease;
-      }
-
-      @keyframes slideDown {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .preview-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 15px;
-      }
-
-      .preview-header h4 {
-        color: var(--primary);
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
-
-      .message-content {
-        background: white;
-        padding: 15px;
-        border-radius: 10px;
-        font-size: 14px;
-        line-height: 1.5;
-        white-space: pre-wrap;
-        max-height: 200px;
-        overflow-y: auto;
-        font-family: "Segoe UI", Arial, sans-serif;
       }
 
       /* Notification */
@@ -639,6 +600,40 @@
           opacity: 1;
         }
       }
+      .btn-whatsapp.sent {
+        background-color: var(--success);
+      }
+
+      .btn-whatsapp.sent:hover {
+        background-color: var(--success);
+        transform: none;
+        box-shadow: none;
+        cursor: default;
+      }
+      /* Add to your CSS */
+      .btn-whatsapp:disabled {
+        background-color: #cccccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+        opacity: 0.7;
+      }
+
+      .btn-whatsapp:disabled:hover {
+        background-color: #cccccc;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .customer-phone.no-phone {
+        background-color: #ffebee;
+        color: #c62828;
+        font-style: italic;
+      }
+
+      .customer-phone.no-phone i {
+        margin-right: 5px;
+      }
     </style>
   </head>
   <body>
@@ -674,7 +669,10 @@
               <a href="billing.html"><i class="fas fa-receipt"></i> Billing</a>
             </li>
             <li>
-              <a href="#" class="active"
+              <a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a>
+            </li>
+            <li>
+              <a href="promotions.html" class="active"
                 ><i class="fas fa-bullhorn"></i> Promotions</a
               >
             </li>
@@ -747,109 +745,94 @@
           <i class="fas fa-sync-alt"></i> Refresh Data
         </button>
       </div>
-
-      <!-- Campaign 1: Upcoming Birthdays -->
-      <div class="campaign-card">
-        <div class="campaign-header">
-          <div class="campaign-title">
-            <div class="campaign-icon">
-              <i class="fas fa-birthday-cake"></i>
+      <div class="main-content">
+        <!-- Campaign 1: Upcoming Birthdays -->
+        <div class="campaign-card">
+          <div class="campaign-header">
+            <div class="campaign-title">
+              <div class="campaign-icon">
+                <i class="fas fa-birthday-cake"></i>
+              </div>
+              <div>
+                <h2>🎂 Upcoming Birthdays</h2>
+                <p>Send birthday offers to customers with upcoming birthdays</p>
+              </div>
             </div>
-            <div>
-              <h2>🎂 Upcoming Birthdays</h2>
-              <p>Send birthday offers to customers with upcoming birthdays</p>
+            <div class="campaign-stats">
+              <div class="stat-badge">
+                <i class="fas fa-user"></i>
+                <span id="birthdayStats">0 customers</span>
+              </div>
             </div>
           </div>
-          <div class="campaign-stats">
-            <div class="stat-badge">
-              <i class="fas fa-user"></i>
-              <span id="birthdayStats">0 customers</span>
+
+          <div class="customer-list" id="birthdayList">
+            <div class="loading">
+              <i class="fas fa-spinner fa-spin"></i> Loading upcoming
+              birthdays...
             </div>
           </div>
         </div>
 
-        <div class="customer-list" id="birthdayList">
-          <div class="loading">
-            <i class="fas fa-spinner fa-spin"></i> Loading upcoming birthdays...
+        <!-- Campaign 2: High Ticket Customers -->
+        <div class="campaign-card">
+          <div class="campaign-header">
+            <div class="campaign-title">
+              <div class="campaign-icon">
+                <i class="fas fa-crown"></i>
+              </div>
+              <div>
+                <h2>👑 High Ticket Customers</h2>
+                <p>Reward your highest spending customers from last month</p>
+              </div>
+            </div>
+            <div class="campaign-stats">
+              <div class="stat-badge">
+                <i class="fas fa-user"></i>
+                <span id="highTicketStats">0 customers</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Campaign 2: High Ticket Customers -->
-      <div class="campaign-card">
-        <div class="campaign-header">
-          <div class="campaign-title">
-            <div class="campaign-icon">
-              <i class="fas fa-crown"></i>
-            </div>
-            <div>
-              <h2>👑 High Ticket Customers</h2>
-              <p>Reward your highest spending customers from last month</p>
-            </div>
-          </div>
-          <div class="campaign-stats">
-            <div class="stat-badge">
-              <i class="fas fa-rupee-sign"></i>
-              <span id="highTicketStats">0 customers</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="customer-list" id="highTicketList">
-          <div class="loading">
-            <i class="fas fa-spinner fa-spin"></i> Loading high ticket
-            customers...
-          </div>
-        </div>
-      </div>
-
-      <!-- Campaign 3: Gifting Reciprocity -->
-      <div class="campaign-card">
-        <div class="campaign-header">
-          <div class="campaign-title">
-            <div class="campaign-icon">
-              <i class="fas fa-gift"></i>
-            </div>
-            <div>
-              <h2>🎁 Gifting Reciprocity</h2>
-              <p>
-                Remind customers who received cakes that their gifter's birthday
-                is coming up
-              </p>
-            </div>
-          </div>
-          <div class="campaign-stats">
-            <div class="stat-badge">
-              <i class="fas fa-exchange-alt"></i>
-              <span id="giftingStats">0 opportunities</span>
+          <div class="customer-list" id="highTicketList">
+            <div class="loading">
+              <i class="fas fa-spinner fa-spin"></i> Loading high ticket
+              customers...
             </div>
           </div>
         </div>
 
-        <div class="customer-list" id="giftingList">
-          <div class="loading">
-            <i class="fas fa-spinner fa-spin"></i> Loading gifting
-            opportunities...
+        <!-- Campaign 3: Gifting Reciprocity -->
+        <div class="campaign-card">
+          <div class="campaign-header">
+            <div class="campaign-title">
+              <div class="campaign-icon">
+                <i class="fas fa-gift"></i>
+              </div>
+              <div>
+                <h2>🎁 Gifting Reciprocity</h2>
+                <p>
+                  Remind customers who received cakes that their gifter's
+                  birthday is coming up
+                </p>
+              </div>
+            </div>
+            <div class="campaign-stats">
+              <div class="stat-badge">
+                <i class="fas fa-user"></i>
+                <span id="giftingStats">0 opportunities</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <!-- Message Preview -->
-      <div id="messagePreview" class="message-preview">
-        <div class="preview-header">
-          <h4><i class="fab fa-whatsapp"></i> WhatsApp Message Preview</h4>
-          <button
-            onclick="closePreview()"
-            style="background: none; border: none; color: #666; cursor: pointer"
-          >
-            <i class="fas fa-times"></i>
-          </button>
-        </div>
-        <div id="previewContent" class="message-content">
-          Message will appear here...
+          <div class="customer-list" id="giftingList">
+            <div class="loading">
+              <i class="fas fa-spinner fa-spin"></i> Loading gifting
+              opportunities...
+            </div>
+          </div>
         </div>
       </div>
-
       <!-- Notification -->
       <div id="notification" class="notification">
         <i class="fas fa-check-circle"></i>
@@ -981,21 +964,26 @@
               );
 
               if (thisYearBirthday >= today && thisYearBirthday <= futureDate) {
-                if (!seenPhones.has(bill.purchaser_phone)) {
+                // Check if phone number exists
+                const phone = bill.purchaser_phone;
+                const hasPhone = phone && phone.trim() !== "";
+
+                if (!seenPhones.has(phone)) {
                   birthdayCustomers.push({
                     name: bill.purchaser_name,
-                    phone: bill.purchaser_phone,
+                    phone: phone,
                     birthday: bill.purchaser_birthdate,
                     type: "purchaser",
                     lastPurchase: bill.created_at,
                     totalSpent: parseFloat(bill.total_price) || 0,
+                    hasPhone: hasPhone,
                   });
-                  seenPhones.add(bill.purchaser_phone);
+                  seenPhones.add(phone);
                 }
               }
             }
 
-            // Check birthday person's birthday
+            // Check birthday person's birthday - ONLY if they have a phone number
             if (bill.birthday_person_birthdate) {
               const birthdayPersonBirthday = new Date(
                 bill.birthday_person_birthdate
@@ -1007,32 +995,37 @@
               );
 
               if (thisYearBirthday >= today && thisYearBirthday <= futureDate) {
-                if (
-                  !seenPhones.has(
-                    bill.birthday_person_phone || bill.purchaser_phone
-                  )
-                ) {
+                // Check for phone number
+                const phone =
+                  bill.birthday_person_phone || bill.purchaser_phone;
+                const hasPhone = phone && phone.trim() !== "";
+
+                // Only add if they have a phone number
+                if (hasPhone && !seenPhones.has(phone)) {
                   birthdayCustomers.push({
                     name: bill.birthday_person_name,
-                    phone: bill.birthday_person_phone || bill.purchaser_phone,
+                    phone: phone,
                     birthday: bill.birthday_person_birthdate,
                     type: "birthday_person",
                     lastPurchase: bill.created_at,
                     totalSpent: parseFloat(bill.total_price) || 0,
+                    hasPhone: hasPhone,
                   });
-                  if (bill.birthday_person_phone)
-                    seenPhones.add(bill.birthday_person_phone);
+                  seenPhones.add(phone);
                 }
               }
             }
           });
 
-          // Update stats
+          // Update stats - count only those with phone numbers
+          const customersWithPhone = birthdayCustomers.filter(
+            (c) => c.hasPhone
+          );
           document.getElementById("birthdayCount").textContent =
-            birthdayCustomers.length;
+            customersWithPhone.length;
           document.getElementById(
             "birthdayStats"
-          ).textContent = `${birthdayCustomers.length} customers`;
+          ).textContent = `${customersWithPhone.length} customers`;
           updateTotalStats();
 
           // Display customers
@@ -1178,6 +1171,7 @@
           futureDate.setDate(today.getDate() + days);
 
           const opportunities = [];
+          const seenRecipients = new Set(); // Track unique recipients
 
           giftingMap.forEach((gifters, recipientPhone) => {
             gifters.forEach((gifter) => {
@@ -1193,6 +1187,11 @@
                   thisYearBirthday >= today &&
                   thisYearBirthday <= futureDate
                 ) {
+                  // Check if recipient is already in the list
+                  if (seenRecipients.has(recipientPhone)) {
+                    return; // Skip if recipient already exists
+                  }
+
                   // Find recipient info
                   const recipientBill = allBills.find(
                     (bill) =>
@@ -1214,6 +1213,9 @@
                       lastGiftAmount:
                         parseFloat(recipientBill.total_price) || 0,
                     });
+
+                    // Mark recipient as seen to prevent duplicates
+                    seenRecipients.add(recipientPhone);
                   }
                 }
               }
@@ -1271,93 +1273,122 @@
             '<span class="type-badge birthday-person">Birthday Person</span>';
         }
 
+        // Check if phone number exists
+        const hasPhone = customer.phone && customer.phone.trim() !== "";
+
         div.innerHTML = `
-                <div class="customer-info">
-                    <h4>${customer.name}</h4>
-                    <div class="customer-phone">${customer.phone}</div>
-                    <div class="customer-type">${typeBadge}</div>
-                </div>
-                <div class="customer-date">
-                    <i class="fas fa-calendar-alt"></i>
-                    ${
-                      type === "birthday"
-                        ? "Birthday: " + formattedDate
-                        : "Last Purchase: " + lastPurchaseDate
-                    }
-                </div>
-                <div class="customer-amount">
-                    ${
-                      type === "highTicket"
-                        ? "₹" + customer.totalSpent.toFixed(0)
-                        : ""
-                    }
-                </div>
-                <div class="action-buttons">
-                    <button class="btn-whatsapp" onclick="sendBirthdayOffer('${
-                      customer.phone
-                    }', '${customer.name}', '${formattedDate}', '${type}')">
-                        <i class="fab fa-whatsapp"></i> Send Offer
-                    </button>
-                </div>
-            `;
+        <div class="customer-info">
+            <h4>${customer.name}</h4>
+            <div class="customer-phone ${!hasPhone ? "no-phone" : ""}">
+                ${
+                  hasPhone
+                    ? customer.phone
+                    : '<i class="fas fa-phone-slash"></i> No phone number'
+                }
+            </div>
+            <div class="customer-type">${typeBadge}</div>
+        </div>
+        <div class="customer-date">
+            <i class="fas fa-calendar-alt"></i>
+            ${
+              type === "birthday"
+                ? "Birthday: " + formattedDate
+                : "Last Purchase: " + lastPurchaseDate
+            }
+        </div>
+        <div class="customer-amount">
+            ${type === "highTicket" ? "₹" + customer.totalSpent.toFixed(0) : ""}
+        </div>
+        <div class="action-buttons">
+            ${
+              hasPhone
+                ? `<button class="btn-whatsapp" onclick="sendBirthdayOffer('${customer.phone}', '${customer.name}', '${formattedDate}', '${type}')">
+                      <i class="fab fa-whatsapp"></i> Send Offer
+                   </button>`
+                : `<button class="btn-whatsapp" disabled title="No phone number available">
+                      <i class="fas fa-ban"></i> No Phone
+                   </button>`
+            }
+        </div>
+    `;
 
         return div;
       }
+// Create gifting opportunity element
+function createGiftingElement(opportunity) {
+  const div = document.createElement("div");
+  div.className = "customer-item";
 
-      // Create gifting opportunity element
-      function createGiftingElement(opportunity) {
-        const div = document.createElement("div");
-        div.className = "customer-item";
+  // Format gifter birthday as DD-month name (without year)
+  const gifterBirthday = new Date(
+    opportunity.gifterBirthday
+  ).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "long"
+    // Removed year: "numeric" to exclude the year
+  });
 
-        const gifterBirthday = new Date(
-          opportunity.gifterBirthday
-        ).toLocaleDateString("en-IN", {
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        });
+  const lastGiftDate = new Date(
+    opportunity.lastGiftDate
+  ).toLocaleDateString("en-IN");
 
-        const lastGiftDate = new Date(
-          opportunity.lastGiftDate
-        ).toLocaleDateString("en-IN");
+  // Check if phone number exists
+  const hasPhone =
+    opportunity.recipientPhone &&
+    opportunity.recipientPhone.trim() !== "";
 
-        div.innerHTML = `
-                <div class="customer-info">
-                    <h4>${opportunity.recipientName}</h4>
-                    <div class="customer-phone">${
-                      opportunity.recipientPhone
-                    }</div>
-                    <div class="customer-type">
-                        <span class="type-badge purchaser">Received Gift</span>
-                    </div>
-                </div>
-                <div class="customer-date">
-                    <i class="fas fa-user-friends"></i>
-                    From: ${opportunity.gifterName}
-                </div>
-                <div class="customer-date">
-                    <i class="fas fa-calendar-star"></i>
-                    Their birthday: ${gifterBirthday}
-                </div>
-                <div class="customer-amount">
-                    ₹${opportunity.lastGiftAmount.toFixed(0)}
-                </div>
-                <div class="action-buttons">
-                    <button class="btn-whatsapp" onclick="sendGiftingReminder('${
-                      opportunity.recipientPhone
-                    }', '${opportunity.recipientName}', '${
-          opportunity.gifterName
-        }', '${gifterBirthday}')">
-                        <i class="fab fa-whatsapp"></i> Send Reminder
-                    </button>
-                </div>
-            `;
+  div.innerHTML = `
+    <div class="customer-info">
+        <h4>${opportunity.recipientName}</h4>
+        <div class="customer-phone ${!hasPhone ? "no-phone" : ""}">
+            ${
+              hasPhone
+                ? opportunity.recipientPhone
+                : '<i class="fas fa-phone-slash"></i> No phone number'
+            }
+        </div>
+        <div class="customer-type">
+            <span class="type-badge purchaser">Received Gift</span>
+        </div>
+    </div>
+    <div class="customer-date">
+        <i class="fas fa-user-friends"></i>
+        From: ${opportunity.gifterName}
+    </div>
+    <div class="customer-date">
+        <i class="fas fa-calendar-star"></i>
+        Their birthday: ${gifterBirthday}
+    </div>
+    <div class="customer-amount">
+        ₹${opportunity.lastGiftAmount.toFixed(0)}
+    </div>
+    <div class="action-buttons">
+        ${
+          hasPhone
+            ? `<button class="btn-whatsapp" onclick="sendGiftingReminder('${opportunity.recipientPhone}', '${opportunity.recipientName}', '${opportunity.gifterName}', '${gifterBirthday}')">
+                  <i class="fab fa-whatsapp"></i> Send Reminder
+               </button>`
+            : `<button class="btn-whatsapp" disabled title="No phone number available">
+                  <i class="fas fa-ban"></i> No Phone
+               </button>`
+        }
+    </div>
+  `;
 
-        return div;
-      }
+  return div;
+}
 
-      // Send birthday offer via WhatsApp
+      // Send birthday offer via WhatsApp - Direct version (no preview)
       function sendBirthdayOffer(phone, name, birthday, type) {
+        // Additional safety check
+        if (!phone || phone.trim() === "") {
+          showNotification(
+            "Cannot send: No phone number available for " + name,
+            "error"
+          );
+          return;
+        }
+
         if (dailySendCount >= MAX_DAILY_SENDS) {
           showNotification(
             `Daily limit reached (${MAX_DAILY_SENDS} messages). Try again tomorrow.`,
@@ -1422,19 +1453,10 @@ Cake Bliss Team
 _To unsubscribe, reply STOP_`;
         }
 
-        // Show preview first
-        showMessagePreview(message, name);
-
-        // Store data for sending
-        window.pendingMessage = {
-          phone: phoneWithCountryCode,
-          message: message,
-          name: name,
-          type: type,
-        };
+        // Send immediately
+        sendWhatsAppMessage(phoneWithCountryCode, message, name, type);
       }
 
-      // Send gifting reminder
       function sendGiftingReminder(
         phone,
         recipientName,
@@ -1455,7 +1477,19 @@ _To unsubscribe, reply STOP_`;
           ? cleanPhone
           : "91" + cleanPhone;
 
-        // Create gifting reminder message
+        // Convert gifterBirthday string to Date object
+        const gifterBirthdayDate = new Date(gifterBirthday);
+
+        // Format the date as DD-month name
+        const formattedValidUntil = gifterBirthdayDate.toLocaleDateString(
+          "en-IN",
+          {
+            day: "2-digit",
+            month: "long",
+          }
+        );
+
+        // Create gifting reminder message with formatted date
         const message = `🎁 *Gifting Reminder* 🎁
 
 Hello ${recipientName}! 
@@ -1475,7 +1509,7 @@ Make their day special with a delicious cake from Cake Bliss!
 
 Use code: RETURNLOVE15
 
-Valid until: ${gifterBirthday}
+Valid until: ${formattedValidUntil}
 
 Spread the love! 💕
 
@@ -1483,16 +1517,78 @@ Cake Bliss Team 🍰
 
 _This is a one-time gifting reminder_`;
 
-        // Show preview first
-        showMessagePreview(message, recipientName);
+        // Send immediately
+        sendWhatsAppMessage(
+          phoneWithCountryCode,
+          message,
+          recipientName,
+          "gifting"
+        );
+      }
 
-        // Store data for sending
-        window.pendingMessage = {
-          phone: phoneWithCountryCode,
-          message: message,
-          name: recipientName,
-          type: "gifting",
-        };
+      // Send WhatsApp message directly
+      function sendWhatsAppMessage(phone, message, name, type) {
+        // Encode message for URL
+        const encodedMessage = encodeURIComponent(message);
+
+        // Create WhatsApp URL
+        const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
+
+        // Open WhatsApp in new tab
+        const newWindow = window.open(
+          whatsappUrl,
+          "_blank",
+          "noopener,noreferrer"
+        );
+
+        if (newWindow) {
+          newWindow.focus();
+
+          // Update send count
+          dailySendCount++;
+          updateDailyCount();
+
+          // Show success notification
+          let campaignType = "";
+          switch (type) {
+            case "birthday":
+              campaignType = "birthday offer";
+              break;
+            case "highTicket":
+              campaignType = "VIP offer";
+              break;
+            case "gifting":
+              campaignType = "gifting reminder";
+              break;
+          }
+
+          showNotification(`${campaignType} sent to ${name}`, "success");
+
+          // Update stats
+          document.getElementById("totalSent").textContent = dailySendCount;
+
+          // Update button state
+          const buttons = document.querySelectorAll(".btn-whatsapp");
+          buttons.forEach((button) => {
+            if (button.textContent.includes(name)) {
+              button.disabled = true;
+              button.innerHTML = '<i class="fas fa-check"></i> Sent';
+              button.classList.add("sent");
+
+              // Reset button after 5 seconds
+              setTimeout(() => {
+                button.disabled = false;
+                button.innerHTML = '<i class="fab fa-whatsapp"></i> Send Offer';
+                button.classList.remove("sent");
+              }, 5000);
+            }
+          });
+        } else {
+          showNotification(
+            "Popup blocked. Please allow popups for this site.",
+            "error"
+          );
+        }
       }
 
       // Confirm and send message
@@ -1563,34 +1659,6 @@ _This is a one-time gifting reminder_`;
             "error"
           );
         }
-      }
-
-      // Show message preview
-      function showMessagePreview(message, recipientName) {
-        const preview = document.getElementById("messagePreview");
-        const content = document.getElementById("previewContent");
-
-        content.textContent = message;
-        preview.classList.add("show");
-
-        // Add confirm button if not already present
-        if (!document.getElementById("confirmSendBtn")) {
-          const confirmBtn = document.createElement("button");
-          confirmBtn.id = "confirmSendBtn";
-          confirmBtn.className = "btn-whatsapp sending";
-          confirmBtn.innerHTML =
-            '<i class="fab fa-whatsapp"></i> Confirm & Send to ' +
-            recipientName;
-          confirmBtn.style.marginTop = "15px";
-          confirmBtn.onclick = confirmAndSend;
-
-          preview.appendChild(confirmBtn);
-        }
-      }
-
-      function closePreview() {
-        document.getElementById("messagePreview").classList.remove("show");
-        window.pendingMessage = null;
       }
 
       // Update total statistics

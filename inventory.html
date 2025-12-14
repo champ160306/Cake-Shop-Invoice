@@ -2268,6 +2268,10 @@
         font-size: 14px;
         color: #666;
       }
+      .active-filter {
+        border: 2px solid var(--primary) !important;
+        background-color: rgba(255, 123, 172, 0.1) !important;
+      }
     </style>
   </head>
   <body>
@@ -2303,7 +2307,9 @@
               >
             </li>
             <li>
-              <a href="#"><i class="fas fa-cog"></i> Settings</a>
+              <a href="promotions.html"
+                ><i class="fas fa-bullhorn"></i> Promotions</a
+              >
             </li>
           </ul>
         </nav>
@@ -2337,7 +2343,7 @@
             <i class="fas fa-check-circle"></i>
           </div>
           <div class="stat-content">
-            <h3>In Stock</h3>
+            <h3>Available Stock</h3>
             <div class="stat-value" id="inStockCount">0</div>
           </div>
         </div>
@@ -2434,7 +2440,7 @@
                 <label for="filterStockStatus">Stock Status:</label>
                 <select id="filterStockStatus">
                   <option value="">All Status</option>
-                  <option value="in_stock">In Stock</option>
+                  <option value="in_stock">Available</option>
                   <option value="low_stock">Low Stock</option>
                   <option value="out_of_stock">Out of Stock</option>
                   <option value="expiring_soon">Expiring Soon</option>
@@ -2866,6 +2872,23 @@
           .addEventListener("change", applyFilters);
       }
 
+      // Update after loading products
+      function updateCategoryFilterOptions() {
+        const categorySelect = document.getElementById("filterCategory");
+        const categories = [...new Set(products.map((p) => p.category))];
+
+        // Clear existing options (keep "All Categories")
+        categorySelect.innerHTML = '<option value="">All Categories</option>';
+
+        // Add each unique category
+        categories.forEach((category) => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category;
+          categorySelect.appendChild(option);
+        });
+      }
+
       // Apply filters
       function applyFilters() {
         // Get filter values
@@ -2919,12 +2942,31 @@
             matchesAllFilters = false;
           }
 
-          // Stock status filter
-          if (
-            currentFilters.stockStatus &&
-            status.status !== currentFilters.stockStatus
-          ) {
-            matchesAllFilters = false;
+          if (currentFilters.stockStatus) {
+            if (currentFilters.stockStatus === "available") {
+              // Show products that are NOT out_of_stock
+              if (status.status === "out_of_stock") {
+                matchesAllFilters = false;
+              }
+            } else if (currentFilters.stockStatus === "expiring_soon") {
+              // Show only products with expiring batches AND stock > 0
+              if (
+                status.status !== "expiring_soon" ||
+                status.totalStock === 0
+              ) {
+                matchesAllFilters = false;
+              }
+            } else if (currentFilters.stockStatus === "low_stock") {
+              // Show products with stock > 0
+              if (status.status !== "low_stock") {
+                matchesAllFilters = false;
+              }
+            } else if (currentFilters.stockStatus === "out_of_stock") {
+              // Show products with no stock
+              if (status.totalStock > 0) {
+                matchesAllFilters = false;
+              }
+            }
           }
 
           // Search filter
@@ -3061,7 +3103,7 @@
         });
       }
 
-      // Clear all filters
+      // Clear filters function
       function clearFilters() {
         document.getElementById("filterCategory").value = "";
         document.getElementById("filterStockStatus").value = "";
@@ -3073,8 +3115,8 @@
           search: "",
         };
 
-        filteredProducts = [];
-        updateFilteredTable(); // This will now show all products
+        // Update table to show all products
+        updateInventoryTable(); // Call the original table update function
         updateActiveFiltersDisplay();
 
         showNotification("Filters cleared", "info");
@@ -3124,12 +3166,11 @@
 
         if (currentFilters.stockStatus) {
           const statusLabels = {
-            in_stock: "In Stock",
+            available: "Available",
             low_stock: "Low Stock",
             out_of_stock: "Out of Stock",
             expiring_soon: "Expiring Soon",
           };
-
           const tag = document.createElement("div");
           tag.className = "filter-tag";
           tag.innerHTML = `
@@ -4031,9 +4072,8 @@
         };
       }
 
-      // Update dashboard statistics
       function updateDashboard() {
-        let inStock = 0;
+        let availableStock = 0; // This will include in_stock + low_stock + expiring_soon
         let lowStock = 0;
         let expiringSoon = 0;
         let outOfStock = 0;
@@ -4041,14 +4081,20 @@
         products.forEach((product) => {
           const status = calculateProductStatus(product);
 
-          if (status.status === "in_stock") inStock++;
-          else if (status.status === "low_stock") lowStock++;
-          else if (status.status === "expiring_soon") expiringSoon++;
-          else if (status.status === "out_of_stock") outOfStock++;
+          if (status.status === "out_of_stock") {
+            outOfStock++;
+          } else {
+            // All other statuses (in_stock, low_stock, expiring_soon) are considered "available"
+            availableStock++;
+
+            // Still track low_stock and expiring_soon separately for their individual counters
+            if (status.status === "low_stock") lowStock++;
+            if (status.status === "expiring_soon") expiringSoon++;
+          }
         });
 
         document.getElementById("totalProducts").textContent = products.length;
-        document.getElementById("inStockCount").textContent = inStock;
+        document.getElementById("inStockCount").textContent = availableStock; // Now shows total available products
         document.getElementById("lowStockCount").textContent = lowStock;
         document.getElementById("expiringCount").textContent = expiringSoon;
         document.getElementById("outOfStockCount").textContent = outOfStock;
@@ -5528,6 +5574,20 @@
         }, 3000);
       }
 
+      // Add this to applyFilters function
+      function highlightActiveFilters() {
+        const filters = ["filterCategory", "filterStockStatus", "filterSearch"];
+
+        filters.forEach((filterId) => {
+          const element = document.getElementById(filterId);
+          if (element.value) {
+            element.classList.add("active-filter");
+          } else {
+            element.classList.remove("active-filter");
+          }
+        });
+      }
+
       // Initialize the application
       document.addEventListener("DOMContentLoaded", async function () {
         await initSupabase();
@@ -5605,9 +5665,9 @@
         }, 1500);
 
         // Call this when switching back to inventory page
-window.addEventListener('focus', async function() {
-    await loadInventoryData();
-});
+        window.addEventListener("focus", async function () {
+          await loadInventoryData();
+        });
       });
     </script>
   </body>

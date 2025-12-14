@@ -679,17 +679,17 @@
               <a href="billing.html"><i class="fas fa-receipt"></i> Billing</a>
             </li>
             <li>
-              <a href="#" class="active"
+              <a href="reports.html" class="active"
                 ><i class="fas fa-chart-bar"></i> Reports</a
               >
             </li>
             <li>
-              <a href="#" id="viewCustomersBtn"
-                ><i class="fas fa-users"></i> Customers</a
+              <a href="inventory.html"
+                ><i class="fas fa-boxes"></i> Inventory</a
               >
             </li>
             <li>
-              <a href="#"><i class="fas fa-cog"></i> Settings</a>
+              <a href="promotions.html"><i class="fas fa-bullhorn"></i> Promotions</a>
             </li>
           </ul>
         </nav>
@@ -798,66 +798,6 @@
             </div>
             <div class="chart-container">
               <canvas id="cakesChart"></canvas>
-            </div>
-          </div>
-        </div>
-
-        <!-- Search and Filters -->
-        <div class="search-filters">
-          <div class="search-header">
-            <h3><i class="fas fa-search"></i> Search & Filter Orders</h3>
-          </div>
-          <div class="search-box">
-            <input
-              type="text"
-              class="search-input"
-              id="searchOrders"
-              placeholder="Search by customer name, phone, cake name..."
-            />
-            <button id="searchBtn" class="search-btn">
-              <i class="fas fa-search"></i> Search
-            </button>
-            <button
-              id="clearSearch"
-              class="search-btn"
-              style="background-color: #666"
-            >
-              <i class="fas fa-times"></i> Clear
-            </button>
-          </div>
-          <div class="filters-row">
-            <div class="filter-group">
-              <label>Filter by Cake</label>
-              <select id="filterCake">
-                <option value="">All Cakes</option>
-                <option value="Chocolate Fudge Delight">
-                  Chocolate Fudge Delight
-                </option>
-                <option value="Vanilla Dream">Vanilla Dream</option>
-                <option value="Red Velvet Supreme">Red Velvet Supreme</option>
-                <option value="Strawberry Heaven">Strawberry Heaven</option>
-                <option value="Caramel Crunch">Caramel Crunch</option>
-                <option value="Rainbow Sprinkles">Rainbow Sprinkles</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label>Filter by Price Range</label>
-              <select id="filterPrice">
-                <option value="">All Prices</option>
-                <option value="0-40">Under ₹40</option>
-                <option value="40-50">₹40 - ₹50</option>
-                <option value="50-100">₹50 - ₹100</option>
-                <option value="100+">Over ₹100</option>
-              </select>
-            </div>
-            <div class="filter-group">
-              <label>Sort By</label>
-              <select id="sortBy">
-                <option value="newest">Newest First</option>
-                <option value="oldest">Oldest First</option>
-                <option value="price-high">Price: High to Low</option>
-                <option value="price-low">Price: Low to High</option>
-              </select>
             </div>
           </div>
         </div>
