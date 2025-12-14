@@ -2440,7 +2440,7 @@
                 <label for="filterStockStatus">Stock Status:</label>
                 <select id="filterStockStatus">
                   <option value="">All Status</option>
-                  <option value="in_stock">Available</option>
+                  <option value="available">Available</option>
                   <option value="low_stock">Low Stock</option>
                   <option value="out_of_stock">Out of Stock</option>
                   <option value="expiring_soon">Expiring Soon</option>
@@ -2942,6 +2942,7 @@
             matchesAllFilters = false;
           }
 
+          // Stock status filter - KEEP AVAILABLE LOGIC AS IS
           if (currentFilters.stockStatus) {
             if (currentFilters.stockStatus === "available") {
               // Show products that are NOT out_of_stock
@@ -2949,15 +2950,32 @@
                 matchesAllFilters = false;
               }
             } else if (currentFilters.stockStatus === "expiring_soon") {
-              // Show only products with expiring batches AND stock > 0
-              if (
-                status.status !== "expiring_soon" ||
-                status.totalStock === 0
-              ) {
+              // FIX: Show ALL products with batches expiring in ≤3 days (regardless of product status)
+              const hasExpiringBatch =
+                status.batches &&
+                status.batches.some((batch) => {
+                  if (!batch.expiry_date) return false;
+
+                  const expiryDate = new Date(batch.expiry_date);
+                  const todayDate = new Date();
+
+                  // Calculate days difference
+                  const diffTime = expiryDate - todayDate;
+                  const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                  // Batch is expiring soon if: 0-3 days left AND has remaining quantity
+                  return (
+                    diffDays >= 0 &&
+                    diffDays <= 3 &&
+                    (batch.remaining_quantity || 0) > 0
+                  );
+                });
+
+              if (!hasExpiringBatch) {
                 matchesAllFilters = false;
               }
             } else if (currentFilters.stockStatus === "low_stock") {
-              // Show products with stock > 0
+              // Show products with low stock (1-5 units)
               if (status.status !== "low_stock") {
                 matchesAllFilters = false;
               }
@@ -2985,6 +3003,50 @@
 
           return matchesAllFilters;
         });
+      }
+
+      // Debug function to check expiring items
+      function debugExpiringItems() {
+        console.log("=== DEBUG: Expiring Items Analysis ===");
+
+        products.forEach((product, index) => {
+          const status = calculateProductStatus(product);
+
+          // Check if this product has expiring batches
+          const expiringBatches = status.batches.filter((b) => {
+            if (!b.expiry_date || b.remaining_quantity === 0) return false;
+            const expiry = new Date(b.expiry_date);
+            const diffTime = expiry - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            return diffDays <= 3 && diffDays >= 0;
+          });
+
+          if (expiringBatches.length > 0) {
+            console.log(`${index + 1}. ${product.product_name}`);
+            console.log(`   Product Status: ${status.status}`);
+            console.log(`   Total Stock: ${status.totalStock}`);
+            console.log(`   Expiring Batches: ${expiringBatches.length}`);
+            expiringBatches.forEach((batch, i) => {
+              const expiry = new Date(batch.expiry_date);
+              const diffTime = expiry - today;
+              const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+              console.log(
+                `   Batch ${i + 1}: ${
+                  batch.remaining_quantity
+                } units, ${diffDays} days left`
+              );
+            });
+            console.log(
+              `   Should show in filter: ${
+                expiringBatches.length > 0 && status.totalStock > 0
+                  ? "YES"
+                  : "NO"
+              }`
+            );
+          }
+        });
+
+        console.log("=== END DEBUG ===");
       }
 
       // Check if any filters are active
@@ -4048,20 +4110,28 @@
           );
           earliestExpiry = new Date(validBatches[0].expiry_date);
 
-          // Count batches expiring in 3 days or less
+          // Count batches expiring in 3 days or less WITH remaining quantity
           expiringSoon = validBatches.filter((b) => {
             const expiry = new Date(b.expiry_date);
             const diffTime = expiry - today;
             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-            return diffDays <= 3;
+            const hasRemaining = (b.remaining_quantity || 0) > 0;
+            return diffDays <= 3 && hasRemaining;
           }).length;
         }
 
-        // Determine status
+        // Determine status - FIXED LOGIC
         let status = "in_stock";
-        if (totalStock === 0) status = "out_of_stock";
-        else if (totalStock >= 1 && totalStock <= 5) status = "low_stock";
-        else if (expiringSoon > 0) status = "expiring_soon";
+
+        if (totalStock === 0) {
+          status = "out_of_stock";
+        } else if (totalStock >= 1 && totalStock <= 5) {
+          status = "low_stock";
+        } else if (expiringSoon > 0) {
+          // IMPORTANT: A product is "expiring_soon" if it has ANY batch expiring soon
+          // AND has stock > 0 (not out_of_stock)
+          status = "expiring_soon";
+        }
 
         return {
           totalStock,
