@@ -9,6 +9,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
       * {
         margin: 0;
@@ -1332,6 +1333,216 @@
       .notification.show {
         transform: translateX(0);
       }
+      /* WhatsApp Button Styles */
+      .btn-success {
+        background-color: #25d366;
+        color: white;
+      }
+
+      .btn-success:hover {
+        background-color: #1da851;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+      }
+      /* PDF Generation Styles */
+      .pdf-container {
+        background: white;
+        padding: 30px;
+        max-width: 800px;
+        margin: 0 auto;
+        font-family: Arial, sans-serif;
+      }
+
+      .pdf-header {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid var(--primary);
+        padding-bottom: 20px;
+      }
+
+      .pdf-header h2 {
+        color: var(--primary);
+        font-size: 28px;
+        margin-bottom: 5px;
+      }
+
+      .pdf-bill-number {
+        background: #f8f9fa;
+        padding: 8px 15px;
+        border-radius: 5px;
+        font-family: monospace;
+        font-weight: bold;
+        color: var(--accent);
+        display: inline-block;
+        margin: 10px 0;
+      }
+
+      .pdf-section {
+        margin: 20px 0;
+        padding: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+      }
+
+      .pdf-section-title {
+        color: var(--primary);
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .pdf-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 15px 0;
+      }
+
+      .pdf-table th {
+        background: #f8f9fa;
+        padding: 10px;
+        text-align: left;
+        font-weight: 600;
+        border-bottom: 2px solid #ddd;
+      }
+
+      .pdf-table td {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .pdf-total {
+        background: #fff9fb;
+        padding: 15px;
+        border-radius: 8px;
+        border-left: 4px solid var(--accent);
+        margin-top: 20px;
+      }
+
+      .pdf-footer {
+        text-align: center;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
+        color: #666;
+        font-size: 12px;
+      }
+      /* Add to your existing CSS */
+      #pdf-content {
+        visibility: visible !important;
+        opacity: 1 !important;
+        position: relative !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: auto !important;
+        display: block !important;
+      }
+
+      .pdf-table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+
+      .pdf-table th,
+      .pdf-table td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      .pdf-table th {
+        background-color: #f8f9fa;
+        font-weight: bold;
+      }
+      /* Add to your existing CSS */
+      .btn-success {
+        background-color: #25d366 !important;
+        color: white !important;
+      }
+
+      .btn-success:hover {
+        background-color: #1da851 !important;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(37, 211, 102, 0.4);
+      }
+
+      /* WhatsApp icon animation */
+      @keyframes whatsappPulse {
+        0% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+        100% {
+          transform: scale(1);
+        }
+      }
+
+      .btn-success:hover i {
+        animation: whatsappPulse 1s infinite;
+      }
+      /* Custom Notification Modal */
+      .custom-notification {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        z-index: 2000;
+        min-width: 300px;
+        max-width: 400px;
+      }
+
+      .custom-notification h3 {
+        color: var(--primary);
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .notification-options {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .notification-options button {
+        padding: 12px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        transition: all 0.3s;
+      }
+
+      .notification-options button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .notification-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     </style>
   </head>
   <body>
@@ -1612,7 +1823,7 @@
             <!-- Action Buttons -->
             <div class="button-group">
               <button type="submit" class="btn btn-primary" id="submitBill">
-                <i class="fas fa-file-invoice-dollar"></i> Generate & Save Bill
+                <i class="fas fa-file-invoice-dollar"></i> Generate & Send Bill
                 (Ctrl+S)
               </button>
               <button type="button" class="btn btn-secondary" id="resetForm">
@@ -2223,6 +2434,759 @@
         }
       }
 
+      async function generateBillPDF(billData) {
+        try {
+          console.log("Generating PDF for bill:", billData.bill_number);
+
+          // Create HTML structure for PDF
+          const pdfHTML = `
+      <div class="pdf-container" id="pdf-content">
+          <div class="pdf-header">
+              <h2>🎂 Cake Bliss</h2>
+              <p>Delicious Cakes & Pastries</p>
+              <div class="pdf-bill-number">Bill: ${billData.bill_number}</div>
+              <div style="font-size: 12px; color: #666;">
+                  Date: ${new Date(billData.created_at).toLocaleDateString()}
+              </div>
+          </div>
+          
+          <div class="pdf-section">
+              <div class="pdf-section-title">
+                  <i class="fas fa-user"></i> Customer Details
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                  <div>
+                      <strong>Purchaser:</strong><br>
+                      ${billData.purchaser_name}<br>
+                      📱 ${billData.purchaser_phone}
+                  </div>
+                  <div>
+                      <strong>Birthday Person:</strong><br>
+                      ${billData.birthday_person_name}<br>
+                      ${
+                        billData.birthday_person_phone
+                          ? "📱 " + billData.birthday_person_phone
+                          : ""
+                      }
+                  </div>
+              </div>
+          </div>
+          
+          <div class="pdf-section">
+              <div class="pdf-section-title">
+                  <i class="fas fa-shopping-cart"></i> Order Items
+              </div>
+              <table class="pdf-table">
+                  <thead>
+                      <tr>
+                          <th>Item</th>
+                          <th>Qty</th>
+                          <th>Price</th>
+                          <th>Total</th>
+                      </tr>
+                  </thead>
+                  <tbody id="pdf-items">
+                      ${await generatePDFItemsHTML(billData.cake_name)}
+                  </tbody>
+              </table>
+          </div>
+          
+          <div class="pdf-total">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                  <span>Subtotal:</span>
+                  <span>₹${parseFloat(billData.cake_price).toFixed(2)}</span>
+              </div>
+              ${
+                billData.coupon_code
+                  ? `
+              <div style="display: flex; justify-content: space-between; margin-bottom: 5px; color: var(--success);">
+                  <span>Discount (${billData.coupon_code}):</span>
+                  <span>-₹${(
+                    parseFloat(billData.cake_price) -
+                    parseFloat(billData.total_price)
+                  ).toFixed(2)}</span>
+              </div>
+              `
+                  : ""
+              }
+              <div style="display: flex; justify-content: space-between; font-size: 18px; font-weight: bold; margin-top: 10px; color: var(--accent);">
+                  <span>GRAND TOTAL:</span>
+                  <span>₹${parseFloat(billData.total_price).toFixed(2)}</span>
+              </div>
+          </div>
+          
+          <div class="pdf-footer">
+              <p>Thank you for choosing Cake Bliss! 🎂</p>
+              <p>For any queries, call: ${billData.purchaser_phone}</p>
+              <p style="font-size: 10px; margin-top: 10px;">
+                  Bill generated on ${new Date().toLocaleString()}
+              </p>
+          </div>
+      </div>
+    `;
+
+          // Create and show the PDF content temporarily to ensure it renders
+          const tempDiv = document.createElement("div");
+          tempDiv.style.position = "fixed";
+          tempDiv.style.top = "0";
+          tempDiv.style.left = "0";
+          tempDiv.style.width = "800px";
+          tempDiv.style.height = "100vh";
+          tempDiv.style.overflow = "scroll";
+          tempDiv.style.background = "white";
+          tempDiv.style.zIndex = "9999";
+          tempDiv.style.padding = "20px";
+          tempDiv.innerHTML = pdfHTML;
+          document.body.appendChild(tempDiv);
+
+          // Wait for content to render
+          await new Promise((resolve) => setTimeout(resolve, 500));
+
+          // Generate PDF
+          const options = {
+            margin: [15, 15],
+            filename: `CakeBliss_Bill_${billData.bill_number}.pdf`,
+            image: {
+              type: "jpeg",
+              quality: 0.98,
+            },
+            html2canvas: {
+              scale: 2,
+              useCORS: true,
+              logging: false,
+              backgroundColor: "#ffffff",
+              windowWidth: 800,
+              windowHeight: tempDiv.scrollHeight,
+              onclone: function (clonedDoc) {
+                // Ensure all content is visible
+                clonedDoc.body.style.overflow = "visible";
+                clonedDoc.body.style.height = "auto";
+              },
+            },
+            jsPDF: {
+              unit: "mm",
+              format: "a4",
+              orientation: "portrait",
+            },
+          };
+
+          // Generate PDF
+          const worker = html2pdf().set(options).from(tempDiv);
+          const pdfBlob = await worker.outputPdf("blob");
+
+          // Remove temporary div
+          document.body.removeChild(tempDiv);
+
+          console.log("PDF generated successfully, size:", pdfBlob.size);
+          return pdfBlob;
+        } catch (error) {
+          console.error("Error generating PDF:", error);
+
+          // Fallback: Create a simple text PDF
+          const fallbackPDF = await generateFallbackPDF(billData);
+          return fallbackPDF;
+        }
+      }
+
+      // Update the generatePDFItemsHTML function to ensure it's async
+      async function generatePDFItemsHTML(itemsJSON) {
+        try {
+          const items = JSON.parse(itemsJSON);
+          if (!Array.isArray(items))
+            return '<tr><td colspan="4">No items</td></tr>';
+
+          return items
+            .map(
+              (item) => `
+        <tr>
+            <td>${item.name || "Item"}</td>
+            <td>${item.quantity || 1}</td>
+            <td>₹${parseFloat(item.unit_price || 0).toFixed(2)}</td>
+            <td>₹${parseFloat(item.total_price || 0).toFixed(2)}</td>
+        </tr>
+    `
+            )
+            .join("");
+        } catch (e) {
+          console.error("Error parsing items:", e);
+
+          // Try to extract items from string if not valid JSON
+          if (typeof itemsJSON === "string" && itemsJSON.includes("[")) {
+            try {
+              // Try to manually parse if JSON is malformed
+              const cleanedJSON = itemsJSON.replace(/\\/g, "");
+              const items = JSON.parse(cleanedJSON);
+              if (Array.isArray(items)) {
+                return items
+                  .map(
+                    (item, index) => `
+            <tr>
+                <td>Item ${index + 1}</td>
+                <td>${item.quantity || 1}</td>
+                <td>₹${parseFloat(item.unit_price || 0).toFixed(2)}</td>
+                <td>₹${parseFloat(item.total_price || 0).toFixed(2)}</td>
+            </tr>
+          `
+                  )
+                  .join("");
+              }
+            } catch (parseError) {
+              console.error("Manual parse failed:", parseError);
+            }
+          }
+
+          return '<tr><td colspan="4">Error loading items</td></tr>';
+        }
+      }
+
+      // Add a fallback PDF generator
+      async function generateFallbackPDF(billData) {
+        console.log(
+          "Using fallback PDF generator for bill:",
+          billData.bill_number
+        );
+
+        // Create a simple text-based PDF
+        const doc = new window.jspdf.jsPDF({
+          orientation: "portrait",
+          unit: "mm",
+          format: "a4",
+        });
+
+        // Add header
+        doc.setFontSize(20);
+        doc.setTextColor(255, 123, 172); // Primary color
+        doc.text("🎂 Cake Bliss", 105, 20, { align: "center" });
+
+        doc.setFontSize(12);
+        doc.setTextColor(128, 128, 128);
+        doc.text("Delicious Cakes & Pastries", 105, 27, { align: "center" });
+
+        doc.setFontSize(14);
+        doc.setTextColor(157, 78, 221); // Accent color
+        doc.text(`Bill: ${billData.bill_number}`, 105, 35, { align: "center" });
+
+        // Add customer details
+        doc.setFontSize(11);
+        doc.setTextColor(0, 0, 0);
+        doc.text("Customer Details:", 20, 50);
+        doc.setFontSize(10);
+        doc.text(`Purchaser: ${billData.purchaser_name}`, 25, 57);
+        doc.text(`Phone: ${billData.purchaser_phone}`, 25, 62);
+        doc.text(`Birthday Person: ${billData.birthday_person_name}`, 25, 67);
+
+        if (billData.birthday_person_phone) {
+          doc.text(`Birthday Phone: ${billData.birthday_person_phone}`, 25, 72);
+        }
+
+        // Add items
+        doc.setFontSize(11);
+        doc.text("Order Items:", 20, 85);
+
+        let yPos = 92;
+        try {
+          const items = JSON.parse(billData.cake_name);
+          if (Array.isArray(items)) {
+            items.forEach((item, index) => {
+              if (yPos > 250) {
+                doc.addPage();
+                yPos = 20;
+              }
+              doc.text(
+                `${item.name || "Item"} x${item.quantity || 1} - ₹${parseFloat(
+                  item.total_price || 0
+                ).toFixed(2)}`,
+                25,
+                yPos
+              );
+              yPos += 7;
+            });
+          }
+        } catch (e) {
+          doc.text("Multiple items in order", 25, yPos);
+          yPos += 7;
+        }
+
+        // Add totals
+        yPos += 10;
+        doc.setFontSize(11);
+        doc.text(
+          `Subtotal: ₹${parseFloat(billData.cake_price).toFixed(2)}`,
+          140,
+          yPos
+        );
+        yPos += 7;
+
+        if (billData.coupon_code) {
+          doc.text(
+            `Discount (${billData.coupon_code}): -₹${(
+              parseFloat(billData.cake_price) - parseFloat(billData.total_price)
+            ).toFixed(2)}`,
+            140,
+            yPos
+          );
+          yPos += 7;
+        }
+
+        doc.setFontSize(14);
+        doc.setTextColor(157, 78, 221);
+        doc.text(
+          `GRAND TOTAL: ₹${parseFloat(billData.total_price).toFixed(2)}`,
+          140,
+          yPos
+        );
+
+        // Add footer
+        yPos += 20;
+        doc.setFontSize(10);
+        doc.setTextColor(128, 128, 128);
+        doc.text("Thank you for choosing Cake Bliss! 🎂", 105, yPos, {
+          align: "center",
+        });
+        yPos += 7;
+        doc.text(
+          `For any queries, call: ${billData.purchaser_phone}`,
+          105,
+          yPos,
+          { align: "center" }
+        );
+        yPos += 7;
+        doc.text(
+          `Bill generated on ${new Date().toLocaleString()}`,
+          105,
+          yPos,
+          { align: "center" }
+        );
+
+        // Return PDF blob
+        return doc.output("blob");
+      }
+
+      async function uploadPDFToStorage(pdfBlob, billNumber) {
+        try {
+          console.log("Starting PDF upload...");
+
+          // Clean filename - NO FOLDERS!
+          const fileName = `bill_${billNumber}_${Date.now()}.pdf`;
+
+          console.log("Uploading to bucket 'bills', file:", fileName);
+
+          // Simple upload - no complex options
+          const { data, error } = await supabase.storage
+            .from("bills") // Only specify bucket here
+            .upload(fileName, pdfBlob);
+
+          if (error) {
+            console.error("SUPABASE UPLOAD ERROR:", error);
+            console.error("Error details:", JSON.stringify(error, null, 2));
+            throw error;
+          }
+
+          console.log("Upload successful, data:", data);
+
+          // Get URL
+          const { data: urlData } = supabase.storage
+            .from("bills")
+            .getPublicUrl(fileName);
+
+          console.log("Generated URL:", urlData.publicUrl);
+
+          return {
+            fileName,
+            publicUrl: urlData.publicUrl,
+          };
+        } catch (error) {
+          console.error("COMPLETE UPLOAD FAILURE:", error);
+          throw error;
+        }
+      }
+
+      async function debugStorage() {
+        console.log("=== STORAGE DEBUG ===");
+
+        // 1. List buckets
+        console.log("1. Listing buckets...");
+        const { data: buckets, error: bucketsError } =
+          await supabase.storage.listBuckets();
+        console.log("Buckets:", buckets);
+        console.log("Buckets error:", bucketsError);
+
+        // 2. Check bills bucket specifically
+        console.log("\n2. Checking 'bills' bucket...");
+        const billsBucket = buckets?.find((b) => b.name === "bills");
+        console.log("Bills bucket found:", billsBucket);
+        console.log("Is public?", billsBucket?.public);
+
+        // 3. Test upload
+        console.log("\n3. Testing upload...");
+        const testBlob = new Blob(["TEST"], { type: "text/plain" });
+        try {
+          const { data, error } = await supabase.storage
+            .from("bills")
+            .upload("debug_test.txt", testBlob);
+          console.log("Test upload result:", data);
+          console.log("Test upload error:", error);
+
+          if (!error) {
+            // 4. List files to confirm
+            console.log("\n4. Listing files in bucket...");
+            const { data: files } = await supabase.storage.from("bills").list();
+            console.log("Files in bucket:", files);
+          }
+        } catch (err) {
+          console.error("Test failed:", err);
+        }
+
+        console.log("=== DEBUG END ===");
+      }
+
+      async function verifyBucket() {
+        console.log("Verifying bucket exists...");
+
+        const { data: buckets, error } = await supabase.storage.listBuckets();
+
+        if (error) {
+          console.error("Error listing buckets:", error);
+          return;
+        }
+
+        console.log("All buckets:", buckets);
+
+        const billsBucket = buckets?.find((b) => b.name === "bills");
+        if (billsBucket) {
+          console.log("✅ SUCCESS: 'bills' bucket found:", billsBucket);
+          console.log("Is public?", billsBucket.public);
+
+          // Test upload
+          console.log("Testing upload...");
+          const testBlob = new Blob(["Test file"], { type: "text/plain" });
+          const uploadResult = await supabase.storage
+            .from("bills")
+            .upload("verify.txt", testBlob);
+
+          console.log("Upload test:", uploadResult);
+
+          if (!uploadResult.error) {
+            alert("🎉 COMPLETE SUCCESS! Bucket created and upload works!");
+          }
+        } else {
+          console.log("❌ 'bills' bucket NOT found");
+        }
+      }
+
+      function openWhatsAppWithBill(billData, pdfUrl) {
+        try {
+          // Format WhatsApp message with customer phone number
+          const customerPhone = billData.purchaser_phone;
+
+          // Remove any non-numeric characters and ensure it starts with 91 for India
+          const cleanPhone = customerPhone.replace(/\D/g, "");
+          const phoneWithCountryCode = cleanPhone.startsWith("91")
+            ? cleanPhone
+            : "91" + cleanPhone;
+
+          // Format items for WhatsApp
+          const itemsText = formatItemsForWhatsApp(billData.cake_name);
+
+          // Create a simpler, more WhatsApp-friendly message
+          const message = `🎂 *Cake Bliss - Bill Confirmation* 🎂
+
+*Bill Number:* ${billData.bill_number}
+*Customer Name:* ${billData.purchaser_name}
+*Date:* ${new Date(billData.created_at).toLocaleDateString("en-IN")}
+
+*Order Items:*
+${itemsText}
+
+*Total Amount:* ₹${parseFloat(billData.total_price).toFixed(2)}
+Thank you for your order! 🎂
+
+For any queries, please call: +91 9168281183
+
+-- Cake Bliss Team`;
+
+          // Encode message for URL
+          const encodedMessage = encodeURIComponent(message);
+
+          // Create WhatsApp URL
+          const whatsappUrl = `https://wa.me/${phoneWithCountryCode}?text=${encodedMessage}`;
+
+          console.log("Opening WhatsApp with URL:", whatsappUrl);
+          console.log("PDF URL being sent:", pdfUrl);
+
+          // Check if PDF URL is accessible
+          checkURLAccessibility(pdfUrl).then((isAccessible) => {
+            if (!isAccessible) {
+              console.warn("PDF URL might not be publicly accessible");
+              showNotification(
+                "PDF might not be accessible publicly. Checking alternative...",
+                "warning"
+              );
+
+              // Try to create a direct download link
+              const directDownloadLink = createDirectDownloadLink(pdfUrl);
+              if (directDownloadLink) {
+                console.log("Using direct download link:", directDownloadLink);
+              }
+            }
+
+            // Open WhatsApp
+            const newWindow = window.open(
+              whatsappUrl,
+              "_blank",
+              "noopener,noreferrer"
+            );
+
+            if (newWindow) {
+              newWindow.focus();
+            } else {
+              // If popup blocked, provide alternative
+              handleWhatsAppPopupBlock(whatsappUrl, message);
+            }
+          });
+
+          return whatsappUrl;
+        } catch (error) {
+          console.error("Error creating WhatsApp URL:", error);
+
+          // Fallback: Create a simpler message without PDF link
+          const fallbackMessage = `🎂 Cake Bliss Bill\nBill: ${
+            billData.bill_number
+          }\nAmount: ₹${billData.total_price}\nDate: ${new Date(
+            billData.created_at
+          ).toLocaleDateString()}`;
+          const fallbackUrl = `https://wa.me/91${billData.purchaser_phone.replace(
+            /\D/g,
+            ""
+          )}?text=${encodeURIComponent(fallbackMessage)}`;
+
+          window.open(fallbackUrl, "_blank");
+          return null;
+        }
+      }
+
+      // Helper function to check URL accessibility
+      async function checkURLAccessibility(url) {
+        try {
+          const response = await fetch(url, {
+            method: "HEAD",
+            mode: "no-cors",
+          });
+          return true; // If no-cors succeeds, URL is accessible
+        } catch (error) {
+          console.log("URL accessibility check failed:", error);
+          return false;
+        }
+      }
+
+      // Create a direct download link
+      function createDirectDownloadLink(pdfUrl) {
+        // For Supabase Storage, we need to ensure the URL is direct
+        if (pdfUrl.includes("supabase.co/storage/v1/object/public/")) {
+          // This should already be a public URL
+          return pdfUrl;
+        }
+
+        // Try to force download by adding ?download=1 parameter
+        if (!pdfUrl.includes("?")) {
+          return pdfUrl + "?download=1";
+        }
+
+        return pdfUrl;
+      }
+
+      // Handle WhatsApp popup block
+      function handleWhatsAppPopupBlock(whatsappUrl, message) {
+        const userChoice = confirm(
+          "WhatsApp window was blocked by your browser.\n\n" +
+            "What would you like to do?\n\n" +
+            "1. Copy message to clipboard (Recommended)\n" +
+            "2. Open link manually"
+        );
+
+        if (userChoice) {
+          // Copy to clipboard
+          navigator.clipboard
+            .writeText(message)
+            .then(() => {
+              alert(
+                "WhatsApp message copied to clipboard!\n\n" +
+                  "Please paste it in WhatsApp to send the bill.\n\n" +
+                  "You can also access the bill PDF here:\n" +
+                  window.lastPdfUrl
+              );
+            })
+            .catch(() => {
+              // Fallback for older browsers
+              const textArea = document.createElement("textarea");
+              textArea.value = message;
+              document.body.appendChild(textArea);
+              textArea.focus();
+              textArea.select();
+
+              try {
+                document.execCommand("copy");
+                alert(
+                  "WhatsApp message copied to clipboard!\n\n" +
+                    "Please paste it in WhatsApp to send the bill."
+                );
+              } catch (err) {
+                alert(
+                  "Please manually copy this message and send via WhatsApp:\n\n" +
+                    message +
+                    "\n\n" +
+                    "Bill PDF: " +
+                    window.lastPdfUrl
+                );
+              }
+
+              document.body.removeChild(textArea);
+            });
+        } else {
+          // Show the URL for manual opening
+          alert(
+            "Please open this link in WhatsApp:\n\n" +
+              whatsappUrl.substring(0, 100) +
+              "...\n\n" +
+              "Or copy this link: " +
+              whatsappUrl
+          );
+        }
+      }
+
+      // Improve the formatItemsForWhatsApp function
+      function formatItemsForWhatsApp(itemsJSON) {
+        try {
+          const items = JSON.parse(itemsJSON);
+          if (!Array.isArray(items) || items.length === 0) {
+            return "No items in order";
+          }
+
+          let itemsText = "";
+          items.forEach((item, index) => {
+            const name = item.name || "Item";
+            const qty = item.quantity || 1;
+            const price = parseFloat(item.unit_price || 0);
+            const total = parseFloat(item.total_price || 0);
+
+            itemsText += `${index + 1}. ${name}\n`;
+            itemsText += `   Qty: ${qty} × ₹${price.toFixed(
+              2
+            )} = ₹${total.toFixed(2)}\n`;
+          });
+
+          return itemsText;
+        } catch (e) {
+          console.error("Error formatting items:", e);
+          return "Multiple items in order - see bill for details";
+        }
+      }
+
+      async function saveBillWithWhatsAppFlow() {
+    // ======== ADD THIS BLOCKER AT THE START ========
+    if (window.isProcessingBill) {
+        console.log("Already processing a bill, please wait...");
+        return;
+    }
+    window.isProcessingBill = true;
+    // ===============================================
+    
+    const submitBtn = document.getElementById("submitBill");
+    const originalText = submitBtn.innerHTML;
+
+    try {
+        // Step 1: Validate form
+        if (!validateFormBeforeSubmission()) {
+            throw new Error("Form validation failed");
+        }
+
+        // Step 2: Check items
+        const itemRows = document.querySelectorAll(".item-row");
+        if (itemRows.length === 0) {
+            throw new Error("Please add at least one item");
+        }
+
+        // Step 3: Save bill to Supabase
+        showNotification("Saving bill to database...", "info");
+        const savedBill = await saveBillWithInventoryCheck();
+
+        if (!savedBill) {
+            throw new Error("Failed to save bill");
+        }
+
+        showNotification("Bill saved! Generating PDF...", "success");
+
+        // Step 4: Generate PDF
+        showNotification("Generating PDF...", "info");
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating PDF...';
+
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        const pdfBlob = await generateBillPDF(savedBill);
+
+        // Step 5: Upload PDF to Supabase Storage
+        showNotification("Uploading PDF to cloud storage...", "info");
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading PDF...';
+
+        const uploadResult = await uploadPDFToStorage(pdfBlob, savedBill.bill_number);
+
+        // Step 6: Update bill record with PDF URL
+        try {
+            await supabase
+                .from("cake_bills")
+                .update({
+                    pdf_url: uploadResult.publicUrl,
+                    updated_at: new Date().toISOString(),
+                })
+                .eq("id", savedBill.id);
+        } catch (updateError) {
+            console.warn("Update bill with PDF URL failed:", updateError);
+        }
+
+        // Step 7: AUTO-SEND TO WHATSAPP
+        showNotification("Opening WhatsApp...", "success");
+
+        window.lastSavedBill = savedBill;
+        window.lastPdfUrl = uploadResult.publicUrl;
+
+        window.dispatchEvent(
+            new CustomEvent("billSaved", {
+                detail: {
+                    bill: savedBill,
+                    pdfUrl: uploadResult.publicUrl,
+                },
+            })
+        );
+
+        openWhatsAppWithBill(savedBill, uploadResult.publicUrl);
+
+        // Step 8: Reset form automatically after 2 seconds
+        setTimeout(() => {
+            showNotification(
+                `Bill #${savedBill.bill_number} sent to WhatsApp!`,
+                "success"
+            );
+
+            const autoReset = confirm(
+                `✅ Bill #${savedBill.bill_number} sent to WhatsApp!\n\n` +
+                `Do you want to reset the form for a new bill?`
+            );
+
+            if (autoReset) {
+                document.getElementById("resetForm").click();
+            }
+        }, 2000);
+    } catch (error) {
+        console.error("Error in save flow:", error);
+        showNotification(error.message || "Failed to process bill", "error");
+    } finally {
+        // ======== IMPORTANT: Reset the blocker ========
+        window.isProcessingBill = false;
+        submitBtn.classList.remove("btn-loading");
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = originalText;
+        // ==============================================
+    }
+}
       // Phone number validation functions
       function validatePhoneLength(input) {
         const errorElement = document.getElementById("purchaserPhoneError");
@@ -2269,16 +3233,16 @@
       }
 
       function handleGlobalKeyboard(e) {
-        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Your save logic
-        if (document.getElementById("submitBill")) {
+        if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+          e.preventDefault();
+          e.stopPropagation();
+
+          // Your save logic
+          if (document.getElementById("submitBill")) {
             document.getElementById("submitBill").click();
+          }
+          return;
         }
-        return;
-    }
         // Don't interfere with text input or textarea
         if (
           (e.target.tagName === "INPUT" && e.target.type === "text") ||
@@ -3145,7 +4109,6 @@
 
       // ==================== SUPABASE & CORE FUNCTIONS ====================
 
-      // Initialize Supabase
       async function initSupabase() {
         if (config.supabaseUrl && config.supabaseKey) {
           try {
@@ -7428,90 +8391,159 @@ QUICK FIELDS (Alt+Number):
         }
       }
 
-      // Add this function to handle form submission properly
-      function setupFormSubmission() {
-        const form = document.getElementById("billingForm");
-        const submitBtn = document.getElementById("submitBill");
+     function setupFormSubmission() {
+    const form = document.getElementById("billingForm");
+    const submitBtn = document.getElementById("submitBill");
 
-        form.addEventListener("submit", async function (e) {
-          e.preventDefault(); // This is the key fix!
+    // Remove any existing listeners first
+    const newForm = form.cloneNode(true);
+    form.parentNode.replaceChild(newForm, form);
 
-          // Validate form
-          if (!validateFormBeforeSubmission()) {
+    // Get the new form reference
+    const updatedForm = document.getElementById("billingForm");
+
+    // Add ONE listener with the WhatsApp auto-send logic
+    updatedForm.addEventListener("submit", async function (e) {
+        e.preventDefault(); // This is the key fix!
+
+        // Validate form
+        if (!validateFormBeforeSubmission()) {
             return;
-          }
+        }
 
-          // Check if there are items
-          const itemRows = document.querySelectorAll(".item-row");
-          if (itemRows.length === 0) {
+        // Check if there are items
+        const itemRows = document.querySelectorAll(".item-row");
+        if (itemRows.length === 0) {
             showNotification(
-              "Please add at least one item to the bill",
-              "error"
+                "Please add at least one item to the bill",
+                "error"
             );
             return;
-          }
+        }
 
-          // Show loading state
-          submitBtn.classList.add("btn-loading");
-          submitBtn.disabled = true;
-          const originalText = submitBtn.innerHTML;
-          submitBtn.innerHTML =
-            '<i class="fas fa-spinner fa-spin"></i> Processing...';
+        // Call the WhatsApp flow function (which has the blocker)
+        await saveBillWithWhatsAppFlow();
+    });
 
-          try {
-            // Save the bill
-            const savedBill = await saveBillWithInventoryCheck();
-
-            if (savedBill) {
-              // Success - show notification
-              showNotification(
-                `Bill #${savedBill.bill_number} saved successfully!`,
-                "success"
-              );
-
-              // Optionally reset form or show print dialog
-              setTimeout(() => {
-                if (confirm("Bill saved! Reset form for new bill?")) {
-                  document.getElementById("resetForm").click();
-                }
-              }, 1500);
-            }
-          } catch (error) {
-            console.error("Error in form submission:", error);
-            showNotification("Failed to save bill: " + error.message, "error");
-          } finally {
-            // Restore button
-            submitBtn.classList.remove("btn-loading");
-            submitBtn.disabled = false;
-            submitBtn.innerHTML = originalText;
-          }
-        });
-      }
+    console.log("Form submission handler set up with WhatsApp auto-send");
+}
 
       // Add this function to prevent browser's Save Page dialog
-function preventBrowserSaveShortcut() {
-    document.addEventListener('keydown', function(e) {
-        // Check for Ctrl+S or Cmd+S
-        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
-            e.preventDefault(); // Prevent browser save dialog
-            e.stopPropagation(); // Stop event from bubbling up
-            
-            // Focus out of any input field first
-            if (document.activeElement && 
-                (document.activeElement.tagName === 'INPUT' || 
-                 document.activeElement.tagName === 'TEXTAREA')) {
+      function preventBrowserSaveShortcut() {
+        document.addEventListener(
+          "keydown",
+          function (e) {
+            // Check for Ctrl+S or Cmd+S
+            if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+              e.preventDefault(); // Prevent browser save dialog
+              e.stopPropagation(); // Stop event from bubbling up
+
+              // Focus out of any input field first
+              if (
+                document.activeElement &&
+                (document.activeElement.tagName === "INPUT" ||
+                  document.activeElement.tagName === "TEXTAREA")
+              ) {
                 document.activeElement.blur();
+              }
+
+              // Trigger your save function
+              setTimeout(() => {
+                document.getElementById("submitBill")?.click();
+              }, 50);
+
+              return false;
             }
-            
-            // Trigger your save function
-            setTimeout(() => {
-                document.getElementById('submitBill')?.click();
-            }, 50);
-            
-            return false;
+          },
+          true
+        ); // Use capture phase to catch it early
+      }
+
+      // Add this function to your code
+      async function checkAndUpdateStockDisplay(productCode, quantity, row) {
+        if (!productCode || !row) return;
+
+        try {
+          const stockCheck = await checkStockAvailability(
+            productCode,
+            quantity
+          );
+          const stockBadge = row.querySelector(".stock-badge");
+          const stockMessage = row.querySelector(".stock-info-message");
+          const rowTd = row.querySelector("td:first-child");
+
+          // Remove previous styling
+          if (rowTd) {
+            rowTd.style.borderLeft = "";
+            rowTd.style.backgroundColor = "";
+          }
+
+          // Update stock badge
+          if (stockCheck.available === false && stockCheck.stock > 0) {
+            // Partially available
+            if (stockBadge) {
+              stockBadge.className = "stock-badge low-stock";
+              stockBadge.textContent = "LOW";
+              stockBadge.title = `Only ${stockCheck.stock} units available`;
+            }
+
+            if (stockMessage) {
+              stockMessage.textContent = `Stock: ${stockCheck.stock} units (Insufficient)`;
+              stockMessage.style.color = "#ff9800";
+            }
+
+            if (rowTd) {
+              rowTd.style.borderLeft = "3px solid #ff9800";
+              rowTd.style.backgroundColor = "rgba(255, 152, 0, 0.05)";
+            }
+          } else if (stockCheck.stock === 0) {
+            // Out of stock
+            if (stockBadge) {
+              stockBadge.className = "stock-badge out-of-stock";
+              stockBadge.textContent = "OUT";
+              stockBadge.title = "Out of stock";
+            }
+
+            if (stockMessage) {
+              stockMessage.textContent = "Stock: 0 units (Out of stock)";
+              stockMessage.style.color = "#f44336";
+            }
+
+            if (rowTd) {
+              rowTd.style.borderLeft = "3px solid #f44336";
+              rowTd.style.backgroundColor = "rgba(244, 67, 54, 0.05)";
+            }
+          } else {
+            // Sufficient stock
+            if (stockBadge) {
+              if (stockCheck.stock <= 3) {
+                stockBadge.className = "stock-badge low-stock";
+                stockBadge.textContent = "LOW";
+              } else if (stockCheck.stock <= 10) {
+                stockBadge.className = "stock-badge medium-stock";
+                stockBadge.textContent = "MED";
+              } else {
+                stockBadge.className = "stock-badge in-stock";
+                stockBadge.textContent = "IN";
+              }
+              stockBadge.title = `${stockCheck.stock} units available`;
+            }
+
+            if (stockMessage) {
+              stockMessage.textContent = `Stock: ${stockCheck.stock} units`;
+              stockMessage.style.color =
+                stockCheck.stock <= 10 ? "#ff9800" : "#4caf50";
+            }
+
+            if (rowTd && stockCheck.stock <= 10) {
+              rowTd.style.borderLeft = "3px solid #ff9800";
+              rowTd.style.backgroundColor = "rgba(255, 152, 0, 0.05)";
+            }
+          }
+        } catch (error) {
+          console.error("Error checking stock display:", error);
         }
-    }, true); // Use capture phase to catch it early
-}
+      }
 
       // Initialize when page loads
       document.addEventListener("DOMContentLoaded", async function () {
@@ -7767,11 +8799,7 @@ function preventBrowserSaveShortcut() {
         const resetFormBtn = document.getElementById("resetForm");
         if (resetFormBtn) {
           resetFormBtn.addEventListener("click", function () {
-            if (
-              confirm(
-                "Are you sure you want to reset the form? (Press Enter to confirm, Esc to cancel)"
-              )
-            ) {
+            {
               document.getElementById("billingForm").reset();
               document.getElementById("itemsTableBody").innerHTML = "";
               document.getElementById("couponDisplaySection").style.display =
@@ -7801,6 +8829,39 @@ function preventBrowserSaveShortcut() {
             if (e.key === "Enter" || e.key === " ") {
               e.preventDefault();
               this.click();
+            }
+          });
+        }
+
+        // Add WhatsApp share button to the button group
+        const buttonGroup = document.querySelector(".button-group");
+        if (buttonGroup && !document.getElementById("whatsappShareBtn")) {
+          const whatsappBtn = document.createElement("button");
+          whatsappBtn.type = "button";
+          whatsappBtn.id = "whatsappShareBtn";
+          whatsappBtn.className = "btn btn-success";
+          whatsappBtn.innerHTML =
+            '<i class="fab fa-whatsapp"></i> Send via WhatsApp';
+          whatsappBtn.style.display = "none"; // Hidden by default
+
+          buttonGroup.appendChild(whatsappBtn);
+
+          // WhatsApp button click handler
+          whatsappBtn.addEventListener("click", function () {
+            if (!window.lastSavedBill || !window.lastPdfUrl) {
+              showNotification("Please save a bill first", "warning");
+              return;
+            }
+
+            openWhatsAppWithBill(window.lastSavedBill, window.lastPdfUrl);
+          });
+
+          // Show WhatsApp button when a bill is saved
+          window.addEventListener("billSaved", function (e) {
+            if (e.detail && e.detail.bill && e.detail.pdfUrl) {
+              window.lastSavedBill = e.detail.bill;
+              window.lastPdfUrl = e.detail.pdfUrl;
+              whatsappBtn.style.display = "flex";
             }
           });
         }
@@ -7910,6 +8971,32 @@ function preventBrowserSaveShortcut() {
           ensureCatalogLoaded();
         }, 3000);
       });
+      // WhatsApp button click handler
+      const whatsappBtn = document.getElementById("whatsappShareBtn");
+      if (whatsappBtn) {
+        whatsappBtn.addEventListener("click", function () {
+          if (!window.lastSavedBill || !window.lastPdfUrl) {
+            showNotification("Please save a bill first", "warning");
+            return;
+          }
+
+          openWhatsAppWithBill(window.lastSavedBill, window.lastPdfUrl);
+        });
+
+        // WhatsApp keyboard shortcut (Ctrl+W)
+        document.addEventListener("keydown", function (e) {
+          if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === "w") {
+            e.preventDefault();
+            if (window.lastSavedBill && window.lastPdfUrl) {
+              whatsappBtn.click();
+            } else {
+              showNotification("Save a bill first (Ctrl+S)", "info");
+            }
+          }
+        });
+      }
+
+      
     </script>
   </body>
 </html>
