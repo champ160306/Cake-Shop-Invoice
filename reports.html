@@ -629,6 +629,32 @@
           justify-content: center;
         }
       }
+      /* Add to your existing CSS */
+      .chart-container {
+        position: relative;
+        height: 300px;
+        width: 100%;
+      }
+
+      .chart-container canvas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      .no-data-text {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        color: #999;
+        font-size: 16px;
+        font-weight: 600;
+        text-align: center;
+        pointer-events: none;
+      }
     </style>
   </head>
   <body>
@@ -1264,12 +1290,16 @@
       }
 
       // Set date range inputs
+      // Set date range inputs - UPDATED
       function setDateRange(days) {
         const range = calculateDateRange(days);
-        document.getElementById("startDate").value = formatDate(
-          range.startDate
-        );
-        document.getElementById("endDate").value = formatDate(range.endDate);
+
+        // Format dates for input (YYYY-MM-DD)
+        const startDateStr = formatDate(range.startDate);
+        const endDateStr = formatDate(range.endDate);
+
+        document.getElementById("startDate").value = startDateStr;
+        document.getElementById("endDate").value = endDateStr;
 
         currentDateRange = {
           startDate: range.startDate,
@@ -1284,6 +1314,28 @@
             btn.classList.add("active");
           }
         });
+
+        // Refresh data
+        loadReportsData();
+      }
+
+      // Debug function to check data
+      async function debugSalesData() {
+        try {
+          const { data, error } = await supabase
+            .from("cake_bills")
+            .select("*")
+            .order("created_at", { ascending: true })
+            .limit(5);
+
+          console.log("Sample sales data:", data);
+          if (data && data.length > 0) {
+            console.log("First item created_at:", data[0].created_at);
+            console.log("First item total_price:", data[0].total_price);
+          }
+        } catch (err) {
+          console.error("Debug error:", err);
+        }
       }
 
       // Load all reports data
@@ -1414,7 +1466,7 @@
         }
       }
 
-      // Load sales chart data
+      // Load sales chart data - FIXED VERSION
       async function loadSalesChartData() {
         try {
           // Build query for daily sales
@@ -1434,25 +1486,37 @@
           if (error) throw error;
 
           if (data && data.length > 0) {
-            // Group by date
+            // Group by date using YYYY-MM-DD format for proper sorting
             const salesByDate = {};
             data.forEach((bill) => {
-              const date = new Date(bill.created_at).toLocaleDateString();
+              const date = new Date(bill.created_at);
+              const dateKey = date.toISOString().split("T")[0]; // YYYY-MM-DD format
               const amount = parseFloat(bill.total_price || 0);
 
-              if (!salesByDate[date]) {
-                salesByDate[date] = 0;
+              if (!salesByDate[dateKey]) {
+                salesByDate[dateKey] = 0;
               }
-              salesByDate[date] += amount;
+              salesByDate[dateKey] += amount;
             });
 
-            // Prepare chart data
-            const dates = Object.keys(salesByDate);
-            const amounts = Object.values(salesByDate);
+            // Sort dates chronologically
+            const sortedDates = Object.keys(salesByDate).sort();
+
+            // Format dates for display (DD/MM/YYYY or similar)
+            const displayDates = sortedDates.map((dateStr) => {
+              const date = new Date(dateStr);
+              return date.toLocaleDateString("en-IN", {
+                day: "2-digit",
+                month: "short",
+              });
+            });
+
+            const amounts = sortedDates.map((date) => salesByDate[date]);
 
             // Create or update chart
             const ctx = document.getElementById("salesChart").getContext("2d");
 
+            // Destroy existing chart if it exists
             if (salesChart) {
               salesChart.destroy();
             }
@@ -1460,7 +1524,7 @@
             salesChart = new Chart(ctx, {
               type: "line",
               data: {
-                labels: dates,
+                labels: displayDates,
                 datasets: [
                   {
                     label: "Daily Revenue",
@@ -1481,13 +1545,25 @@
                     display: true,
                     position: "top",
                   },
+                  tooltip: {
+                    callbacks: {
+                      label: function (context) {
+                        return `₹${context.raw.toFixed(2)}`;
+                      },
+                    },
+                  },
                 },
                 scales: {
+                  x: {
+                    grid: {
+                      display: false,
+                    },
+                  },
                   y: {
                     beginAtZero: true,
                     ticks: {
                       callback: function (value) {
-                        return "₹" + value;
+                        return "₹" + value.toLocaleString("en-IN");
                       },
                     },
                   },
@@ -1495,22 +1571,23 @@
               },
             });
           } else {
-            // Create empty chart
+            // Create empty chart with message
             const ctx = document.getElementById("salesChart").getContext("2d");
             if (salesChart) {
               salesChart.destroy();
             }
 
+            // Create a "no data" chart
             salesChart = new Chart(ctx, {
               type: "line",
               data: {
-                labels: [],
+                labels: ["No Data"],
                 datasets: [
                   {
                     label: "Daily Revenue",
-                    data: [],
-                    borderColor: "#ff7bac",
-                    backgroundColor: "rgba(255, 123, 172, 0.1)",
+                    data: [0],
+                    borderColor: "#ddd",
+                    backgroundColor: "rgba(221, 221, 221, 0.1)",
                     borderWidth: 2,
                     fill: true,
                   },
@@ -1524,13 +1601,63 @@
                     display: true,
                     position: "top",
                   },
+                  tooltip: {
+                    enabled: false,
+                  },
+                },
+                scales: {
+                  x: {
+                    display: false,
+                  },
+                  y: {
+                    display: false,
+                  },
                 },
               },
             });
+
+            // Add text to indicate no data
+            ctx.canvas.parentNode.style.position = "relative";
+            const noDataText = document.createElement("div");
+            noDataText.style.position = "absolute";
+            noDataText.style.top = "50%";
+            noDataText.style.left = "50%";
+            noDataText.style.transform = "translate(-50%, -50%)";
+            noDataText.style.color = "#999";
+            noDataText.style.fontSize = "16px";
+            noDataText.style.fontWeight = "600";
+            noDataText.textContent = "No sales data available";
+            ctx.canvas.parentNode.appendChild(noDataText);
           }
         } catch (error) {
           console.error("Error loading sales chart data:", error);
           showNotification("Failed to load sales chart data", "error");
+
+          // Create error chart
+          const ctx = document.getElementById("salesChart").getContext("2d");
+          if (salesChart) {
+            salesChart.destroy();
+          }
+
+          salesChart = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: ["Error"],
+              datasets: [
+                {
+                  label: "Error Loading Data",
+                  data: [0],
+                  borderColor: "#ff0000",
+                  backgroundColor: "rgba(255, 0, 0, 0.1)",
+                  borderWidth: 2,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+            },
+          });
         }
       }
 
