@@ -8,6 +8,11 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
+    <!-- Cake-themed favicon -->
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎂</text></svg>"
+    />
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
       * {
@@ -132,18 +137,48 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 30px;
       }
-      /* Make the 3rd campaign full width */
-      .main-content .campaign-card:nth-child(3) {
-        grid-column: span 2;
+      /* All campaigns should be side by side (2 per row) */
+      .main-content .campaign-card {
+        grid-column: span 1;
       }
       @media (max-width: 992px) {
         .main-content {
           grid-template-columns: 1fr;
         }
+      }
 
-        .main-content .campaign-card:nth-child(3) {
-          grid-column: span 1;
-        }
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 2000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .modal-content {
+        background: white;
+        border-radius: 20px;
+        padding: 30px;
+        width: 90%;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      }
+
+      .close-modal {
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #666;
+        cursor: pointer;
+        padding: 5px;
+      }
+
+      .close-modal:hover {
+        color: var(--danger);
       }
 
       /* Campaign Cards */
@@ -634,11 +669,703 @@
       .customer-phone.no-phone i {
         margin-right: 5px;
       }
+      /* Mobile Responsive Styles */
+      @media (max-width: 576px) {
+        body {
+          padding: 10px;
+        }
+
+        header {
+          padding: 20px;
+          flex-direction: column;
+          text-align: center;
+          gap: 20px;
+        }
+
+        .logo-container {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .logo {
+          margin: 0 auto;
+        }
+
+        .header-stats {
+          flex-wrap: wrap;
+          justify-content: center;
+        }
+
+        nav ul {
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 10px;
+        }
+
+        nav a {
+          padding: 8px 12px;
+          font-size: 14px;
+        }
+
+        .dashboard-summary {
+          grid-template-columns: 1fr;
+          gap: 10px;
+        }
+
+        .summary-card {
+          padding: 15px;
+        }
+
+        .summary-icon {
+          width: 50px;
+          height: 50px;
+          font-size: 20px;
+        }
+
+        .filter-controls {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        .filter-group {
+          flex-direction: column;
+          align-items: flex-start;
+          width: 100%;
+        }
+
+        .filter-group select,
+        .filter-group input {
+          width: 100%;
+          min-width: unset;
+        }
+
+        .refresh-btn {
+          margin-left: 0;
+          margin-top: 10px;
+          width: 100%;
+        }
+
+        .main-content {
+          grid-template-columns: 1fr;
+          gap: 20px;
+        }
+
+        .campaign-card {
+          padding: 20px;
+          margin-bottom: 20px;
+        }
+
+        .campaign-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .campaign-title {
+          flex-direction: column;
+          text-align: center;
+          width: 100%;
+        }
+
+        .campaign-icon {
+          margin: 0 auto;
+        }
+
+        .campaign-stats {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .customer-item {
+          grid-template-columns: 1fr;
+          gap: 10px;
+          padding: 15px;
+          text-align: center;
+        }
+
+        .customer-info,
+        .customer-date,
+        .customer-amount {
+          text-align: center;
+        }
+
+        .customer-type {
+          justify-content: center;
+        }
+
+        .action-buttons {
+          justify-content: center;
+        }
+
+        .btn-whatsapp {
+          padding: 12px 15px;
+          font-size: 14px;
+          width: 100%;
+          justify-content: center;
+        }
+
+        /* Modal for mobile */
+        .modal-content {
+          width: 95%;
+          padding: 20px;
+          margin: 10px;
+        }
+
+        .notification {
+          left: 10px;
+          right: 10px;
+          text-align: center;
+        }
+      }
+
+      /* Tablet Responsive */
+      @media (min-width: 577px) and (max-width: 768px) {
+        .main-content {
+          grid-template-columns: 1fr;
+        }
+
+        .customer-item {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      /* Touch-friendly improvements */
+      .btn-whatsapp,
+      .refresh-btn,
+      .filter-group select {
+        min-height: 44px; /* Minimum touch target size */
+        touch-action: manipulation; /* Prevent double-tap zoom */
+      }
+
+      /* Prevent text zoom on mobile */
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      /* Better scrolling on mobile */
+      .customer-list {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+
+      /* Mobile-specific font sizes */
+      @media (max-width: 576px) {
+        h1 {
+          font-size: 24px;
+        }
+        h2 {
+          font-size: 20px;
+        }
+        h3 {
+          font-size: 16px;
+        }
+        p,
+        label,
+        .stat-badge {
+          font-size: 14px;
+        }
+
+        .logo-text h1 {
+          font-size: 24px;
+        }
+
+        .campaign-title h2 {
+          font-size: 20px;
+        }
+      }
+      /* Mobile Navigation */
+      .mobile-menu-toggle {
+        display: none;
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 8px;
+        font-size: 20px;
+        cursor: pointer;
+        margin: 10px auto;
+      }
+
+      @media (max-width: 768px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+
+        nav ul {
+          display: none;
+          flex-direction: column;
+          width: 100%;
+          background: white;
+          border-radius: 10px;
+          padding: 10px;
+          margin-top: 10px;
+          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul.show {
+          display: flex;
+        }
+
+        nav ul li {
+          width: 100%;
+        }
+
+        nav ul li a {
+          display: block;
+          text-align: center;
+          padding: 12px;
+          border-radius: 8px;
+          margin: 5px 0;
+        }
+      }
+      /* Better touch targets */
+      .btn-whatsapp,
+      .refresh-btn,
+      .filter-group select,
+      .filter-group input,
+      .customer-item {
+        cursor: pointer;
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+        tap-highlight-color: rgba(0, 0, 0, 0.1);
+      }
+
+      /* Prevent text selection on buttons */
+      .btn-whatsapp,
+      .refresh-btn {
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      /* Better scrolling */
+      body {
+        overflow-x: hidden;
+      }
+
+      .customer-list {
+        scrollbar-width: thin;
+        scrollbar-color: var(--primary) #f0f0f0;
+      }
+
+      .customer-list::-webkit-scrollbar {
+        width: 6px;
+      }
+
+      .customer-list::-webkit-scrollbar-track {
+        background: #f0f0f0;
+        border-radius: 10px;
+      }
+
+      .customer-list::-webkit-scrollbar-thumb {
+        background: var(--primary);
+        border-radius: 10px;
+      }
+      /* Enhanced Navigation */
+      nav {
+        position: relative;
+      }
+
+      nav ul {
+        display: flex;
+        list-style: none;
+        gap: 15px;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav li {
+        position: relative;
+      }
+
+      nav a {
+        text-decoration: none;
+        color: var(--dark);
+        font-weight: 600;
+        font-size: 16px;
+        padding: 12px 20px;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      nav a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      nav a:hover::before {
+        left: 100%;
+      }
+
+      nav a:hover {
+        background-color: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 123, 172, 0.3);
+      }
+
+      nav a.active {
+        background-color: var(--primary);
+        color: white;
+        box-shadow: 0 4px 12px rgba(255, 123, 172, 0.4);
+      }
+
+      nav a i {
+        font-size: 18px;
+        transition: transform 0.3s ease;
+      }
+
+      nav a:hover i {
+        transform: scale(1.2);
+      }
+
+      /* Active page indicator */
+      nav a.active::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 6px;
+        background-color: var(--secondary);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      /* Mobile Navigation Enhancements */
+      .mobile-menu-toggle {
+        display: none;
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1001;
+        box-shadow: 0 4px 12px rgba(255, 123, 172, 0.3);
+      }
+
+      .mobile-menu-toggle:hover {
+        background: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(255, 179, 71, 0.4);
+      }
+
+      .mobile-menu-toggle:active {
+        transform: translateY(0);
+      }
+
+      @media (max-width: 768px) {
+        .mobile-menu-toggle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin: 0;
+          order: 2;
+        }
+
+        header {
+          position: relative;
+          padding: 20px;
+        }
+
+        nav {
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: white;
+          border-radius: 15px;
+          margin-top: 15px;
+          padding: 15px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+          z-index: 1000;
+          display: none;
+          animation: slideDown 0.3s ease;
+        }
+
+        nav.show {
+          display: block;
+        }
+
+        nav ul {
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        nav li {
+          width: 100%;
+        }
+
+        nav a {
+          padding: 15px 20px;
+          border-radius: 10px;
+          justify-content: flex-start;
+          font-size: 16px;
+          border: 1px solid #f0f0f0;
+        }
+
+        nav a:hover {
+          background-color: var(--primary);
+          transform: translateX(5px);
+        }
+
+        nav a.active {
+          border-left: 4px solid var(--primary);
+          background-color: rgba(255, 123, 172, 0.1);
+        }
+
+        nav a.active::after {
+          display: none;
+        }
+
+        /* Close button for mobile menu */
+        .mobile-close-btn {
+          position: absolute;
+          top: 15px;
+          right: 15px;
+          background: none;
+          border: none;
+          font-size: 20px;
+          color: var(--dark);
+          cursor: pointer;
+          padding: 5px;
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Desktop specific enhancements */
+      @media (min-width: 769px) {
+        .logo-container {
+          flex: 1;
+        }
+
+        nav {
+          flex: 2;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        nav ul {
+          justify-content: flex-end;
+        }
+
+        /* Add subtle background animation for desktop */
+        nav a {
+          background: linear-gradient(
+            to right,
+            transparent 50%,
+            var(--primary) 50%
+          );
+          background-size: 200% 100%;
+          background-position: right bottom;
+          transition: all 0.4s ease;
+        }
+
+        nav a:hover {
+          background-position: left bottom;
+          color: white;
+        }
+      }
+
+      /* Badge for notification counts (optional) */
+      .nav-badge {
+        position: absolute;
+        top: -8px;
+        right: -8px;
+        background-color: var(--danger);
+        color: white;
+        font-size: 10px;
+        font-weight: bold;
+        padding: 2px 6px;
+        border-radius: 10px;
+        min-width: 18px;
+        text-align: center;
+      }
+
+      /* Navbar shadow effect */
+      header {
+        position: relative;
+      }
+
+      header::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 5%;
+        width: 90%;
+        height: 10px;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: 50%;
+        filter: blur(5px);
+        z-index: -1;
+      }
+
+      /* Floating animation for active menu item */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      nav a.active {
+        animation: float 3s ease-in-out infinite;
+      }
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Better focus styles for accessibility */
+      nav a:focus,
+      .btn-whatsapp:focus,
+      .refresh-btn:focus {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+      }
+
+      /* Reduce motion for users who prefer it */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        nav a.active {
+          animation: none;
+        }
+      }
+      /* Navbar loading indicator */
+      .nav-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          var(--primary),
+          var(--secondary),
+          var(--accent)
+        );
+        background-size: 200% 100%;
+        animation: loading 2s linear infinite;
+        display: none;
+      }
+
+      .nav-loading.active {
+        display: block;
+      }
+
+      @keyframes loading {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+       .birthday-expiring-combo {
+        background: linear-gradient(135deg, #ff6b6b 0%, #ffd93d 100%);
+        border-left: 5px solid #ff6b6b;
+        animation: pulse-glow 2s ease-in-out infinite;
+      }
+
+      @keyframes pulse-glow {
+        0%, 100% {
+          box-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+        }
+        50% {
+          box-shadow: 0 0 20px rgba(255, 107, 107, 0.8);
+        }
+      }
+
+      .combo-badge {
+        background: linear-gradient(45deg, #ff6b6b, #ff8e53) !important;
+        color: white !important;
+        font-weight: bold !important;
+        padding: 6px 12px !important;
+        border-radius: 20px !important;
+      }
+
+      .double-offer-btn {
+        background: linear-gradient(45deg, #ff6b6b, #ff8e53) !important;
+        color: white !important;
+        border: none !important;
+        font-weight: bold !important;
+      }
+
+      .double-offer-btn:hover {
+        background: linear-gradient(45deg, #ff5252, #ff7b00) !important;
+        transform: translateY(-2px) scale(1.05) !important;
+        box-shadow: 0 8px 20px rgba(255, 107, 107, 0.4) !important;
+      }
+
+      .customer-item.combo-highlight {
+        animation: highlight-combo 0.5s ease;
+        position: relative;
+      }
+
+      @keyframes highlight-combo {
+        0% {
+          transform: scale(0.98);
+          background-color: rgba(255, 107, 107, 0.1);
+        }
+        100% {
+          transform: scale(1);
+          background-color: inherit;
+        }
+      }
+
+      .combo-tag {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+        color: white;
+        padding: 3px 8px;
+        border-radius: 10px;
+        font-size: 10px;
+        font-weight: bold;
+        z-index: 1;
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <!-- Header -->
       <header>
         <div class="logo-container">
           <div class="logo">
@@ -663,23 +1390,37 @@
             </div>
           </div>
         </div>
-        <nav>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <nav id="mobileNav">
           <ul>
             <li>
-              <a href="billing.html"><i class="fas fa-receipt"></i> Billing</a>
+              <a href="billing.html">
+                <i class="fas fa-receipt"></i>
+                <span>Billing</span>
+              </a>
             </li>
             <li>
-              <a href="reports.html"><i class="fas fa-chart-bar"></i> Reports</a>
+              <a href="inventory.html">
+                <i class="fas fa-boxes"></i>
+                <span>Inventory</span>
+              </a>
             </li>
             <li>
-              <a href="promotions.html" class="active"
-                ><i class="fas fa-bullhorn"></i> Promotions</a
-              >
+              <a href="reports.html">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+              </a>
             </li>
             <li>
-              <a href="inventory.html"
-                ><i class="fas fa-boxes"></i> Inventory</a
-              >
+              <a href="promotions.html" class="active">
+                <i class="fas fa-bullhorn"></i>
+                <span>Promotions</span>
+              </a>
             </li>
           </ul>
         </nav>
@@ -783,7 +1524,7 @@
               </div>
               <div>
                 <h2>👑 High Ticket Customers</h2>
-                <p>Reward your highest spending customers from last month</p>
+                <p>Reward your highest spending customers</p>
               </div>
             </div>
             <div class="campaign-stats">
@@ -832,6 +1573,73 @@
             </div>
           </div>
         </div>
+
+        <!-- Campaign 4: Expiring Products Offers -->
+        <div class="campaign-card">
+          <div class="campaign-header">
+            <div class="campaign-title">
+              <div
+                class="campaign-icon"
+                style="
+                  background: linear-gradient(45deg, var(--warning), #ff9800);
+                "
+              >
+                <i class="fas fa-hourglass-end"></i>
+              </div>
+              <div>
+                <h2>⏰ Expiring Products Offers</h2>
+                <p>
+                  Send special offers for products expiring soon to previous
+                  buyers
+                </p>
+              </div>
+            </div>
+            <div class="campaign-stats">
+              <div class="stat-badge">
+                <i class="fas fa-box"></i>
+                <span id="expiringStats">0 products</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="customer-list" id="expiringList">
+            <div class="loading">
+              <i class="fas fa-spinner fa-spin"></i> Loading expiring
+              products...
+            </div>
+          </div>
+        </div>
+
+        <!-- New Campaign: Birthday + Expiring Products Combo -->
+      <div class="campaign-card">
+        <div class="campaign-header">
+          <div class="campaign-title">
+            <div
+              class="campaign-icon"
+              style="background: linear-gradient(45deg, #ff6b6b, #ff8e53)"
+            >
+              <i class="fas fa-birthday-cake"></i>
+              <i class="fas fa-fire" style="font-size: 14px; position: absolute; top: 5px; right: 5px;"></i>
+            </div>
+            <div>
+              <h2>🎂🔥 Birthday & Expiring Products Combo</h2>
+              <p>Special birthday offers with expiring products for maximum impact!</p>
+            </div>
+          </div>
+          <div class="campaign-stats">
+            <div class="stat-badge combo-badge">
+              <i class="fas fa-star"></i>
+              <span id="comboStats">0 matches</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="customer-list" id="comboList">
+          <div class="loading">
+            <i class="fas fa-spinner fa-spin"></i> Loading birthday-expiring matches...
+          </div>
+        </div>
+      </div>
       </div>
       <!-- Notification -->
       <div id="notification" class="notification">
@@ -840,6 +1648,68 @@
       </div>
     </div>
 
+    <!-- Expiring Products Modal -->
+    <div id="expiringModal" class="modal" style="display: none">
+      <div class="modal-content" style="max-width: 900px; max-height: 90vh">
+        <div class="campaign-header">
+          <div class="campaign-title">
+            <div
+              class="campaign-icon"
+              style="
+                background: linear-gradient(45deg, var(--warning), #ff9800);
+              "
+            >
+              <i class="fas fa-box"></i>
+            </div>
+            <div>
+              <h2 id="expiringModalTitle">Expiring Product</h2>
+              <p id="expiringModalSubtitle">
+                Previous customers who purchased this product
+              </p>
+            </div>
+          </div>
+          <button
+            type="button"
+            class="close-modal"
+            onclick="closeExpiringModal()"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <div
+          class="customer-list"
+          id="expiringCustomersList"
+          style="max-height: 60vh"
+        >
+          <!-- Customers will be loaded here -->
+        </div>
+
+        <div
+          style="
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <div>
+            <strong id="expiringProductInfo"></strong>
+          </div>
+          <div>
+            <button
+              type="button"
+              class="btn"
+              onclick="closeExpiringModal()"
+              style="background-color: #f0f0f0"
+            >
+              <i class="fas fa-times"></i> Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
     <script>
       // Configuration
       const DEFAULT_CONFIG = {
@@ -847,14 +1717,16 @@
         supabaseKey:
           "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkYnd6bXV0eGpvbm5wZndmcGJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTcwMjQsImV4cCI6MjA4MDU3MzAyNH0.n0ERxgLgYU1Tvw5QONihv1C3A7o7rcxrcn5MjZ5UnEM",
       };
-
-      let supabase = null;
+      // === GLOBAL VARIABLES ===
+      const supabaseClient = window.supabase.createClient(
+        DEFAULT_CONFIG.supabaseUrl,
+        DEFAULT_CONFIG.supabaseKey
+      );
       let isConnected = false;
-      let config = DEFAULT_CONFIG;
       let dailySendCount = 0;
-      const MAX_DAILY_SENDS = 50; // Safe limit to avoid WhatsApp bans
+      const MAX_DAILY_SENDS = 50;
 
-      // Initialize when page loads
+      // === INITIALIZATION ===
       document.addEventListener("DOMContentLoaded", async function () {
         await initSupabase();
         loadDailyCount();
@@ -862,17 +1734,16 @@
         setupEventListeners();
       });
 
-      // Initialize Supabase
+      // === DATABASE FUNCTIONS ===
       async function initSupabase() {
         try {
-          config = DEFAULT_CONFIG;
+          const config = DEFAULT_CONFIG;
           supabase = window.supabase.createClient(
             config.supabaseUrl,
             config.supabaseKey
           );
 
-          // Test connection
-          const { data, error } = await supabase
+          const { data, error } = await supabaseClient
             .from("cake_bills")
             .select("id")
             .limit(1);
@@ -907,7 +1778,7 @@
         }
       }
 
-      // Load all campaigns
+      // === CAMPAIGN LOADING FUNCTIONS ===
       async function loadAllCampaigns() {
         if (!isConnected) {
           showNotification("Please connect to database first", "error");
@@ -919,14 +1790,52 @@
           document.getElementById("amountFilter").value
         );
 
-        await Promise.all([
-          loadUpcomingBirthdays(days),
-          loadHighTicketCustomers(minAmount),
-          loadGiftingOpportunities(days),
-        ]);
+        showNavLoading();
+
+        try {
+          await Promise.all([
+            loadUpcomingBirthdays(days),
+            loadHighTicketCustomers(minAmount),
+            loadGiftingOpportunities(days),
+            loadExpiringProducts(),
+            loadBirthdayExpiringCombo(days),
+          ]);
+        } finally {
+          hideNavLoading();
+        }
       }
 
-      // 1. Upcoming Birthdays Campaign
+      // Mobile menu toggle
+      function toggleMobileMenu() {
+        const mobileNav = document.getElementById("mobileNav");
+        mobileNav.classList.toggle("show");
+
+        // Change icon
+        const menuIcon = document.querySelector(".mobile-menu-toggle i");
+        if (mobileNav.classList.contains("show")) {
+          menuIcon.className = "fas fa-times";
+          document.body.style.overflow = "hidden"; // Prevent scrolling when menu is open
+        } else {
+          menuIcon.className = "fas fa-bars";
+          document.body.style.overflow = ""; // Restore scrolling
+        }
+      }
+
+      // Show navbar loading indicator
+      function showNavLoading() {
+        const loadingBar = document.createElement("div");
+        loadingBar.className = "nav-loading active";
+        document.querySelector("header").appendChild(loadingBar);
+      }
+
+      // Hide navbar loading indicator
+      function hideNavLoading() {
+        const loadingBar = document.querySelector(".nav-loading");
+        if (loadingBar) {
+          loadingBar.remove();
+        }
+      }
+
       async function loadUpcomingBirthdays(days = 3) {
         const container = document.getElementById("birthdayList");
         container.innerHTML =
@@ -937,19 +1846,13 @@
           const futureDate = new Date();
           futureDate.setDate(today.getDate() + days);
 
-          // Format dates for query
-          const todayStr = today.toISOString().split("T")[0];
-          const futureStr = futureDate.toISOString().split("T")[0];
-
-          // Query for upcoming birthdays from both purchaser and birthday person
-          const { data: bills, error } = await supabase
+          const { data: bills, error } = await supabaseClient
             .from("cake_bills")
             .select("*")
             .order("created_at", { ascending: false });
 
           if (error) throw error;
 
-          // Process and filter for upcoming birthdays
           const birthdayCustomers = [];
           const seenPhones = new Set();
 
@@ -964,7 +1867,6 @@
               );
 
               if (thisYearBirthday >= today && thisYearBirthday <= futureDate) {
-                // Check if phone number exists
                 const phone = bill.purchaser_phone;
                 const hasPhone = phone && phone.trim() !== "";
 
@@ -977,13 +1879,14 @@
                     lastPurchase: bill.created_at,
                     totalSpent: parseFloat(bill.total_price) || 0,
                     hasPhone: hasPhone,
+                    billData: bill
                   });
                   seenPhones.add(phone);
                 }
               }
             }
 
-            // Check birthday person's birthday - ONLY if they have a phone number
+            // Check birthday person's birthday
             if (bill.birthday_person_birthdate) {
               const birthdayPersonBirthday = new Date(
                 bill.birthday_person_birthdate
@@ -995,12 +1898,10 @@
               );
 
               if (thisYearBirthday >= today && thisYearBirthday <= futureDate) {
-                // Check for phone number
                 const phone =
                   bill.birthday_person_phone || bill.purchaser_phone;
                 const hasPhone = phone && phone.trim() !== "";
 
-                // Only add if they have a phone number
                 if (hasPhone && !seenPhones.has(phone)) {
                   birthdayCustomers.push({
                     name: bill.birthday_person_name,
@@ -1010,6 +1911,7 @@
                     lastPurchase: bill.created_at,
                     totalSpent: parseFloat(bill.total_price) || 0,
                     hasPhone: hasPhone,
+                    billData: bill
                   });
                   seenPhones.add(phone);
                 }
@@ -1017,7 +1919,6 @@
             }
           });
 
-          // Update stats - count only those with phone numbers
           const customersWithPhone = birthdayCustomers.filter(
             (c) => c.hasPhone
           );
@@ -1028,7 +1929,6 @@
           ).textContent = `${customersWithPhone.length} customers`;
           updateTotalStats();
 
-          // Display customers
           if (birthdayCustomers.length === 0) {
             container.innerHTML =
               '<div class="empty-state"><i class="fas fa-birthday-cake"></i><p>No upcoming birthdays in selected range</p></div>';
@@ -1047,19 +1947,16 @@
         }
       }
 
-      // 2. High Ticket Customers Campaign
       async function loadHighTicketCustomers(minAmount = 1000) {
         const container = document.getElementById("highTicketList");
         container.innerHTML =
           '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading high ticket customers...</div>';
 
         try {
-          // Calculate date 30 days ago
           const thirtyDaysAgo = new Date();
           thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
 
-          // Get bills from last 30 days
-          const { data: bills, error } = await supabase
+          const { data: bills, error } = await supabaseClient
             .from("cake_bills")
             .select("*")
             .gte("created_at", thirtyDaysAgo.toISOString())
@@ -1067,7 +1964,6 @@
 
           if (error) throw error;
 
-          // Aggregate by customer and filter by amount
           const customerMap = new Map();
 
           bills.forEach((bill) => {
@@ -1092,12 +1988,10 @@
             }
           });
 
-          // Filter by minimum amount and convert to array
           const highTicketCustomers = Array.from(customerMap.values())
             .filter((customer) => customer.totalSpent >= minAmount)
             .sort((a, b) => b.totalSpent - a.totalSpent);
 
-          // Update stats
           document.getElementById("highTicketCount").textContent =
             highTicketCustomers.length;
           document.getElementById(
@@ -1105,7 +1999,6 @@
           ).textContent = `${highTicketCustomers.length} customers`;
           updateTotalStats();
 
-          // Display customers
           if (highTicketCustomers.length === 0) {
             container.innerHTML =
               '<div class="empty-state"><i class="fas fa-crown"></i><p>No high ticket customers found</p></div>';
@@ -1127,26 +2020,24 @@
         }
       }
 
-      // 3. Gifting Reciprocity Campaign
       async function loadGiftingOpportunities(days = 3) {
         const container = document.getElementById("giftingList");
         container.innerHTML =
           '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading gifting opportunities...</div>';
 
         try {
-          // Get all bills
-          const { data: allBills, error } = await supabase
+          const { data: allBills, error } = await supabaseClient
             .from("cake_bills")
             .select("*")
             .order("created_at", { ascending: false });
 
           if (error) throw error;
 
-          // Find gifting relationships
-          const giftingMap = new Map(); // birthday_person_phone -> [{gifter: purchaser, date: birthday}]
-          const upcomingBirthdays = new Map(); // phone -> birthday date
+          const giftingMap = new Map();
+          const today = new Date();
+          const futureDate = new Date();
+          futureDate.setDate(today.getDate() + days);
 
-          // First pass: Build gifting relationships
           allBills.forEach((bill) => {
             if (
               bill.birthday_person_phone &&
@@ -1165,13 +2056,8 @@
             }
           });
 
-          // Second pass: Find gifter birthdays coming up
-          const today = new Date();
-          const futureDate = new Date();
-          futureDate.setDate(today.getDate() + days);
-
           const opportunities = [];
-          const seenRecipients = new Set(); // Track unique recipients
+          const seenRecipients = new Set();
 
           giftingMap.forEach((gifters, recipientPhone) => {
             gifters.forEach((gifter) => {
@@ -1187,12 +2073,8 @@
                   thisYearBirthday >= today &&
                   thisYearBirthday <= futureDate
                 ) {
-                  // Check if recipient is already in the list
-                  if (seenRecipients.has(recipientPhone)) {
-                    return; // Skip if recipient already exists
-                  }
+                  if (seenRecipients.has(recipientPhone)) return;
 
-                  // Find recipient info
                   const recipientBill = allBills.find(
                     (bill) =>
                       bill.birthday_person_phone === recipientPhone ||
@@ -1214,7 +2096,6 @@
                         parseFloat(recipientBill.total_price) || 0,
                     });
 
-                    // Mark recipient as seen to prevent duplicates
                     seenRecipients.add(recipientPhone);
                   }
                 }
@@ -1222,7 +2103,6 @@
             });
           });
 
-          // Update stats
           document.getElementById("giftingCount").textContent =
             opportunities.length;
           document.getElementById(
@@ -1230,7 +2110,6 @@
           ).textContent = `${opportunities.length} opportunities`;
           updateTotalStats();
 
-          // Display opportunities
           if (opportunities.length === 0) {
             container.innerHTML =
               '<div class="empty-state"><i class="fas fa-gift"></i><p>No gifting opportunities found</p></div>';
@@ -1249,7 +2128,377 @@
         }
       }
 
-      // Create customer element for display
+      async function loadExpiringProducts() {
+        const container = document.getElementById("expiringList");
+        container.innerHTML =
+          '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading expiring products...</div>';
+
+        try {
+          const { data: inventoryData, error: inventoryError } =
+            await supabaseClient
+              .from("products")
+              .select("*")
+              .order("product_name");
+          if (inventoryError) throw inventoryError;
+
+          const { data: batchesData, error: batchesError } =
+            await supabaseClient.from("product_batches").select("*");
+          if (
+            batchesError &&
+            !batchesError.message.includes("does not exist")
+          ) {
+            throw batchesError;
+          }
+
+          const today = new Date();
+          today.setHours(0, 0, 0, 0);
+          const expiringProducts = [];
+
+          inventoryData.forEach((product) => {
+            const productBatches = batchesData.filter(
+              (b) => b.product_code === product.product_code
+            );
+            if (productBatches.length === 0) return;
+
+            let totalStock = 0;
+            let earliestExpiry = null;
+            let expiringSoon = false;
+
+            productBatches.forEach((batch) => {
+              if (batch.expiry_date) {
+                const expiryDate = new Date(batch.expiry_date);
+                expiryDate.setHours(0, 0, 0, 0);
+
+                const diffTime = expiryDate - today;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                const remainingQty = batch.remaining_quantity || 0;
+                if (diffDays >= 0 && diffDays <= 3 && remainingQty > 0) {
+                  expiringSoon = true;
+                  if (!earliestExpiry || expiryDate < earliestExpiry) {
+                    earliestExpiry = expiryDate;
+                  }
+                }
+
+                if (expiryDate >= today) {
+                  totalStock += remainingQty;
+                }
+              }
+            });
+
+            if (expiringSoon && totalStock > 0) {
+              expiringProducts.push({
+                id: product.id,
+                name: product.product_name,
+                code: product.product_code,
+                price: parseFloat(product.unit_price) || 0,
+                stock: totalStock,
+                expiryDate: earliestExpiry,
+                category: product.category,
+                shelfLife: product.shelf_life_days || 7,
+              });
+            }
+          });
+
+          expiringProducts.sort((a, b) => a.expiryDate - b.expiryDate);
+          document.getElementById(
+            "expiringStats"
+          ).textContent = `${expiringProducts.length} products`;
+
+          if (expiringProducts.length === 0) {
+            container.innerHTML =
+              '<div class="empty-state"><i class="fas fa-box-open"></i><p>No products expiring soon</p></div>';
+            return;
+          }
+
+          container.innerHTML = "";
+          expiringProducts.forEach((product) => {
+            const productElement = createExpiringProductElement(product);
+            container.appendChild(productElement);
+          });
+        } catch (error) {
+          console.error("Error loading expiring products:", error);
+          container.innerHTML =
+            '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load expiring products</p></div>';
+        }
+      }
+
+      // === NEW FUNCTION: LOAD BIRTHDAY + EXPIRING COMBO ===
+      async function loadBirthdayExpiringCombo(days = 3) {
+        const container = document.getElementById("comboList");
+        if (!container) return;
+        
+        container.innerHTML =
+          '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Finding birthday-expiring matches...</div>';
+
+        try {
+          // Get upcoming birthdays
+          const today = new Date();
+          const futureDate = new Date();
+          futureDate.setDate(today.getDate() + days);
+
+          const { data: bills, error: billsError } = await supabaseClient
+            .from("cake_bills")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+          if (billsError) throw billsError;
+
+          // Get expiring products
+          const { data: inventoryData, error: inventoryError } =
+            await supabaseClient
+              .from("products")
+              .select("*")
+              .order("product_name");
+          if (inventoryError) throw inventoryError;
+
+          const { data: batchesData, error: batchesError } =
+            await supabaseClient.from("product_batches").select("*");
+          if (
+            batchesError &&
+            !batchesError.message.includes("does not exist")
+          ) {
+            throw batchesError;
+          }
+
+          // Find expiring products
+          const todayDate = new Date();
+          todayDate.setHours(0, 0, 0, 0);
+          const expiringProducts = [];
+
+          inventoryData.forEach((product) => {
+            const productBatches = batchesData.filter(
+              (b) => b.product_code === product.product_code
+            );
+            if (productBatches.length === 0) return;
+
+            let totalStock = 0;
+            let earliestExpiry = null;
+            let expiringSoon = false;
+
+            productBatches.forEach((batch) => {
+              if (batch.expiry_date) {
+                const expiryDate = new Date(batch.expiry_date);
+                expiryDate.setHours(0, 0, 0, 0);
+
+                const diffTime = expiryDate - todayDate;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                const remainingQty = batch.remaining_quantity || 0;
+                if (diffDays >= 0 && diffDays <= 3 && remainingQty > 0) {
+                  expiringSoon = true;
+                  if (!earliestExpiry || expiryDate < earliestExpiry) {
+                    earliestExpiry = expiryDate;
+                  }
+                }
+
+                if (expiryDate >= todayDate) {
+                  totalStock += remainingQty;
+                }
+              }
+            });
+
+            if (expiringSoon && totalStock > 0) {
+              expiringProducts.push({
+                id: product.id,
+                name: product.product_name,
+                code: product.product_code,
+                price: parseFloat(product.unit_price) || 0,
+                stock: totalStock,
+                expiryDate: earliestExpiry,
+                category: product.category,
+                shelfLife: product.shelf_life_days || 7,
+              });
+            }
+          });
+
+          // Find birthday customers and match with expiring products
+          const birthdayExpiringMatches = [];
+          const seenPhones = new Set();
+
+          // First pass: Collect all birthday customers
+          const birthdayCustomers = [];
+          bills.forEach((bill) => {
+            // Check purchaser birthday
+            if (bill.purchaser_birthdate) {
+              const purchaserBirthday = new Date(bill.purchaser_birthdate);
+              const thisYearBirthday = new Date(
+                today.getFullYear(),
+                purchaserBirthday.getMonth(),
+                purchaserBirthday.getDate()
+              );
+
+              if (thisYearBirthday >= today && thisYearBirthday <= futureDate) {
+                const phone = bill.purchaser_phone;
+                const hasPhone = phone && phone.trim() !== "";
+
+                if (!seenPhones.has(phone) && hasPhone) {
+                  birthdayCustomers.push({
+                    name: bill.purchaser_name,
+                    phone: phone,
+                    birthday: bill.purchaser_birthdate,
+                    type: "purchaser",
+                    lastPurchase: bill.created_at,
+                    totalSpent: parseFloat(bill.total_price) || 0,
+                    hasPhone: hasPhone,
+                    billData: bill
+                  });
+                  seenPhones.add(phone);
+                }
+              }
+            }
+
+            // Check birthday person's birthday
+            if (bill.birthday_person_birthdate) {
+              const birthdayPersonBirthday = new Date(
+                bill.birthday_person_birthdate
+              );
+              const thisYearBirthday = new Date(
+                today.getFullYear(),
+                birthdayPersonBirthday.getMonth(),
+                birthdayPersonBirthday.getDate()
+              );
+
+              if (thisYearBirthday >= today && thisYearBirthday <= futureDate) {
+                const phone =
+                  bill.birthday_person_phone || bill.purchaser_phone;
+                const hasPhone = phone && phone.trim() !== "";
+
+                if (hasPhone && !seenPhones.has(phone)) {
+                  birthdayCustomers.push({
+                    name: bill.birthday_person_name,
+                    phone: phone,
+                    birthday: bill.birthday_person_birthdate,
+                    type: "birthday_person",
+                    lastPurchase: bill.created_at,
+                    totalSpent: parseFloat(bill.total_price) || 0,
+                    hasPhone: hasPhone,
+                    billData: bill
+                  });
+                  seenPhones.add(phone);
+                }
+              }
+            }
+          });
+
+          // Second pass: Match birthday customers with their purchased expiring products
+          birthdayCustomers.forEach((customer) => {
+            // Find products this customer has purchased that are now expiring
+            const customerBill = customer.billData;
+            const customerExpiringProducts = [];
+
+            if (customerBill) {
+              expiringProducts.forEach((expiringProduct) => {
+                // Check if this customer purchased this product
+                let purchasedThisProduct = false;
+                
+                // Check product name in various possible fields
+                const productName = expiringProduct.name.toLowerCase();
+                const billString = JSON.stringify(customerBill).toLowerCase();
+                
+                // Simple matching logic
+                if (billString.includes(productName) || 
+                    (productName.includes("cake") && billString.includes("cake")) ||
+                    (expiringProduct.category && expiringProduct.category.toLowerCase() === "cakes" && 
+                     (billString.includes("cake") || billString.includes("pastry")))) {
+                  purchasedThisProduct = true;
+                }
+
+                // Also check by product code if available
+                if (customerBill.product_code === expiringProduct.code) {
+                  purchasedThisProduct = true;
+                }
+
+                // Check items array if it exists
+                const possibleItemFields = ["items", "products", "products_list", "order_items"];
+                possibleItemFields.forEach((field) => {
+                  if (customerBill[field]) {
+                    try {
+                      let items = [];
+                      if (typeof customerBill[field] === "string") {
+                        items = JSON.parse(customerBill[field]);
+                      } else if (Array.isArray(customerBill[field])) {
+                        items = customerBill[field];
+                      }
+                      
+                      if (Array.isArray(items)) {
+                        items.forEach((item) => {
+                          if (!item) return;
+                          const itemName = (
+                            item.name ||
+                            item.product_name ||
+                            item.productName ||
+                            item.description ||
+                            ""
+                          ).toLowerCase();
+                          const itemCode = (
+                            item.productCode ||
+                            item.code ||
+                            item.product_code ||
+                            item.id ||
+                            ""
+                          ).toString().toLowerCase();
+                          
+                          if (itemName.includes(productName) || 
+                              itemCode === expiringProduct.code.toLowerCase() ||
+                              (expiringProduct.category && expiringProduct.category.toLowerCase() === "cakes" && 
+                               (itemName.includes("cake") || itemName.includes("pastry")))) {
+                            purchasedThisProduct = true;
+                          }
+                        });
+                      }
+                    } catch (e) {
+                      // Silent catch for JSON parsing errors
+                    }
+                  }
+                });
+
+                if (purchasedThisProduct) {
+                  customerExpiringProducts.push(expiringProduct);
+                }
+              });
+
+              if (customerExpiringProducts.length > 0) {
+                // Sort by closest expiry date
+                customerExpiringProducts.sort((a, b) => a.expiryDate - b.expiryDate);
+                
+                birthdayExpiringMatches.push({
+                  customer: customer,
+                  expiringProducts: customerExpiringProducts,
+                  matchScore: customerExpiringProducts.length * 10 + 
+                             (30 - Math.ceil((customerExpiringProducts[0].expiryDate - today) / (1000 * 60 * 60 * 24))) // Days until expiry
+                });
+              }
+            }
+          });
+
+          // Sort by match score (highest first)
+          birthdayExpiringMatches.sort((a, b) => b.matchScore - a.matchScore);
+
+          const comboStats = document.getElementById("comboStats");
+          if (comboStats) {
+            comboStats.textContent = `${birthdayExpiringMatches.length} matches`;
+          }
+
+          if (birthdayExpiringMatches.length === 0) {
+            container.innerHTML =
+              '<div class="empty-state"><i class="fas fa-search"></i><p>No birthday-expiring product matches found</p></div>';
+            return;
+          }
+
+          container.innerHTML = "";
+          birthdayExpiringMatches.forEach((match, index) => {
+            const matchElement = createBirthdayExpiringElement(match, index);
+            container.appendChild(matchElement);
+          });
+        } catch (error) {
+          console.error("Error loading birthday-expiring combo:", error);
+          container.innerHTML =
+            '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Failed to load birthday-expiring matches</p></div>';
+        }
+      }
+
+      // === UI ELEMENT CREATION ===
       function createCustomerElement(customer, type) {
         const div = document.createElement("div");
         div.className = "customer-item";
@@ -1273,114 +2522,552 @@
             '<span class="type-badge birthday-person">Birthday Person</span>';
         }
 
-        // Check if phone number exists
         const hasPhone = customer.phone && customer.phone.trim() !== "";
+        const escapedName = customer.name.replace(/'/g, "\\'");
+        const escapedPhone = customer.phone
+          ? customer.phone.replace(/'/g, "\\'")
+          : "";
 
         div.innerHTML = `
-        <div class="customer-info">
-            <h4>${customer.name}</h4>
-            <div class="customer-phone ${!hasPhone ? "no-phone" : ""}">
-                ${
-                  hasPhone
-                    ? customer.phone
-                    : '<i class="fas fa-phone-slash"></i> No phone number'
-                }
-            </div>
-            <div class="customer-type">${typeBadge}</div>
-        </div>
-        <div class="customer-date">
-            <i class="fas fa-calendar-alt"></i>
-            ${
-              type === "birthday"
-                ? "Birthday: " + formattedDate
-                : "Last Purchase: " + lastPurchaseDate
-            }
-        </div>
-        <div class="customer-amount">
-            ${type === "highTicket" ? "₹" + customer.totalSpent.toFixed(0) : ""}
-        </div>
-        <div class="action-buttons">
-            ${
-              hasPhone
-                ? `<button class="btn-whatsapp" onclick="sendBirthdayOffer('${customer.phone}', '${customer.name}', '${formattedDate}', '${type}')">
-                      <i class="fab fa-whatsapp"></i> Send Offer
-                   </button>`
-                : `<button class="btn-whatsapp" disabled title="No phone number available">
-                      <i class="fas fa-ban"></i> No Phone
-                   </button>`
-            }
-        </div>
+      <div class="customer-info">
+          <h4>${customer.name}</h4>
+          <div class="customer-phone ${!hasPhone ? "no-phone" : ""}">
+              ${
+                hasPhone
+                  ? customer.phone
+                  : '<i class="fas fa-phone-slash"></i> No phone number'
+              }
+          </div>
+          <div class="customer-type">${typeBadge}</div>
+      </div>
+      <div class="customer-date">
+          <i class="fas fa-calendar-alt"></i>
+          ${
+            type === "birthday"
+              ? "Birthday: " + formattedDate
+              : "Last Purchase: " + lastPurchaseDate
+          }
+      </div>
+      <div class="customer-amount">
+          ${type === "highTicket" ? "₹" + customer.totalSpent.toFixed(0) : ""}
+      </div>
+      <div class="action-buttons">
+          ${
+            hasPhone
+              ? `<button class="btn-whatsapp" onclick="sendBirthdayOffer('${escapedPhone}', '${escapedName}', '${formattedDate}', '${type}')">
+                    <i class="fab fa-whatsapp"></i> Send Offer
+                 </button>`
+              : `<button class="btn-whatsapp" disabled title="No phone number available">
+                    <i class="fas fa-ban"></i> No Phone
+                 </button>`
+          }
+      </div>
     `;
 
         return div;
       }
-// Create gifting opportunity element
-function createGiftingElement(opportunity) {
-  const div = document.createElement("div");
-  div.className = "customer-item";
 
-  // Format gifter birthday as DD-month name (without year)
-  const gifterBirthday = new Date(
-    opportunity.gifterBirthday
-  ).toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "long"
-    // Removed year: "numeric" to exclude the year
-  });
+      function createGiftingElement(opportunity) {
+        const div = document.createElement("div");
+        div.className = "customer-item";
 
-  const lastGiftDate = new Date(
-    opportunity.lastGiftDate
-  ).toLocaleDateString("en-IN");
+        const gifterBirthday = new Date(
+          opportunity.gifterBirthday
+        ).toLocaleDateString("en-IN", {
+          day: "2-digit",
+          month: "long",
+        });
 
-  // Check if phone number exists
-  const hasPhone =
-    opportunity.recipientPhone &&
-    opportunity.recipientPhone.trim() !== "";
+        const lastGiftDate = new Date(
+          opportunity.lastGiftDate
+        ).toLocaleDateString("en-IN");
+        const hasPhone =
+          opportunity.recipientPhone &&
+          opportunity.recipientPhone.trim() !== "";
 
-  div.innerHTML = `
-    <div class="customer-info">
-        <h4>${opportunity.recipientName}</h4>
-        <div class="customer-phone ${!hasPhone ? "no-phone" : ""}">
+        const escapedRecipientName = opportunity.recipientName.replace(
+          /'/g,
+          "\\'"
+        );
+        const escapedRecipientPhone = opportunity.recipientPhone
+          ? opportunity.recipientPhone.replace(/'/g, "\\'")
+          : "";
+        const escapedGifterName = opportunity.gifterName.replace(/'/g, "\\'");
+        const escapedGifterBirthday = gifterBirthday.replace(/'/g, "\\'");
+
+        div.innerHTML = `
+      <div class="customer-info">
+          <h4>${opportunity.recipientName}</h4>
+          <div class="customer-phone ${!hasPhone ? "no-phone" : ""}">
+              ${
+                hasPhone
+                  ? opportunity.recipientPhone
+                  : '<i class="fas fa-phone-slash"></i> No phone number'
+              }
+          </div>
+          <div class="customer-type">
+              <span class="type-badge purchaser">Received Gift</span>
+          </div>
+      </div>
+      <div class="customer-date">
+          <i class="fas fa-user-friends"></i>
+          From: ${opportunity.gifterName}
+      </div>
+      <div class="customer-date">
+          <i class="fas fa-calendar-star"></i>
+          Their birthday: ${gifterBirthday}
+      </div>
+      <div class="customer-amount">
+          ₹${opportunity.lastGiftAmount.toFixed(0)}
+      </div>
+      <div class="action-buttons">
+          ${
+            hasPhone
+              ? `<button class="btn-whatsapp" onclick="sendGiftingReminder('${escapedRecipientPhone}', '${escapedRecipientName}', '${escapedGifterName}', '${escapedGifterBirthday}')">
+                    <i class="fab fa-whatsapp"></i> Send Reminder
+                 </button>`
+              : `<button class="btn-whatsapp" disabled title="No phone number available">
+                    <i class="fas fa-ban"></i> No Phone
+                 </button>`
+          }
+      </div>
+    `;
+
+        return div;
+      }
+
+      function createExpiringProductElement(product) {
+        const div = document.createElement("div");
+        div.className = "customer-item";
+
+        const expiryDateStr = product.expiryDate.toLocaleDateString("en-IN", {
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+        const today = new Date();
+        const diffTime = product.expiryDate - today;
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        let expiryBadge = "";
+        if (diffDays === 0) {
+          expiryBadge =
+            '<span class="type-badge" style="background-color: rgba(244, 67, 54, 0.1); color: var(--danger);">EXPIRES TODAY</span>';
+        } else if (diffDays === 1) {
+          expiryBadge =
+            '<span class="type-badge" style="background-color: rgba(255, 152, 0, 0.1); color: var(--warning);">1 DAY LEFT</span>';
+        } else {
+          expiryBadge = `<span class="type-badge" style="background-color: rgba(255, 152, 0, 0.1); color: var(--warning);">${diffDays} DAYS LEFT</span>`;
+        }
+
+        const escapedProductName = product.name.replace(/'/g, "\\'");
+        const escapedExpiryDate = expiryDateStr.replace(/'/g, "\\'");
+
+        div.innerHTML = `
+      <div class="customer-info">
+        <h4>${product.name}</h4>
+        <div style="font-size: 13px; color: #666; margin-top: 5px;">
+          <i class="fas fa-barcode"></i> ${product.code}
+        </div>
+        <div style="font-size: 13px; color: #666; margin-top: 3px;">
+          <i class="fas fa-tag"></i> ${product.category}
+        </div>
+      </div>
+      <div class="customer-date">
+        <i class="fas fa-calendar-times"></i>
+        Expires: ${expiryDateStr}
+      </div>
+      <div class="customer-amount" style="display: flex; flex-direction: column; align-items: center;">
+        <div style="font-size: 18px; font-weight: 700; color: var(--accent);">
+          ₹${product.price.toFixed(2)}
+        </div>
+        <div style="font-size: 12px; color: #666; margin-top: 5px;">
+          <i class="fas fa-box"></i> ${product.stock} in stock
+        </div>
+      </div>
+      <div class="action-buttons">
+        <button class="btn-whatsapp" onclick="viewProductCustomers('${
+          product.id
+        }', '${escapedProductName}', ${product.stock}, '${escapedExpiryDate}')">
+          <i class="fas fa-users"></i> View Buyers
+        </button>
+      </div>
+    `;
+
+        return div;
+      }
+
+      // === CREATE BIRTHDAY + EXPIRING ELEMENT ===
+      function createBirthdayExpiringElement(match, index) {
+        const div = document.createElement("div");
+        div.className = "customer-item combo-highlight";
+        
+        const birthdayDate = new Date(match.customer.birthday).toLocaleDateString("en-IN", {
+          day: "numeric",
+          month: "long",
+        });
+
+        // Format expiry dates
+        const expiringProductsList = match.expiringProducts
+          .slice(0, 2) // Show only first 2 products
+          .map(product => {
+            const expiryDate = new Date(product.expiryDate).toLocaleDateString("en-IN", {
+              day: "numeric",
+              month: "short"
+            });
+            const diffDays = Math.ceil((product.expiryDate - new Date()) / (1000 * 60 * 60 * 24));
+            return `${product.name} (expires ${expiryDate}, ${diffDays} days left)`;
+          })
+          .join(", ");
+
+        const hasPhone = match.customer.hasPhone;
+        const escapedName = match.customer.name.replace(/'/g, "\\'");
+        const escapedPhone = match.customer.phone.replace(/'/g, "\\'");
+        const escapedBirthday = birthdayDate.replace(/'/g, "\\'");
+        
+        // Create product list for message
+        const productList = match.expiringProducts.map(p => p.name).join(", ");
+        const escapedProductList = productList.replace(/'/g, "\\'");
+
+        // Get the first (most urgent) expiring product
+        const mainProduct = match.expiringProducts[0];
+        const escapedMainProduct = mainProduct.name.replace(/'/g, "\\'");
+        const expiryDateStr = new Date(mainProduct.expiryDate).toLocaleDateString("en-IN", {
+          day: "numeric",
+          month: "long",
+          year: "numeric"
+        });
+        const escapedExpiryDate = expiryDateStr.replace(/'/g, "\\'");
+
+        div.innerHTML = `
+          <div class="combo-tag">${match.expiringProducts.length} expiring products</div>
+          <div class="customer-info">
+            <h4 style="color: #ff6b6b;">${match.customer.name}</h4>
+            <div class="customer-phone ${!hasPhone ? "no-phone" : ""}">
+              ${match.customer.phone}
+            </div>
+            <div class="customer-type">
+              <span class="type-badge" style="background: rgba(255, 107, 107, 0.1); color: #ff6b6b;">
+                <i class="fas fa-birthday-cake"></i> Birthday on ${birthdayDate}
+              </span>
+            </div>
+          </div>
+          <div class="customer-date">
+            <i class="fas fa-fire" style="color: #ff6b6b;"></i>
+            Expiring products: ${expiringProductsList}
+            ${match.expiringProducts.length > 2 ? `+${match.expiringProducts.length - 2} more` : ''}
+          </div>
+          <div class="action-buttons">
             ${
               hasPhone
-                ? opportunity.recipientPhone
-                : '<i class="fas fa-phone-slash"></i> No phone number'
+                ? `<button class="btn-whatsapp double-offer-btn" onclick="sendBirthdayExpiringComboOffer('${escapedPhone}', '${escapedName}', '${escapedBirthday}', '${escapedMainProduct}', '${escapedExpiryDate}', '${escapedProductList}')">
+                    <i class="fab fa-whatsapp"></i> Send Combo Offer
+                  </button>`
+                : `<button class="btn-whatsapp" disabled title="No phone number available">
+                    <i class="fas fa-ban"></i> No Phone
+                  </button>`
             }
+          </div>
+        `;
+
+        return div;
+      }
+
+      async function viewProductCustomers(
+        productId,
+        productName,
+        stock,
+        expiryDate
+      ) {
+        try {
+          document.getElementById("expiringModalTitle").textContent =
+            productName;
+          document.getElementById("expiringModalSubtitle").textContent =
+            "Previous customers who purchased this product";
+          document.getElementById(
+            "expiringProductInfo"
+          ).innerHTML = `Stock: ${stock} units | Expires: ${expiryDate}`;
+
+          const container = document.getElementById("expiringCustomersList");
+          container.innerHTML =
+            '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Loading previous buyers...</div>';
+          document.getElementById("expiringModal").style.display = "flex";
+
+          const { data: productData, error: productError } =
+            await supabaseClient
+              .from("products")
+              .select("product_code, product_name, category")
+              .eq("id", productId)
+              .single();
+
+          if (productError) throw productError;
+
+          const productCode = productData.product_code;
+          const actualProductName = productData.product_name;
+          const category = productData.category;
+
+          const { data: bills, error: billsError } = await supabaseClient
+            .from("cake_bills")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+          if (billsError) throw billsError;
+
+          const uniqueCustomers = new Map();
+
+          if (bills && bills.length > 0) {
+            bills.forEach((bill) => {
+              const customerPhone =
+                bill.purchaser_phone || bill.customer_phone || bill.phone;
+              const customerName =
+                bill.purchaser_name ||
+                bill.customer_name ||
+                bill.name ||
+                "Unknown Customer";
+
+              if (!customerPhone || customerPhone.trim() === "") return;
+
+              let itemsFound = [];
+              const possibleItemFields = [
+                "items",
+                "products",
+                "products_list",
+                "order_items",
+              ];
+
+              possibleItemFields.forEach((field) => {
+                if (bill[field]) {
+                  try {
+                    let items = [];
+                    if (typeof bill[field] === "string") {
+                      items = JSON.parse(bill[field]);
+                    } else if (Array.isArray(bill[field])) {
+                      items = bill[field];
+                    }
+                    if (Array.isArray(items)) {
+                      itemsFound = itemsFound.concat(items);
+                    }
+                  } catch (e) {}
+                }
+              });
+
+              if (bill.product_name || bill.product_code) {
+                itemsFound.push({
+                  name: bill.product_name,
+                  code: bill.product_code,
+                  quantity: bill.quantity || 1,
+                  price: bill.unit_price || bill.total_price,
+                });
+              }
+
+              let productFound = false;
+              itemsFound.forEach((item) => {
+                if (!item) return;
+                const itemName = (
+                  item.name ||
+                  item.product_name ||
+                  item.productName ||
+                  item.description ||
+                  ""
+                ).toLowerCase();
+                const itemCode = (
+                  item.productCode ||
+                  item.code ||
+                  item.product_code ||
+                  item.id ||
+                  ""
+                )
+                  .toString()
+                  .toLowerCase();
+                const searchName = actualProductName.toLowerCase();
+                const searchCode = productCode.toLowerCase();
+
+                const matches =
+                  itemCode === searchCode ||
+                  itemName === searchName ||
+                  itemName.includes(searchName) ||
+                  searchName
+                    .split(" ")
+                    .some(
+                      (word) => word.length > 3 && itemName.includes(word)
+                    ) ||
+                  itemName.includes(searchCode.replace(/-/g, " ")) ||
+                  (category &&
+                    category.toLowerCase() === "cakes" &&
+                    (itemName.includes("cake") || itemName.includes("pastry")));
+
+                if (matches) productFound = true;
+              });
+
+              if (productFound) {
+                if (!uniqueCustomers.has(customerPhone)) {
+                  uniqueCustomers.set(customerPhone, {
+                    name: customerName,
+                    phone: customerPhone,
+                    lastPurchase: bill.created_at,
+                    totalSpent: parseFloat(bill.total_price) || 0,
+                    purchaseDate: new Date(
+                      bill.created_at
+                    ).toLocaleDateString(),
+                  });
+                } else {
+                  const existing = uniqueCustomers.get(customerPhone);
+                  if (
+                    new Date(bill.created_at) > new Date(existing.lastPurchase)
+                  ) {
+                    existing.lastPurchase = bill.created_at;
+                    existing.totalSpent = parseFloat(bill.total_price) || 0;
+                    existing.purchaseDate = new Date(
+                      bill.created_at
+                    ).toLocaleDateString();
+                  }
+                }
+              }
+            });
+          }
+
+          const customers = Array.from(uniqueCustomers.values()).sort(
+            (a, b) => new Date(b.lastPurchase) - new Date(a.lastPurchase)
+          );
+
+          if (customers.length === 0) {
+            const alternativeCustomers = await searchCustomersByProductName(
+              actualProductName,
+              bills
+            );
+            if (alternativeCustomers.length > 0) {
+              container.innerHTML = "";
+              alternativeCustomers.forEach((customer) => {
+                const customerElement = createExpiringCustomerElement(
+                  customer,
+                  actualProductName,
+                  expiryDate,
+                  stock
+                );
+                container.appendChild(customerElement);
+              });
+              return;
+            }
+
+            container.innerHTML = `
+          <div class="empty-state">
+            <i class="fas fa-users-slash"></i>
+            <p>No previous buyers found for "${actualProductName}"</p>
+          </div>
+        `;
+            return;
+          }
+
+          container.innerHTML = "";
+          customers.forEach((customer) => {
+            const customerElement = createExpiringCustomerElement(
+              customer,
+              actualProductName,
+              expiryDate,
+              stock
+            );
+            container.appendChild(customerElement);
+          });
+        } catch (error) {
+          console.error("Error loading product customers:", error);
+          const container = document.getElementById("expiringCustomersList");
+          container.innerHTML = `
+        <div class="empty-state">
+          <i class="fas fa-exclamation-triangle"></i>
+          <p>Error loading customers</p>
         </div>
-        <div class="customer-type">
-            <span class="type-badge purchaser">Received Gift</span>
+      `;
+        }
+      }
+
+      async function searchCustomersByProductName(productName, bills) {
+        const uniqueCustomers = new Map();
+        const searchName = productName.toLowerCase();
+
+        bills.forEach((bill) => {
+          const customerPhone = bill.purchaser_phone;
+          const customerName = bill.purchaser_name;
+
+          if (!customerPhone || customerPhone.trim() === "") return;
+
+          const billString = JSON.stringify(bill).toLowerCase();
+          if (
+            billString.includes(searchName) ||
+            (searchName.includes("cake") && billString.includes("cake"))
+          ) {
+            if (!uniqueCustomers.has(customerPhone)) {
+              uniqueCustomers.set(customerPhone, {
+                name: customerName,
+                phone: customerPhone,
+                lastPurchase: bill.created_at,
+                totalSpent: parseFloat(bill.total_price) || 0,
+                purchaseDate: new Date(bill.created_at).toLocaleDateString(),
+              });
+            }
+          }
+        });
+
+        return Array.from(uniqueCustomers.values());
+      }
+
+      function createExpiringCustomerElement(
+        customer,
+        productName,
+        expiryDate,
+        stock
+      ) {
+        const div = document.createElement("div");
+        div.className = "customer-item";
+
+        const lastPurchaseDate = new Date(
+          customer.lastPurchase
+        ).toLocaleDateString("en-IN");
+        const hasPhone = customer.phone && customer.phone.trim() !== "";
+
+        const escapedCustomerName = customer.name.replace(/'/g, "\\'");
+        const escapedCustomerPhone = customer.phone
+          ? customer.phone.replace(/'/g, "\\'")
+          : "";
+        const escapedProductName = productName.replace(/'/g, "\\'");
+        const escapedExpiryDate = expiryDate.replace(/'/g, "\\'");
+
+        div.innerHTML = `
+      <div class="customer-info">
+        <h4>${customer.name}</h4>
+        <div class="customer-phone ${!hasPhone ? "no-phone" : ""}">
+          ${
+            hasPhone
+              ? customer.phone
+              : '<i class="fas fa-phone-slash"></i> No phone number'
+          }
         </div>
-    </div>
-    <div class="customer-date">
-        <i class="fas fa-user-friends"></i>
-        From: ${opportunity.gifterName}
-    </div>
-    <div class="customer-date">
-        <i class="fas fa-calendar-star"></i>
-        Their birthday: ${gifterBirthday}
-    </div>
-    <div class="customer-amount">
-        ₹${opportunity.lastGiftAmount.toFixed(0)}
-    </div>
-    <div class="action-buttons">
+      </div>
+      <div class="customer-date">
+        <i class="fas fa-shopping-cart"></i>
+        Last bought: ${lastPurchaseDate}
+      </div>
+      <div class="customer-amount">
+        ₹${customer.totalSpent.toFixed(0)}
+      </div>
+      <div class="action-buttons">
         ${
           hasPhone
-            ? `<button class="btn-whatsapp" onclick="sendGiftingReminder('${opportunity.recipientPhone}', '${opportunity.recipientName}', '${opportunity.gifterName}', '${gifterBirthday}')">
-                  <i class="fab fa-whatsapp"></i> Send Reminder
-               </button>`
+            ? `<button class="btn-whatsapp" onclick="sendExpiringProductOffer('${escapedCustomerPhone}', '${escapedCustomerName}', '${escapedProductName}', '${escapedExpiryDate}', ${stock})">
+                <i class="fab fa-whatsapp"></i> Send Offer
+              </button>`
             : `<button class="btn-whatsapp" disabled title="No phone number available">
-                  <i class="fas fa-ban"></i> No Phone
-               </button>`
+                <i class="fas fa-ban"></i> No Phone
+              </button>`
         }
-    </div>
-  `;
+      </div>
+    `;
 
-  return div;
-}
+        return div;
+      }
 
-      // Send birthday offer via WhatsApp - Direct version (no preview)
+      // === MESSAGE SENDING FUNCTIONS ===
       function sendBirthdayOffer(phone, name, birthday, type) {
-        // Additional safety check
         if (!phone || phone.trim() === "") {
           showNotification(
             "Cannot send: No phone number available for " + name,
@@ -1397,13 +3084,11 @@ function createGiftingElement(opportunity) {
           return;
         }
 
-        // Format phone number (remove non-digits, add 91 if not present)
         const cleanPhone = phone.replace(/\D/g, "");
         const phoneWithCountryCode = cleanPhone.startsWith("91")
           ? cleanPhone
           : "91" + cleanPhone;
 
-        // Create personalized message
         let message = "";
         if (type === "birthday") {
           message = `🎂 *Happy Birthday ${name}!* 🎂
@@ -1453,7 +3138,6 @@ Cake Bliss Team
 _To unsubscribe, reply STOP_`;
         }
 
-        // Send immediately
         sendWhatsAppMessage(phoneWithCountryCode, message, name, type);
       }
 
@@ -1471,25 +3155,16 @@ _To unsubscribe, reply STOP_`;
           return;
         }
 
-        // Format phone number
         const cleanPhone = phone.replace(/\D/g, "");
         const phoneWithCountryCode = cleanPhone.startsWith("91")
           ? cleanPhone
           : "91" + cleanPhone;
-
-        // Convert gifterBirthday string to Date object
         const gifterBirthdayDate = new Date(gifterBirthday);
-
-        // Format the date as DD-month name
         const formattedValidUntil = gifterBirthdayDate.toLocaleDateString(
           "en-IN",
-          {
-            day: "2-digit",
-            month: "long",
-          }
+          { day: "2-digit", month: "long" }
         );
 
-        // Create gifting reminder message with formatted date
         const message = `🎁 *Gifting Reminder* 🎁
 
 Hello ${recipientName}! 
@@ -1517,7 +3192,6 @@ Cake Bliss Team 🍰
 
 _This is a one-time gifting reminder_`;
 
-        // Send immediately
         sendWhatsAppMessage(
           phoneWithCountryCode,
           message,
@@ -1526,142 +3200,207 @@ _This is a one-time gifting reminder_`;
         );
       }
 
-      // Send WhatsApp message directly
-      function sendWhatsAppMessage(phone, message, name, type) {
-        // Encode message for URL
-        const encodedMessage = encodeURIComponent(message);
-
-        // Create WhatsApp URL
-        const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
-
-        // Open WhatsApp in new tab
-        const newWindow = window.open(
-          whatsappUrl,
-          "_blank",
-          "noopener,noreferrer"
-        );
-
-        if (newWindow) {
-          newWindow.focus();
-
-          // Update send count
-          dailySendCount++;
-          updateDailyCount();
-
-          // Show success notification
-          let campaignType = "";
-          switch (type) {
-            case "birthday":
-              campaignType = "birthday offer";
-              break;
-            case "highTicket":
-              campaignType = "VIP offer";
-              break;
-            case "gifting":
-              campaignType = "gifting reminder";
-              break;
-          }
-
-          showNotification(`${campaignType} sent to ${name}`, "success");
-
-          // Update stats
-          document.getElementById("totalSent").textContent = dailySendCount;
-
-          // Update button state
-          const buttons = document.querySelectorAll(".btn-whatsapp");
-          buttons.forEach((button) => {
-            if (button.textContent.includes(name)) {
-              button.disabled = true;
-              button.innerHTML = '<i class="fas fa-check"></i> Sent';
-              button.classList.add("sent");
-
-              // Reset button after 5 seconds
-              setTimeout(() => {
-                button.disabled = false;
-                button.innerHTML = '<i class="fab fa-whatsapp"></i> Send Offer';
-                button.classList.remove("sent");
-              }, 5000);
-            }
-          });
-        } else {
+      function sendExpiringProductOffer(
+        phone,
+        customerName,
+        productName,
+        expiryDate,
+        stock
+      ) {
+        if (dailySendCount >= MAX_DAILY_SENDS) {
           showNotification(
-            "Popup blocked. Please allow popups for this site.",
-            "error"
+            `Daily limit reached (${MAX_DAILY_SENDS} messages). Try again tomorrow.`,
+            "warning"
           );
+          return;
         }
+
+        const cleanPhone = phone.replace(/\D/g, "");
+        const phoneWithCountryCode = cleanPhone.startsWith("91")
+          ? cleanPhone
+          : "91" + cleanPhone;
+
+        const message = `🏃‍♂️ *HURRY! Limited Time Offer!* 🏃‍♂️
+
+Hello ${customerName}! 
+
+Remember the delicious *${productName}* you enjoyed? 
+
+We have a limited time offer specially for you that expires on *${expiryDate}*!
+
+*🔥 EXCLUSIVE OFFER FOR YOU:*
+🎯 **30% OFF** on ${productName}
+⚡ **Same-day delivery available**
+
+This is a special offer for our valued customers who have purchased this product before!
+
+*Hurry, offer valid until stock lasts!*
+
+Use code: RECURRING30
+
+Order now before it's gone! ⏰
+
+Best regards,
+Cake Bliss Team 🍰
+
+_To unsubscribe, reply STOP_`;
+
+        sendWhatsAppMessage(
+          phoneWithCountryCode,
+          message,
+          customerName,
+          "expiring"
+        );
       }
 
-      // Confirm and send message
-      function confirmAndSend() {
-        if (!window.pendingMessage) return;
+      // === NEW FUNCTION: SEND BIRTHDAY + EXPIRING COMBO MESSAGE ===
+      function sendBirthdayExpiringComboOffer(phone, name, birthday, mainProduct, expiryDate, productList) {
+        if (dailySendCount >= MAX_DAILY_SENDS) {
+          showNotification(
+            `Daily limit reached (${MAX_DAILY_SENDS} messages). Try again tomorrow.`,
+            "warning"
+          );
+          return;
+        }
 
-        const { phone, message, name, type } = window.pendingMessage;
+        const cleanPhone = phone.replace(/\D/g, "");
+        const phoneWithCountryCode = cleanPhone.startsWith("91")
+          ? cleanPhone
+          : "91" + cleanPhone;
 
-        // Encode message for URL
+        const message = `🎂🔥 *DOUBLE CELEBRATION OFFER!* 🔥🎂
+
+Happy Birthday ${name}! 🥳
+
+We noticed your birthday is coming up on *${birthday}*!
+AND we have something special for you...
+
+*🎁 EXCLUSIVE BIRTHDAY + CLEARANCE COMBO OFFER! 🎁*
+
+To celebrate your birthday, we're offering you:
+1. *🎂 25% BIRTHDAY DISCOUNT* on any order
+2. *🔥 EXTRA 15% OFF* on expiring products you love!
+
+*Products that need your attention:*
+${productList.split(', ').map(p => `• ${p}`).join('\n')}
+
+*🔥 ULTIMATE COMBO DEAL:*
+🎯 **40% OFF TOTAL** when you buy expiring products
+⚡ **Priority birthday delivery**
+🎁 **Free birthday card & candles**
+
+*Main Product Alert:*
+${mainProduct} expires on ${expiryDate}
+
+*🎉 TOTAL SAVINGS: UP TO 40% OFF! 🎉*
+
+Use code: BDAYEXP40
+
+This exclusive combo offer is valid for 48 hours only!
+Don't miss this birthday treat! 🍰
+
+Make your birthday extra special with Cake Bliss!
+Order now: 📞 [Your Phone Number]
+
+With love,
+Cake Bliss Team ❤️
+
+_To unsubscribe, reply STOP_`;
+
+        sendWhatsAppMessage(phoneWithCountryCode, message, name, "combo");
+        
+        // Special success notification for combo offers
+        showNotification(
+          `🎂🔥 Birthday + Expiring combo offer sent to ${name}!`,
+          "success"
+        );
+      }
+
+      function closeExpiringModal() {
+        document.getElementById("expiringModal").style.display = "none";
+      }
+
+      function sendWhatsAppMessage(phone, message, name, type) {
         const encodedMessage = encodeURIComponent(message);
-
-        // Create WhatsApp URL
         const whatsappUrl = `https://wa.me/${phone}?text=${encodedMessage}`;
 
-        // Open WhatsApp in new tab
-        const newWindow = window.open(
-          whatsappUrl,
-          "_blank",
-          "noopener,noreferrer"
-        );
+        // Check if we're on mobile
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
 
-        if (newWindow) {
-          newWindow.focus();
+        if (isMobile) {
+          // For mobile: Use window.location (opens in same tab)
+          window.location.href = whatsappUrl;
 
-          // Update send count
-          dailySendCount++;
-          updateDailyCount();
+          // After a delay, try to come back to the app
+          setTimeout(() => {
+            // Try to show a back button notification
+            showNotification("Message sent! Tap here to return.", "info", true);
+          }, 1000);
+        } else {
+          // For desktop: Open in new tab
+          const newWindow = window.open(
+            whatsappUrl,
+            "_blank",
+            "noopener,noreferrer"
+          );
 
-          // Show success notification
-          let campaignType = "";
-          switch (type) {
-            case "birthday":
-              campaignType = "birthday offer";
-              break;
-            case "highTicket":
-              campaignType = "VIP offer";
-              break;
-            case "gifting":
-              campaignType = "gifting reminder";
-              break;
+          if (!newWindow) {
+            showNotification(
+              "Popup blocked. Please allow popups for this site.",
+              "error"
+            );
+            return;
           }
+        }
 
-          showNotification(`${campaignType} sent to ${name}`, "success");
+        // Update send count and UI
+        dailySendCount++;
+        updateDailyCount();
 
-          // Update stats
-          document.getElementById("totalSent").textContent = dailySendCount;
+        let campaignType = "";
+        switch (type) {
+          case "birthday":
+            campaignType = "birthday offer";
+            break;
+          case "highTicket":
+            campaignType = "VIP offer";
+            break;
+          case "gifting":
+            campaignType = "gifting reminder";
+            break;
+          case "expiring":
+            campaignType = "expiring product offer";
+            break;
+          case "combo":
+            campaignType = "birthday-expiring combo offer";
+            break;
+        }
 
-          // Close preview
-          closePreview();
+        showNotification(`${campaignType} sent to ${name}`, "success");
+        document.getElementById("totalSent").textContent = dailySendCount;
 
-          // Clear pending message
-          window.pendingMessage = null;
-
-          // Disable button temporarily to prevent rapid clicking
-          const button = document.querySelector(".btn-whatsapp.sending");
-          if (button) {
+        // Update button state
+        const buttons = document.querySelectorAll(".btn-whatsapp");
+        buttons.forEach((button) => {
+          if (
+            button.textContent.includes(name) ||
+            button.closest(".customer-item")?.querySelector("h4")
+              ?.textContent === name
+          ) {
             button.disabled = true;
             button.innerHTML = '<i class="fas fa-check"></i> Sent';
+            button.classList.add("sent");
+
             setTimeout(() => {
               button.disabled = false;
               button.innerHTML = '<i class="fab fa-whatsapp"></i> Send Offer';
-              button.classList.remove("sending");
-            }, 3000);
+              button.classList.remove("sent");
+            }, 5000);
           }
-        } else {
-          showNotification(
-            "Popup blocked. Please allow popups for this site.",
-            "error"
-          );
-        }
+        });
       }
 
-      // Update total statistics
+      // === UTILITY FUNCTIONS ===
       function updateTotalStats() {
         const birthdayCount =
           parseInt(document.getElementById("birthdayCount").textContent) || 0;
@@ -1669,12 +3408,10 @@ _This is a one-time gifting reminder_`;
           parseInt(document.getElementById("highTicketCount").textContent) || 0;
         const giftingCount =
           parseInt(document.getElementById("giftingCount").textContent) || 0;
-
         const totalCustomers = birthdayCount + highTicketCount + giftingCount;
         document.getElementById("totalCustomers").textContent = totalCustomers;
       }
 
-      // Load daily send count from localStorage
       function loadDailyCount() {
         const today = new Date().toDateString();
         const storedData = localStorage.getItem("cakeBlissWhatsAppStats");
@@ -1684,32 +3421,27 @@ _This is a one-time gifting reminder_`;
           if (data.date === today) {
             dailySendCount = data.count || 0;
           } else {
-            dailySendCount = 0; // Reset for new day
+            dailySendCount = 0;
           }
         }
 
         document.getElementById("totalSent").textContent = dailySendCount;
       }
 
-      // Update daily count in localStorage
       function updateDailyCount() {
         const today = new Date().toDateString();
-        const data = {
-          date: today,
-          count: dailySendCount,
-        };
+        const data = { date: today, count: dailySendCount };
         localStorage.setItem("cakeBlissWhatsAppStats", JSON.stringify(data));
       }
 
-      // Setup event listeners
       function setupEventListeners() {
-        // Filter change listeners
         document
           .getElementById("daysFilter")
           .addEventListener("change", function () {
             const days = parseInt(this.value);
             loadUpcomingBirthdays(days);
             loadGiftingOpportunities(days);
+            loadBirthdayExpiringCombo(days);
           });
 
         document
@@ -1719,7 +3451,6 @@ _This is a one-time gifting reminder_`;
             loadHighTicketCustomers(minAmount);
           });
 
-        // Refresh button
         document
           .getElementById("refreshBtn")
           .addEventListener("click", function () {
@@ -1734,11 +3465,8 @@ _This is a one-time gifting reminder_`;
             });
           });
 
-        // Keyboard shortcuts
         document.addEventListener("keydown", function (e) {
-          if (e.key === "Escape") {
-            closePreview();
-          }
+          if (e.key === "Escape") closeExpiringModal();
           if (e.ctrlKey && e.key === "r") {
             e.preventDefault();
             document.getElementById("refreshBtn").click();
@@ -1746,7 +3474,6 @@ _This is a one-time gifting reminder_`;
         });
       }
 
-      // Show notification
       function showNotification(message, type = "success") {
         const notification = document.getElementById("notification");
         const icon = notification.querySelector("i");
@@ -1771,21 +3498,26 @@ _This is a one-time gifting reminder_`;
         }
 
         notification.classList.add("show");
-
-        setTimeout(() => {
-          notification.classList.remove("show");
-        }, 3000);
+        setTimeout(() => notification.classList.remove("show"), 3000);
       }
 
-      // Add CSS for type badge colors
-      const style = document.createElement("style");
-      style.textContent = `
-            :root {
-                --primary-rgb: 255, 123, 172;
-                --accent-rgb: 157, 78, 221;
-            }
-        `;
-      document.head.appendChild(style);
+      // Close mobile menu when clicking outside
+      document.addEventListener("click", function (event) {
+        const mobileNav = document.getElementById("mobileNav");
+        const menuToggle = document.querySelector(".mobile-menu-toggle");
+
+        if (
+          mobileNav &&
+          menuToggle &&
+          !mobileNav.contains(event.target) &&
+          !menuToggle.contains(event.target)
+        ) {
+          mobileNav.classList.remove("show");
+          const menuIcon = document.querySelector(".mobile-menu-toggle i");
+          menuIcon.className = "fas fa-bars";
+          document.body.style.overflow = "";
+        }
+      });
     </script>
   </body>
 </html>
