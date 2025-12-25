@@ -873,51 +873,7 @@
           font-size: 20px;
         }
       }
-      /* Mobile Navigation */
-      .mobile-menu-toggle {
-        display: none;
-        background: var(--primary);
-        color: white;
-        border: none;
-        padding: 10px 15px;
-        border-radius: 8px;
-        font-size: 20px;
-        cursor: pointer;
-        margin: 10px auto;
-      }
-
-      @media (max-width: 768px) {
-        .mobile-menu-toggle {
-          display: block;
-        }
-
-        nav ul {
-          display: none;
-          flex-direction: column;
-          width: 100%;
-          background: white;
-          border-radius: 10px;
-          padding: 10px;
-          margin-top: 10px;
-          box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        nav ul.show {
-          display: flex;
-        }
-
-        nav ul li {
-          width: 100%;
-        }
-
-        nav ul li a {
-          display: block;
-          text-align: center;
-          padding: 12px;
-          border-radius: 8px;
-          margin: 5px 0;
-        }
-      }
+      
       /* Better touch targets */
       .btn-whatsapp,
       .refresh-btn,
@@ -1362,6 +1318,166 @@
         font-weight: bold;
         z-index: 1;
       }
+/* Mobile Navigation Enhancements - FIXED */
+.mobile-menu-toggle {
+  display: none;
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 1002;
+  box-shadow: 0 4px 12px rgba(255, 123, 172, 0.3);
+  margin-left: auto; /* Push to the right */
+}
+
+.mobile-menu-toggle:hover {
+  background: var(--secondary);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 179, 71, 0.4);
+}
+
+.mobile-menu-toggle:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .mobile-menu-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; /* Position absolutely */
+    right: 20px; /* Align to right edge */
+    top: 20px; /* Align to top */
+  }
+
+  header {
+    flex-wrap: wrap;
+    padding: 20px;
+    position: relative; /* Needed for absolute positioning */
+    min-height: 100px; /* Ensure enough height */
+  }
+
+  /* Make logo container take full width */
+  .logo-container {
+    width: 100%;
+    padding-right: 60px; /* Leave space for hamburger */
+    margin-bottom: 10px;
+  }
+
+  /* Hide the header stats on mobile to save space */
+  .header-stats {
+    display: none;
+  }
+
+  /* Connection status on mobile */
+  .connection-status {
+    font-size: 12px;
+    padding: 4px 10px;
+  }
+
+  nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 20px;
+    right: 20px;
+    background: white;
+    border-radius: 15px;
+    margin-top: 15px;
+    padding: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    z-index: 1001;
+    animation: slideDown 0.3s ease;
+  }
+
+  /* Show when toggled */
+  nav.show {
+    display: block !important;
+  }
+
+  /* Reset desktop positioning */
+  nav ul {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  nav li {
+    width: 100%;
+  }
+
+  nav a {
+    padding: 15px 20px;
+    border-radius: 10px;
+    justify-content: flex-start;
+    font-size: 16px;
+    border: 1px solid #f0f0f0;
+    background: white;
+    color: var(--dark);
+  }
+
+  nav a:hover,
+  nav a:focus {
+    background-color: var(--primary);
+    color: white;
+    transform: translateX(5px);
+  }
+
+  nav a.active {
+    background-color: var(--primary);
+    color: white;
+    border-left: 4px solid var(--secondary);
+  }
+
+  nav a.active::after {
+    display: none;
+  }
+}
+
+/* Desktop specific - keep nav visible */
+@media (min-width: 769px) {
+  .mobile-menu-toggle {
+    display: none; /* Hide hamburger on desktop */
+  }
+  
+  nav {
+    display: flex !important; /* Ensure nav is visible on desktop */
+  }
+  
+  .header-stats {
+    display: flex; /* Show stats on desktop */
+  }
+}
+
+/* Desktop specific */
+@media (min-width: 769px) {
+  .mobile-menu-toggle {
+    display: none;
+  }
+  
+  header {
+    justify-content: space-between; /* Reset for desktop */
+  }
+  
+  .logo-container {
+    flex: 1; /* Take available space on desktop */
+  }
+}
+
+/* Add this animation */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
     </style>
   </head>
   <body>
@@ -1804,23 +1920,25 @@
           hideNavLoading();
         }
       }
-
-      // Mobile menu toggle
-      function toggleMobileMenu() {
-        const mobileNav = document.getElementById("mobileNav");
-        mobileNav.classList.toggle("show");
-
-        // Change icon
-        const menuIcon = document.querySelector(".mobile-menu-toggle i");
-        if (mobileNav.classList.contains("show")) {
-          menuIcon.className = "fas fa-times";
-          document.body.style.overflow = "hidden"; // Prevent scrolling when menu is open
-        } else {
-          menuIcon.className = "fas fa-bars";
-          document.body.style.overflow = ""; // Restore scrolling
-        }
-      }
-
+// Mobile menu toggle function
+function toggleMobileMenu() {
+  const mobileNav = document.getElementById("mobileNav");
+  const menuIcon = document.querySelector(".mobile-menu-toggle i");
+  
+  if (!mobileNav) return;
+  
+  // Toggle the show class
+  mobileNav.classList.toggle("show");
+  
+  // Change icon
+  if (mobileNav.classList.contains("show")) {
+    menuIcon.className = "fas fa-times";
+    document.body.style.overflow = "hidden"; // Prevent scrolling when menu is open
+  } else {
+    menuIcon.className = "fas fa-bars";
+    document.body.style.overflow = ""; // Restore scrolling
+  }
+}
       // Show navbar loading indicator
       function showNavLoading() {
         const loadingBar = document.createElement("div");

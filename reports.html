@@ -44,7 +44,7 @@
         margin: 0 auto;
       }
 
-      /* Header Styles */
+      /* Header Styles - UPDATED */
       header {
         background-color: white;
         border-radius: 20px;
@@ -55,12 +55,15 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: wrap;
+        position: relative;
       }
 
       .logo-container {
         display: flex;
         align-items: center;
         gap: 15px;
+        flex: 1;
+        min-width: 0;
       }
 
       .logo {
@@ -88,10 +91,21 @@
         opacity: 0.8;
       }
 
+      /* Navigation Styles - UPDATED */
+      nav {
+        position: relative;
+      }
+
       nav ul {
         display: flex;
         list-style: none;
-        gap: 25px;
+        gap: 15px;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav li {
+        position: relative;
       }
 
       nav a {
@@ -99,19 +113,291 @@
         color: var(--dark);
         font-weight: 600;
         font-size: 16px;
-        padding: 8px 15px;
+        padding: 12px 20px;
         border-radius: 50px;
         transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      nav a::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: left 0.5s ease;
+      }
+
+      nav a:hover::before {
+        left: 100%;
       }
 
       nav a:hover {
         background-color: var(--primary);
         color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(255, 123, 172, 0.3);
       }
 
       nav a.active {
-        background-color: var(--accent);
+        background-color: var(--primary);
         color: white;
+        box-shadow: 0 4px 12px rgba(255, 123, 172, 0.4);
+      }
+
+      nav a i {
+        font-size: 18px;
+        transition: transform 0.3s ease;
+      }
+
+      nav a:hover i {
+        transform: scale(1.2);
+      }
+
+      /* Active page indicator */
+      nav a.active::after {
+        content: "";
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 6px;
+        background-color: var(--secondary);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+
+      /* Mobile Navigation Enhancements */
+      .mobile-menu-toggle {
+        display: none;
+        background: var(--primary);
+        color: white;
+        border: none;
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 20px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        z-index: 1002;
+        box-shadow: 0 4px 12px rgba(255, 123, 172, 0.3);
+      }
+
+      .mobile-menu-toggle:hover {
+        background: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 18px rgba(255, 179, 71, 0.4);
+      }
+
+      .mobile-menu-toggle:active {
+        transform: translateY(0);
+      }
+
+      @media (max-width: 768px) {
+        .mobile-menu-toggle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: auto; /* Push to the right */
+        }
+
+        header {
+          flex-wrap: nowrap;
+          padding: 20px;
+        }
+
+        /* Make sure header is properly aligned */
+        .logo-container {
+          flex: 1;
+        }
+
+        nav {
+          display: none;
+          position: fixed;
+          top: 110px; /* Adjust based on header height */
+          left: 20px;
+          right: 20px;
+          background: white;
+          border-radius: 15px;
+          padding: 15px;
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+          z-index: 1001;
+          max-height: calc(100vh - 140px);
+          overflow-y: auto;
+        }
+
+        /* Show when toggled */
+        nav.show {
+          display: block !important;
+        }
+
+        /* Reset desktop positioning */
+        nav ul {
+          flex-direction: column;
+          gap: 8px;
+        }
+
+        nav li {
+          width: 100%;
+        }
+
+        nav a {
+          padding: 15px 20px;
+          border-radius: 10px;
+          justify-content: flex-start;
+          font-size: 16px;
+          border: 1px solid #f0f0f0;
+          background: white;
+          color: var(--dark);
+        }
+
+        nav a:hover,
+        nav a:focus {
+          background-color: var(--primary);
+          color: white;
+          transform: translateX(5px);
+        }
+
+        nav a.active {
+          background-color: var(--primary);
+          color: white;
+          border-left: 4px solid var(--secondary);
+        }
+
+        nav a.active::after {
+          display: none;
+        }
+      }
+
+      @keyframes slideDown {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Desktop specific enhancements */
+      @media (min-width: 769px) {
+        nav {
+          flex: 2;
+          display: flex;
+          justify-content: flex-end;
+        }
+
+        nav ul {
+          justify-content: flex-end;
+        }
+
+        /* Add subtle background animation for desktop */
+        nav a {
+          background: linear-gradient(
+            to right,
+            transparent 50%,
+            var(--primary) 50%
+          );
+          background-size: 200% 100%;
+          background-position: right bottom;
+          transition: all 0.4s ease;
+        }
+
+        nav a:hover {
+          background-position: left bottom;
+          color: white;
+        }
+      }
+
+      /* Floating animation for active menu item */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-5px);
+        }
+      }
+
+      nav a.active {
+        animation: float 3s ease-in-out infinite;
+      }
+
+      /* Better focus styles for accessibility */
+      nav a:focus,
+      .apply-btn:focus,
+      .export-btn:focus {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+      }
+
+      /* Reduce motion for users who prefer it */
+      @media (prefers-reduced-motion: reduce) {
+        * {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        nav a.active {
+          animation: none;
+        }
+      }
+
+      /* Navbar loading indicator */
+      .nav-loading {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          var(--primary),
+          var(--secondary),
+          var(--accent)
+        );
+        background-size: 200% 100%;
+        animation: loading 2s linear infinite;
+        display: none;
+      }
+
+      .nav-loading.active {
+        display: block;
+      }
+
+      @keyframes loading {
+        0% {
+          background-position: 200% 0;
+        }
+        100% {
+          background-position: -200% 0;
+        }
+      }
+
+      @keyframes pulse {
+        0% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+        100% {
+          opacity: 1;
+        }
       }
 
       /* Main Content */
@@ -601,6 +887,10 @@
 
       /* Responsive Design */
       @media (max-width: 768px) {
+        body {
+          padding: 10px;
+        }
+
         .date-inputs {
           flex-direction: column;
         }
@@ -618,24 +908,198 @@
           grid-template-columns: 1fr;
         }
 
-        header {
-          padding: 20px;
-          flex-direction: column;
-          gap: 20px;
+        .stats-container {
+          grid-template-columns: 1fr;
+          gap: 15px;
         }
 
-        nav ul {
-          flex-wrap: wrap;
+        .stat-card {
+          padding: 20px;
+        }
+
+        .stat-value {
+          font-size: 28px;
+        }
+
+        .chart-card,
+        .table-card,
+        .date-range-card,
+        .search-filters {
+          padding: 20px;
+        }
+
+        .date-range-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .date-presets {
+          width: 100%;
+          justify-content: flex-start;
+        }
+
+        .preset-btn {
+          padding: 6px 12px;
+          font-size: 14px;
+        }
+
+        .table-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .table-header h3 {
+          font-size: 18px;
+        }
+
+        th,
+        td {
+          padding: 12px 8px;
+          font-size: 14px;
+        }
+
+        .export-btn {
+          padding: 8px 12px;
+          font-size: 14px;
+          width: 100%;
           justify-content: center;
         }
-      }
-      /* Add to your existing CSS */
-      .chart-container {
-        position: relative;
-        height: 300px;
-        width: 100%;
+
+        .search-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 15px;
+        }
+
+        .search-box {
+          flex-direction: column;
+        }
+
+        .search-btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .filters-row {
+          flex-direction: column;
+        }
+
+        .filter-group {
+          width: 100%;
+        }
+
+        .footer-links {
+          flex-direction: column;
+          gap: 10px;
+        }
       }
 
+      /* Tablet Responsive */
+      @media (min-width: 577px) and (max-width: 768px) {
+        .charts-container,
+        .reports-tables {
+          grid-template-columns: 1fr;
+        }
+
+        .stats-container {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      /* Touch-friendly improvements */
+      .apply-btn,
+      .export-btn,
+      .search-btn,
+      .preset-btn,
+      .page-btn,
+      .filter-group select {
+        min-height: 44px;
+        touch-action: manipulation;
+      }
+
+      /* Prevent text zoom on mobile */
+      html {
+        -webkit-text-size-adjust: 100%;
+      }
+
+      /* Better scrolling on mobile */
+      .table-container {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+      }
+
+      /* Mobile-specific font sizes */
+      @media (max-width: 576px) {
+        h1 {
+          font-size: 24px;
+        }
+        h2 {
+          font-size: 20px;
+        }
+        h3 {
+          font-size: 16px;
+        }
+        p,
+        label,
+        .stat-badge {
+          font-size: 14px;
+        }
+
+        .logo-text h1 {
+          font-size: 24px;
+        }
+
+        .logo {
+          width: 50px;
+          height: 50px;
+          font-size: 24px;
+        }
+
+        .logo-text p {
+          font-size: 12px;
+        }
+      }
+
+      /* Database Status */
+      .db-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 5px 12px;
+        border-radius: 50px;
+        font-size: 14px;
+        font-weight: 600;
+        margin-top: 10px;
+      }
+
+      .db-status.connected {
+        background-color: rgba(76, 175, 80, 0.1);
+        color: var(--success);
+      }
+
+      .db-status.disconnected {
+        background-color: rgba(244, 67, 54, 0.1);
+        color: var(--danger);
+      }
+
+      .status-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .status-dot.connected {
+        background-color: var(--success);
+        animation: pulse 2s infinite;
+      }
+
+      .status-dot.disconnected {
+        background-color: var(--danger);
+      }
+
+      /* Chart specific styles */
       .chart-container canvas {
         position: absolute;
         top: 0;
@@ -655,6 +1119,47 @@
         text-align: center;
         pointer-events: none;
       }
+
+      /* Action buttons in table */
+      .view-btn,
+      .print-btn {
+        padding: 6px 12px;
+        background-color: var(--info);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        margin-right: 5px;
+      }
+
+      .print-btn {
+        background-color: var(--accent);
+      }
+
+      .view-btn:hover {
+        background-color: #1976d2;
+      }
+
+      .print-btn:hover {
+        background-color: #7b1fa2;
+      }
+
+      @media (max-width: 768px) {
+        .view-btn,
+        .print-btn {
+          padding: 8px;
+          font-size: 12px;
+          margin-bottom: 5px;
+          display: block;
+          width: 100%;
+          text-align: center;
+        }
+      }
+      /* Add this at the end of your existing CSS styles */
+.table-card:last-child {
+  display: none;
+}
     </style>
   </head>
   <body>
@@ -669,27 +1174,41 @@
             <p>Reports & Analytics Dashboard</p>
             <div id="dbStatus" class="db-status disconnected">
               <div class="status-dot disconnected"></div>
-              <span>Supabase: Disconnected</span>
+              <span>Database: Disconnected</span>
             </div>
           </div>
         </div>
-        <nav>
+
+        <!-- Mobile Menu Toggle -->
+        <button class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+          <i class="fas fa-bars"></i>
+        </button>
+
+        <nav id="mobileNav">
           <ul>
             <li>
-              <a href="billing.html"><i class="fas fa-receipt"></i> Billing</a>
+              <a href="billing.html">
+                <i class="fas fa-receipt"></i>
+                <span>Billing</span>
+              </a>
             </li>
             <li>
-              <a href="reports.html" class="active"
-                ><i class="fas fa-chart-bar"></i> Reports</a
-              >
+              <a href="inventory.html">
+                <i class="fas fa-boxes"></i>
+                <span>Inventory</span>
+              </a>
             </li>
             <li>
-              <a href="inventory.html"
-                ><i class="fas fa-boxes"></i> Inventory</a
-              >
+              <a href="reports.html" class="active">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+              </a>
             </li>
             <li>
-              <a href="promotions.html"><i class="fas fa-bullhorn"></i> Promotions</a>
+              <a href="promotions.html">
+                <i class="fas fa-bullhorn"></i>
+                <span>Promotions</span>
+              </a>
             </li>
           </ul>
         </nav>
@@ -1049,1369 +1568,1514 @@
     </div>
 
     <script>
-      // Supabase Configuration
-      let supabase = null;
-      let isConnected = false;
-      let currentPage = 1;
-      let pageSize = 10;
-      let totalOrders = 0;
-      let currentFilters = {};
-      let currentDateRange = {
-        startDate: null,
-        endDate: null,
-        preset: "7", // Default to last 7 days
-      };
+      (function () {
+        function toggleMobileMenu() {
+          const mobileNav = document.getElementById("mobileNav");
+          const menuIcon = document.querySelector(".mobile-menu-toggle i");
 
-      // Default configuration (same as main page)
-      const DEFAULT_CONFIG = {
-        supabaseUrl: "https://vdbwzmutxjonnpfwfpbn.supabase.co",
-        supabaseKey:
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkYnd6bXV0eGpvbm5wZndmcGJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTcwMjQsImV4cCI6MjA4MDU3MzAyNH0.n0ERxgLgYU1Tvw5QONihv1C3A7o7rcxrcn5MjZ5UnEM",
-      };
+          if (!mobileNav) return; // Safety check
 
-      // Load configuration from localStorage
-      let config =
-        JSON.parse(localStorage.getItem("cakeBlissConfig")) || DEFAULT_CONFIG;
+          // Toggle the show class
+          mobileNav.classList.toggle("show");
 
-      // Chart instances
-      let salesChart = null;
-      let cakesChart = null;
-
-      // Helper function to parse items from JSON
-      function parseItemsFromJSON(itemsJSON) {
-        try {
-          if (!itemsJSON) return [];
-          const items = JSON.parse(itemsJSON);
-          if (Array.isArray(items)) {
-            return items;
-          }
-          // If it's a single item string (legacy format), convert to array
-          return [
-            { name: itemsJSON, quantity: 1, unit_price: 0, total_price: 0 },
-          ];
-        } catch (e) {
-          console.error("Error parsing items JSON:", e, "Raw data:", itemsJSON);
-          // Return as single item if not JSON
-          return [
-            {
-              name: itemsJSON || "Unknown Item",
-              quantity: 1,
-              unit_price: 0,
-              total_price: 0,
-            },
-          ];
-        }
-      }
-
-      // Get all products from items in bills
-      function getAllProductsFromBills(bills) {
-        const allProducts = [];
-        bills.forEach((bill) => {
-          const items = parseItemsFromJSON(bill.cake_name);
-          items.forEach((item) => {
-            allProducts.push({
-              name: item.name,
-              code: item.code || "",
-              quantity: item.quantity || 1,
-              unit_price: item.unit_price || 0,
-              total_price: item.total_price || 0,
-            });
-          });
-        });
-        return allProducts;
-      }
-
-      // Initialize Supabase if credentials exist
-      function initSupabase() {
-        if (config.supabaseUrl && config.supabaseKey) {
-          try {
-            supabase = window.supabase.createClient(
-              config.supabaseUrl,
-              config.supabaseKey
-            );
-            updateDbStatus(true);
-            loadReportsData();
-            showNotification("Connected to Supabase database!", "success");
-            return true;
-          } catch (error) {
-            console.error("Error initializing Supabase:", error);
-            updateDbStatus(false);
-            showNotification("Failed to connect to Supabase", "error");
-            return false;
-          }
-        } else {
-          updateDbStatus(false);
-          return false;
-        }
-      }
-
-      // Update database connection status
-      function updateDbStatus(connected) {
-        isConnected = connected;
-        const dbStatus = document.getElementById("dbStatus");
-        const statusDot = dbStatus.querySelector(".status-dot");
-        const statusText = dbStatus.querySelector("span");
-
-        if (connected) {
-          dbStatus.className = "db-status connected";
-          statusDot.className = "status-dot connected";
-          statusText.textContent = "Supabase: Connected";
-        } else {
-          dbStatus.className = "db-status disconnected";
-          statusDot.className = "status-dot disconnected";
-          statusText.textContent = "Supabase: Disconnected";
-        }
-      }
-
-      // Show notification
-      function showNotification(message, type = "success") {
-        // Create notification element if it doesn't exist
-        let notification = document.getElementById("notification");
-        if (!notification) {
-          notification = document.createElement("div");
-          notification.id = "notification";
-          notification.className = "notification";
-          notification.innerHTML = `
-        <i class="fas fa-check-circle"></i>
-        <span>${message}</span>
-      `;
-          document.body.appendChild(notification);
-        }
-
-        const icon = notification.querySelector("i");
-        const text = notification.querySelector("span");
-
-        notification.className = `notification ${type}`;
-        text.textContent = message;
-
-        // Set icon based on type
-        if (type === "success") {
-          icon.className = "fas fa-check-circle";
-        } else if (type === "error") {
-          icon.className = "fas fa-exclamation-circle";
-        } else {
-          icon.className = "fas fa-info-circle";
-        }
-
-        notification.classList.add("show");
-
-        // Auto hide after 5 seconds
-        setTimeout(() => {
-          notification.classList.remove("show");
-        }, 5000);
-      }
-
-      // Calculate date range based on preset
-      function calculateDateRange(days) {
-        const endDate = new Date();
-        const startDate = new Date();
-
-        if (days > 0) {
-          startDate.setDate(startDate.getDate() - days);
-        } else {
-          // All time - set start date to a very old date
-          startDate.setFullYear(2000, 0, 1);
-        }
-
-        return {
-          startDate: startDate,
-          endDate: endDate,
-        };
-      }
-
-      // Format date for display
-      function formatDate(date) {
-        return date.toISOString().split("T")[0];
-      }
-
-      // Format currency
-      function formatCurrency(amount) {
-        return "₹" + amount.toFixed(2);
-      }
-
-      // Set date range inputs
-      // Set date range inputs - UPDATED
-      function setDateRange(days) {
-        const range = calculateDateRange(days);
-
-        // Format dates for input (YYYY-MM-DD)
-        const startDateStr = formatDate(range.startDate);
-        const endDateStr = formatDate(range.endDate);
-
-        document.getElementById("startDate").value = startDateStr;
-        document.getElementById("endDate").value = endDateStr;
-
-        currentDateRange = {
-          startDate: range.startDate,
-          endDate: range.endDate,
-          preset: days.toString(),
-        };
-
-        // Update active preset button
-        document.querySelectorAll(".preset-btn").forEach((btn) => {
-          btn.classList.remove("active");
-          if (btn.dataset.days === days.toString()) {
-            btn.classList.add("active");
-          }
-        });
-
-        // Refresh data
-        loadReportsData();
-      }
-
-      // Debug function to check data
-      async function debugSalesData() {
-        try {
-          const { data, error } = await supabase
-            .from("cake_bills")
-            .select("*")
-            .order("created_at", { ascending: true })
-            .limit(5);
-
-          console.log("Sample sales data:", data);
-          if (data && data.length > 0) {
-            console.log("First item created_at:", data[0].created_at);
-            console.log("First item total_price:", data[0].total_price);
-          }
-        } catch (err) {
-          console.error("Debug error:", err);
-        }
-      }
-
-      // Load all reports data
-      async function loadReportsData() {
-        if (!isConnected || !supabase) {
-          showNotification("Please connect to database first", "error");
-          return;
-        }
-
-        try {
-          // Show loading states
-          showLoadingStates();
-
-          // Load all data in parallel
-          await Promise.all([
-            loadSummaryStats(),
-            loadSalesChartData(),
-            loadProductsChartData(), // Changed from loadCakesChartData
-            loadTopProducts(), // Changed from loadTopCakes
-            loadRecentOrders(),
-            loadAllOrders(),
-          ]);
-        } catch (error) {
-          console.error("Error loading reports data:", error);
-          showNotification("Failed to load reports data", "error");
-        }
-      }
-
-      // Show loading states for all sections
-      function showLoadingStates() {
-        document.getElementById("topCakesLoading").style.display = "block";
-        document.getElementById("topCakesTable").style.display = "none";
-        document.getElementById("topCakesNoData").style.display = "none";
-
-        document.getElementById("recentOrdersLoading").style.display = "block";
-        document.getElementById("recentOrdersTable").style.display = "none";
-        document.getElementById("recentOrdersNoData").style.display = "none";
-
-        document.getElementById("allOrdersLoading").style.display = "block";
-        document.getElementById("allOrdersTable").style.display = "none";
-        document.getElementById("allOrdersNoData").style.display = "none";
-        document.getElementById("pagination").style.display = "none";
-      }
-
-      // Load summary statistics
-      async function loadSummaryStats() {
-        try {
-          // Build date filter
-          let query = supabase
-            .from("cake_bills")
-            .select("total_price, purchaser_phone, created_at, cake_name");
-
-          if (currentDateRange.startDate && currentDateRange.endDate) {
-            query = query
-              .gte("created_at", currentDateRange.startDate.toISOString())
-              .lte("created_at", currentDateRange.endDate.toISOString());
-          }
-
-          const { data, error } = await query;
-
-          if (error) throw error;
-
-          if (data && data.length > 0) {
-            // Calculate statistics
-            const totalRevenue = data.reduce(
-              (sum, bill) => sum + parseFloat(bill.total_price || 0),
-              0
-            );
-            const totalOrders = data.length;
-            const averageOrder =
-              totalOrders > 0 ? totalRevenue / totalOrders : 0;
-
-            // Get unique customers
-            const uniquePhones = [
-              ...new Set(data.map((bill) => bill.purchaser_phone)),
-            ];
-            const totalCustomers = uniquePhones.length;
-
-            // Calculate total items sold
-            let totalItemsSold = 0;
-            data.forEach((bill) => {
-              const items = parseItemsFromJSON(bill.cake_name);
-              totalItemsSold += items.reduce(
-                (sum, item) => sum + (item.quantity || 1),
-                0
-              );
-            });
-
-            // Update UI - Update labels to reflect multiple items
-            document.getElementById("totalOrders").textContent = totalOrders;
-            document.getElementById("totalCustomers").textContent =
-              totalCustomers;
-            document.getElementById(
-              "totalRevenue"
-            ).textContent = `₹${totalRevenue.toFixed(2)}`;
-            document.getElementById(
-              "averageOrder"
-            ).textContent = `₹${averageOrder.toFixed(2)}`;
-            // Update labels
-            document.querySelector(
-              ".stat-card.orders .stat-label"
-            ).textContent = "Total Bills";
-            document.querySelector(
-              ".stat-card.average .stat-label"
-            ).textContent = "Average Bill Value";
-
-            // TODO: Calculate percentage changes vs previous period
-            // For now, set random positive changes
-            document.getElementById("revenueChange").textContent = "+12.5%";
-            document.getElementById("ordersChange").textContent = "+8.3%";
-            document.getElementById("averageChange").textContent = "+3.9%";
-            document.getElementById("customersChange").textContent = "+15.2%";
+          // Change icon
+          if (mobileNav.classList.contains("show")) {
+            menuIcon.className = "fas fa-times";
+            document.body.style.overflow = "hidden"; // Prevent scrolling
           } else {
-            // No data
-            document.getElementById("totalRevenue").textContent = "₹0.00";
-            document.getElementById("totalOrders").textContent = "0";
-            document.getElementById("averageOrder").textContent = "₹0.00";
-            document.getElementById("totalCustomers").textContent = "0";
-
-            document.getElementById("revenueChange").textContent = "0%";
-            document.getElementById("ordersChange").textContent = "0%";
-            document.getElementById("averageChange").textContent = "0%";
-            document.getElementById("customersChange").textContent = "0%";
+            menuIcon.className = "fas fa-bars";
+            document.body.style.overflow = ""; // Restore scrolling
           }
-        } catch (error) {
-          console.error("Error loading summary stats:", error);
-          showNotification("Failed to load summary statistics", "error");
         }
-      }
 
-      // Load sales chart data - FIXED VERSION
-      async function loadSalesChartData() {
-        try {
-          // Build query for daily sales
-          let query = supabase
-            .from("cake_bills")
-            .select("total_price, created_at")
-            .order("created_at", { ascending: true });
+        // Close mobile menu when clicking outside
+        document.addEventListener("click", function (event) {
+          const mobileNav = document.getElementById("mobileNav");
+          const menuToggle = document.querySelector(".mobile-menu-toggle");
 
-          if (currentDateRange.startDate && currentDateRange.endDate) {
-            query = query
-              .gte("created_at", currentDateRange.startDate.toISOString())
-              .lte("created_at", currentDateRange.endDate.toISOString());
+          if (
+            mobileNav &&
+            menuToggle &&
+            !mobileNav.contains(event.target) &&
+            !menuToggle.contains(event.target)
+          ) {
+            mobileNav.classList.remove("show");
+            const menuIcon = document.querySelector(".mobile-menu-toggle i");
+            menuIcon.className = "fas fa-bars";
+            document.body.style.overflow = "";
           }
+        });
 
-          const { data, error } = await query;
-
-          if (error) throw error;
-
-          if (data && data.length > 0) {
-            // Group by date using YYYY-MM-DD format for proper sorting
-            const salesByDate = {};
-            data.forEach((bill) => {
-              const date = new Date(bill.created_at);
-              const dateKey = date.toISOString().split("T")[0]; // YYYY-MM-DD format
-              const amount = parseFloat(bill.total_price || 0);
-
-              if (!salesByDate[dateKey]) {
-                salesByDate[dateKey] = 0;
+        // Close mobile menu when clicking on a link
+        document.addEventListener("click", function (event) {
+          if (window.innerWidth <= 768 && event.target.closest("nav a")) {
+            setTimeout(() => {
+              const mobileNav = document.getElementById("mobileNav");
+              const menuIcon = document.querySelector(".mobile-menu-toggle i");
+              if (mobileNav && mobileNav.classList.contains("show")) {
+                mobileNav.classList.remove("show");
+                menuIcon.className = "fas fa-bars";
+                document.body.style.overflow = "";
               }
-              salesByDate[dateKey] += amount;
-            });
+            }, 300); // Small delay for smooth transition
+          }
+        });
 
-            // Sort dates chronologically
-            const sortedDates = Object.keys(salesByDate).sort();
+        // Close menu on escape key
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") {
+            const mobileNav = document.getElementById("mobileNav");
+            const menuIcon = document.querySelector(".mobile-menu-toggle i");
+            if (mobileNav && mobileNav.classList.contains("show")) {
+              mobileNav.classList.remove("show");
+              menuIcon.className = "fas fa-bars";
+              document.body.style.overflow = "";
+            }
+          }
+        });
 
-            // Format dates for display (DD/MM/YYYY or similar)
-            const displayDates = sortedDates.map((dateStr) => {
-              const date = new Date(dateStr);
-              return date.toLocaleDateString("en-IN", {
-                day: "2-digit",
-                month: "short",
+        // Handle window resize
+        window.addEventListener("resize", function () {
+          if (window.innerWidth > 768) {
+            const mobileNav = document.getElementById("mobileNav");
+            const menuIcon = document.querySelector(".mobile-menu-toggle i");
+            if (mobileNav && mobileNav.classList.contains("show")) {
+              mobileNav.classList.remove("show");
+              menuIcon.className = "fas fa-bars";
+              document.body.style.overflow = "";
+            }
+          }
+        });
+
+        // Rest of your existing JavaScript code...
+        // Supabase Configuration
+        let supabase = null;
+        let isConnected = false;
+        let currentPage = 1;
+        let pageSize = 10;
+        let totalOrders = 0;
+        let currentFilters = {};
+        let currentDateRange = {
+          startDate: null,
+          endDate: null,
+          preset: "7", // Default to last 7 days
+        };
+
+        // Default configuration (same as main page)
+        const DEFAULT_CONFIG = {
+          supabaseUrl: "https://vdbwzmutxjonnpfwfpbn.supabase.co",
+          supabaseKey:
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZkYnd6bXV0eGpvbm5wZndmcGJuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ5OTcwMjQsImV4cCI6MjA4MDU3MzAyNH0.n0ERxgLgYU1Tvw5QONihv1C3A7o7rcxrcn5MjZ5UnEM",
+        };
+
+        // Load configuration from localStorage
+        let config =
+          JSON.parse(localStorage.getItem("cakeBlissConfig")) || DEFAULT_CONFIG;
+
+        // Chart instances
+        let salesChart = null;
+        let cakesChart = null;
+
+        // Helper function to parse items from JSON
+        function parseItemsFromJSON(itemsJSON) {
+          try {
+            if (!itemsJSON) return [];
+            const items = JSON.parse(itemsJSON);
+            if (Array.isArray(items)) {
+              return items;
+            }
+            // If it's a single item string (legacy format), convert to array
+            return [
+              { name: itemsJSON, quantity: 1, unit_price: 0, total_price: 0 },
+            ];
+          } catch (e) {
+            console.error(
+              "Error parsing items JSON:",
+              e,
+              "Raw data:",
+              itemsJSON
+            );
+            // Return as single item if not JSON
+            return [
+              {
+                name: itemsJSON || "Unknown Item",
+                quantity: 1,
+                unit_price: 0,
+                total_price: 0,
+              },
+            ];
+          }
+        }
+
+        // Get all products from items in bills
+        function getAllProductsFromBills(bills) {
+          const allProducts = [];
+          bills.forEach((bill) => {
+            const items = parseItemsFromJSON(bill.cake_name);
+            items.forEach((item) => {
+              allProducts.push({
+                name: item.name,
+                code: item.code || "",
+                quantity: item.quantity || 1,
+                unit_price: item.unit_price || 0,
+                total_price: item.total_price || 0,
               });
             });
+          });
+          return allProducts;
+        }
 
-            const amounts = sortedDates.map((date) => salesByDate[date]);
+        // Initialize Supabase if credentials exist
+        function initSupabase() {
+          if (config.supabaseUrl && config.supabaseKey) {
+            try {
+              supabase = window.supabase.createClient(
+                config.supabaseUrl,
+                config.supabaseKey
+              );
+              updateDbStatus(true);
+              loadReportsData();
+              showNotification("Connected to Supabase database!", "success");
+              return true;
+            } catch (error) {
+              console.error("Error initializing Supabase:", error);
+              updateDbStatus(false);
+              showNotification("Failed to connect to Supabase", "error");
+              return false;
+            }
+          } else {
+            updateDbStatus(false);
+            return false;
+          }
+        }
 
-            // Create or update chart
-            const ctx = document.getElementById("salesChart").getContext("2d");
+        // Update database connection status
+        function updateDbStatus(connected) {
+          isConnected = connected;
+          const dbStatus = document.getElementById("dbStatus");
+          const statusDot = dbStatus.querySelector(".status-dot");
+          const statusText = dbStatus.querySelector("span");
 
-            // Destroy existing chart if it exists
-            if (salesChart) {
-              salesChart.destroy();
+          if (connected) {
+            dbStatus.className = "db-status connected";
+            statusDot.className = "status-dot connected";
+            statusText.textContent = "Supabase: Connected";
+          } else {
+            dbStatus.className = "db-status disconnected";
+            statusDot.className = "status-dot disconnected";
+            statusText.textContent = "Supabase: Disconnected";
+          }
+        }
+
+        // Show notification
+        function showNotification(message, type = "success") {
+          // Create notification element if it doesn't exist
+          let notification = document.getElementById("notification");
+          if (!notification) {
+            notification = document.createElement("div");
+            notification.id = "notification";
+            notification.className = "notification";
+            notification.innerHTML = `
+            <i class="fas fa-check-circle"></i>
+            <span>${message}</span>
+          `;
+            document.body.appendChild(notification);
+          }
+
+          const icon = notification.querySelector("i");
+          const text = notification.querySelector("span");
+
+          notification.className = `notification ${type}`;
+          text.textContent = message;
+
+          // Set icon based on type
+          if (type === "success") {
+            icon.className = "fas fa-check-circle";
+          } else if (type === "error") {
+            icon.className = "fas fa-exclamation-circle";
+          } else {
+            icon.className = "fas fa-info-circle";
+          }
+
+          notification.classList.add("show");
+
+          // Auto hide after 5 seconds
+          setTimeout(() => {
+            notification.classList.remove("show");
+          }, 5000);
+        }
+
+        // Calculate date range based on preset
+        function calculateDateRange(days) {
+          const endDate = new Date();
+          const startDate = new Date();
+
+          if (days > 0) {
+            startDate.setDate(startDate.getDate() - days);
+          } else {
+            // All time - set start date to a very old date
+            startDate.setFullYear(2000, 0, 1);
+          }
+
+          return {
+            startDate: startDate,
+            endDate: endDate,
+          };
+        }
+
+        // Format date for display
+        function formatDate(date) {
+          return date.toISOString().split("T")[0];
+        }
+
+        // Format currency
+        function formatCurrency(amount) {
+          return "₹" + amount.toFixed(2);
+        }
+
+        // Set date range inputs - UPDATED
+        function setDateRange(days) {
+          const range = calculateDateRange(days);
+
+          // Format dates for input (YYYY-MM-DD)
+          const startDateStr = formatDate(range.startDate);
+          const endDateStr = formatDate(range.endDate);
+
+          document.getElementById("startDate").value = startDateStr;
+          document.getElementById("endDate").value = endDateStr;
+
+          currentDateRange = {
+            startDate: range.startDate,
+            endDate: range.endDate,
+            preset: days.toString(),
+          };
+
+          // Update active preset button
+          document.querySelectorAll(".preset-btn").forEach((btn) => {
+            btn.classList.remove("active");
+            if (btn.dataset.days === days.toString()) {
+              btn.classList.add("active");
+            }
+          });
+
+          // Refresh data
+          loadReportsData();
+        }
+
+        // Load all reports data
+        async function loadReportsData() {
+          if (!isConnected || !supabase) {
+            showNotification("Please connect to database first", "error");
+            return;
+          }
+
+          try {
+            // Show loading states
+            showLoadingStates();
+
+            // Load all data in parallel
+            await Promise.all([
+              loadSummaryStats(),
+              loadSalesChartData(),
+              loadProductsChartData(), // Changed from loadCakesChartData
+              loadTopProducts(), // Changed from loadTopCakes
+              loadRecentOrders(),
+              loadAllOrders(),
+            ]);
+          } catch (error) {
+            console.error("Error loading reports data:", error);
+            showNotification("Failed to load reports data", "error");
+          }
+        }
+
+        // Show loading states for all sections
+        function showLoadingStates() {
+          document.getElementById("topCakesLoading").style.display = "block";
+          document.getElementById("topCakesTable").style.display = "none";
+          document.getElementById("topCakesNoData").style.display = "none";
+
+          document.getElementById("recentOrdersLoading").style.display =
+            "block";
+          document.getElementById("recentOrdersTable").style.display = "none";
+          document.getElementById("recentOrdersNoData").style.display = "none";
+
+          document.getElementById("allOrdersLoading").style.display = "block";
+          document.getElementById("allOrdersTable").style.display = "none";
+          document.getElementById("allOrdersNoData").style.display = "none";
+          document.getElementById("pagination").style.display = "none";
+        }
+
+        // Load summary statistics
+        async function loadSummaryStats() {
+          try {
+            // Build date filter
+            let query = supabase
+              .from("cake_bills")
+              .select("total_price, purchaser_phone, created_at, cake_name");
+
+            if (currentDateRange.startDate && currentDateRange.endDate) {
+              query = query
+                .gte("created_at", currentDateRange.startDate.toISOString())
+                .lte("created_at", currentDateRange.endDate.toISOString());
             }
 
-            salesChart = new Chart(ctx, {
-              type: "line",
-              data: {
-                labels: displayDates,
-                datasets: [
-                  {
-                    label: "Daily Revenue",
-                    data: amounts,
-                    borderColor: "#ff7bac",
-                    backgroundColor: "rgba(255, 123, 172, 0.1)",
-                    borderWidth: 2,
-                    fill: true,
-                    tension: 0.4,
+            const { data, error } = await query;
+
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+              // Calculate statistics
+              const totalRevenue = data.reduce(
+                (sum, bill) => sum + parseFloat(bill.total_price || 0),
+                0
+              );
+              const totalOrders = data.length;
+              const averageOrder =
+                totalOrders > 0 ? totalRevenue / totalOrders : 0;
+
+              // Get unique customers
+              const uniquePhones = [
+                ...new Set(data.map((bill) => bill.purchaser_phone)),
+              ];
+              const totalCustomers = uniquePhones.length;
+
+              // Calculate total items sold
+              let totalItemsSold = 0;
+              data.forEach((bill) => {
+                const items = parseItemsFromJSON(bill.cake_name);
+                totalItemsSold += items.reduce(
+                  (sum, item) => sum + (item.quantity || 1),
+                  0
+                );
+              });
+
+              // Update UI - Update labels to reflect multiple items
+              document.getElementById("totalOrders").textContent = totalOrders;
+              document.getElementById("totalCustomers").textContent =
+                totalCustomers;
+              document.getElementById(
+                "totalRevenue"
+              ).textContent = `₹${totalRevenue.toFixed(2)}`;
+              document.getElementById(
+                "averageOrder"
+              ).textContent = `₹${averageOrder.toFixed(2)}`;
+              // Update labels
+              document.querySelector(
+                ".stat-card.orders .stat-label"
+              ).textContent = "Total Bills";
+              document.querySelector(
+                ".stat-card.average .stat-label"
+              ).textContent = "Average Bill Value";
+
+              // TODO: Calculate percentage changes vs previous period
+              // For now, set random positive changes
+              document.getElementById("revenueChange").textContent = "+12.5%";
+              document.getElementById("ordersChange").textContent = "+8.3%";
+              document.getElementById("averageChange").textContent = "+3.9%";
+              document.getElementById("customersChange").textContent = "+15.2%";
+            } else {
+              // No data
+              document.getElementById("totalRevenue").textContent = "₹0.00";
+              document.getElementById("totalOrders").textContent = "0";
+              document.getElementById("averageOrder").textContent = "₹0.00";
+              document.getElementById("totalCustomers").textContent = "0";
+
+              document.getElementById("revenueChange").textContent = "0%";
+              document.getElementById("ordersChange").textContent = "0%";
+              document.getElementById("averageChange").textContent = "0%";
+              document.getElementById("customersChange").textContent = "0%";
+            }
+          } catch (error) {
+            console.error("Error loading summary stats:", error);
+            showNotification("Failed to load summary statistics", "error");
+          }
+        }
+
+        // Load sales chart data - FIXED VERSION
+        async function loadSalesChartData() {
+          try {
+            // Build query for daily sales
+            let query = supabase
+              .from("cake_bills")
+              .select("total_price, created_at")
+              .order("created_at", { ascending: true });
+
+            if (currentDateRange.startDate && currentDateRange.endDate) {
+              query = query
+                .gte("created_at", currentDateRange.startDate.toISOString())
+                .lte("created_at", currentDateRange.endDate.toISOString());
+            }
+
+            const { data, error } = await query;
+
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+              // Group by date using YYYY-MM-DD format for proper sorting
+              const salesByDate = {};
+              data.forEach((bill) => {
+                const date = new Date(bill.created_at);
+                const dateKey = date.toISOString().split("T")[0]; // YYYY-MM-DD format
+                const amount = parseFloat(bill.total_price || 0);
+
+                if (!salesByDate[dateKey]) {
+                  salesByDate[dateKey] = 0;
+                }
+                salesByDate[dateKey] += amount;
+              });
+
+              // Sort dates chronologically
+              const sortedDates = Object.keys(salesByDate).sort();
+
+              // Format dates for display (DD/MM/YYYY or similar)
+              const displayDates = sortedDates.map((dateStr) => {
+                const date = new Date(dateStr);
+                return date.toLocaleDateString("en-IN", {
+                  day: "2-digit",
+                  month: "short",
+                });
+              });
+
+              const amounts = sortedDates.map((date) => salesByDate[date]);
+
+              // Create or update chart
+              const ctx = document
+                .getElementById("salesChart")
+                .getContext("2d");
+
+              // Destroy existing chart if it exists
+              if (salesChart) {
+                salesChart.destroy();
+              }
+
+              salesChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                  labels: displayDates,
+                  datasets: [
+                    {
+                      label: "Daily Revenue",
+                      data: amounts,
+                      borderColor: "#ff7bac",
+                      backgroundColor: "rgba(255, 123, 172, 0.1)",
+                      borderWidth: 2,
+                      fill: true,
+                      tension: 0.4,
+                    },
+                  ],
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      display: true,
+                      position: "top",
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          return `₹${context.raw.toFixed(2)}`;
+                        },
+                      },
+                    },
                   },
-                ],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: true,
-                    position: "top",
-                  },
-                  tooltip: {
-                    callbacks: {
-                      label: function (context) {
-                        return `₹${context.raw.toFixed(2)}`;
+                  scales: {
+                    x: {
+                      grid: {
+                        display: false,
+                      },
+                    },
+                    y: {
+                      beginAtZero: true,
+                      ticks: {
+                        callback: function (value) {
+                          return "₹" + value.toLocaleString("en-IN");
+                        },
                       },
                     },
                   },
                 },
-                scales: {
-                  x: {
-                    grid: {
+              });
+            } else {
+              // Create empty chart with message
+              const ctx = document
+                .getElementById("salesChart")
+                .getContext("2d");
+              if (salesChart) {
+                salesChart.destroy();
+              }
+
+              // Create a "no data" chart
+              salesChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                  labels: ["No Data"],
+                  datasets: [
+                    {
+                      label: "Daily Revenue",
+                      data: [0],
+                      borderColor: "#ddd",
+                      backgroundColor: "rgba(221, 221, 221, 0.1)",
+                      borderWidth: 2,
+                      fill: true,
+                    },
+                  ],
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      display: true,
+                      position: "top",
+                    },
+                    tooltip: {
+                      enabled: false,
+                    },
+                  },
+                  scales: {
+                    x: {
+                      display: false,
+                    },
+                    y: {
                       display: false,
                     },
                   },
-                  y: {
-                    beginAtZero: true,
-                    ticks: {
-                      callback: function (value) {
-                        return "₹" + value.toLocaleString("en-IN");
-                      },
-                    },
-                  },
                 },
-              },
-            });
-          } else {
-            // Create empty chart with message
+              });
+
+              // Add text to indicate no data
+              ctx.canvas.parentNode.style.position = "relative";
+              const noDataText = document.createElement("div");
+              noDataText.style.position = "absolute";
+              noDataText.style.top = "50%";
+              noDataText.style.left = "50%";
+              noDataText.style.transform = "translate(-50%, -50%)";
+              noDataText.style.color = "#999";
+              noDataText.style.fontSize = "16px";
+              noDataText.style.fontWeight = "600";
+              noDataText.textContent = "No sales data available";
+              ctx.canvas.parentNode.appendChild(noDataText);
+            }
+          } catch (error) {
+            console.error("Error loading sales chart data:", error);
+            showNotification("Failed to load sales chart data", "error");
+
+            // Create error chart
             const ctx = document.getElementById("salesChart").getContext("2d");
             if (salesChart) {
               salesChart.destroy();
             }
 
-            // Create a "no data" chart
             salesChart = new Chart(ctx, {
               type: "line",
               data: {
-                labels: ["No Data"],
+                labels: ["Error"],
                 datasets: [
                   {
-                    label: "Daily Revenue",
+                    label: "Error Loading Data",
                     data: [0],
-                    borderColor: "#ddd",
-                    backgroundColor: "rgba(221, 221, 221, 0.1)",
+                    borderColor: "#ff0000",
+                    backgroundColor: "rgba(255, 0, 0, 0.1)",
                     borderWidth: 2,
-                    fill: true,
                   },
                 ],
               },
               options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: true,
-                    position: "top",
-                  },
-                  tooltip: {
-                    enabled: false,
-                  },
-                },
-                scales: {
-                  x: {
-                    display: false,
-                  },
-                  y: {
-                    display: false,
-                  },
-                },
               },
             });
-
-            // Add text to indicate no data
-            ctx.canvas.parentNode.style.position = "relative";
-            const noDataText = document.createElement("div");
-            noDataText.style.position = "absolute";
-            noDataText.style.top = "50%";
-            noDataText.style.left = "50%";
-            noDataText.style.transform = "translate(-50%, -50%)";
-            noDataText.style.color = "#999";
-            noDataText.style.fontSize = "16px";
-            noDataText.style.fontWeight = "600";
-            noDataText.textContent = "No sales data available";
-            ctx.canvas.parentNode.appendChild(noDataText);
           }
-        } catch (error) {
-          console.error("Error loading sales chart data:", error);
-          showNotification("Failed to load sales chart data", "error");
-
-          // Create error chart
-          const ctx = document.getElementById("salesChart").getContext("2d");
-          if (salesChart) {
-            salesChart.destroy();
-          }
-
-          salesChart = new Chart(ctx, {
-            type: "line",
-            data: {
-              labels: ["Error"],
-              datasets: [
-                {
-                  label: "Error Loading Data",
-                  data: [0],
-                  borderColor: "#ff0000",
-                  backgroundColor: "rgba(255, 0, 0, 0.1)",
-                  borderWidth: 2,
-                },
-              ],
-            },
-            options: {
-              responsive: true,
-              maintainAspectRatio: false,
-            },
-          });
         }
-      }
 
-      // Load products chart data (REPLACED loadCakesChartData)
-      async function loadProductsChartData() {
-        try {
-          // Build query for all bills
-          let query = supabase
-            .from("cake_bills")
-            .select("cake_name, total_price, created_at");
+        // Load products chart data (REPLACED loadCakesChartData)
+        async function loadProductsChartData() {
+          try {
+            // Build query for all bills
+            let query = supabase
+              .from("cake_bills")
+              .select("cake_name, total_price, created_at");
 
-          if (currentDateRange.startDate && currentDateRange.endDate) {
-            query = query
-              .gte("created_at", currentDateRange.startDate.toISOString())
-              .lte("created_at", currentDateRange.endDate.toISOString());
-          }
-
-          const { data, error } = await query;
-
-          if (error) throw error;
-
-          if (data && data.length > 0) {
-            // Extract all products from bills
-            const allProducts = getAllProductsFromBills(data);
-
-            // Group by product name
-            const productsData = {};
-            allProducts.forEach((product) => {
-              const productName = product.name || "Unknown Product";
-              const quantity = product.quantity || 1;
-
-              if (!productsData[productName]) {
-                productsData[productName] = {
-                  count: 0,
-                  totalQuantity: 0,
-                  totalRevenue: 0,
-                };
-              }
-              productsData[productName].count++;
-              productsData[productName].totalQuantity += quantity;
-              productsData[productName].totalRevenue +=
-                product.total_price || product.unit_price * quantity;
-            });
-
-            // Prepare chart data - show top 10 products by quantity
-            const sortedProducts = Object.entries(productsData)
-              .map(([name, stats]) => ({
-                name,
-                quantity: stats.totalQuantity,
-                revenue: stats.totalRevenue,
-                count: stats.count,
-              }))
-              .sort((a, b) => b.quantity - a.quantity)
-              .slice(0, 10);
-
-            const productNames = sortedProducts.map((p) => p.name);
-            const productQuantities = sortedProducts.map((p) => p.quantity);
-
-            // Colors for the chart
-            const backgroundColors = [
-              "#ff7bac",
-              "#ffb347",
-              "#9d4edd",
-              "#4caf50",
-              "#2196f3",
-              "#ff9800",
-              "#795548",
-              "#607d8b",
-              "#e91e63",
-              "#00bcd4",
-            ];
-
-            // Update chart title
-            document
-              .querySelector("#cakesChart")
-              .closest(".chart-card")
-              .querySelector("h3").innerHTML =
-              '<i class="fas fa-chart-pie"></i> Top Products by Quantity Sold';
-
-            // Create or update chart
-            const ctx = document.getElementById("cakesChart").getContext("2d");
-
-            if (cakesChart) {
-              cakesChart.destroy();
+            if (currentDateRange.startDate && currentDateRange.endDate) {
+              query = query
+                .gte("created_at", currentDateRange.startDate.toISOString())
+                .lte("created_at", currentDateRange.endDate.toISOString());
             }
 
-            cakesChart = new Chart(ctx, {
-              type: "pie",
-              data: {
-                labels: productNames,
-                datasets: [
-                  {
-                    data: productQuantities,
-                    backgroundColor: backgroundColors,
-                    borderWidth: 1,
-                  },
-                ],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: true,
-                    position: "right",
-                  },
-                  tooltip: {
-                    callbacks: {
-                      label: function (context) {
-                        const productName = context.label;
-                        const quantity = context.raw;
-                        const product = sortedProducts.find(
-                          (p) => p.name === productName
-                        );
-                        return `${productName}: ${quantity} units (₹${revenue.toFixed(
-                          2
-                        )})`;
+            const { data, error } = await query;
+
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+              // Extract all products from bills
+              const allProducts = getAllProductsFromBills(data);
+
+              // Group by product name
+              const productsData = {};
+              allProducts.forEach((product) => {
+                const productName = product.name || "Unknown Product";
+                const quantity = product.quantity || 1;
+
+                if (!productsData[productName]) {
+                  productsData[productName] = {
+                    count: 0,
+                    totalQuantity: 0,
+                    totalRevenue: 0,
+                  };
+                }
+                productsData[productName].count++;
+                productsData[productName].totalQuantity += quantity;
+                productsData[productName].totalRevenue +=
+                  product.total_price || product.unit_price * quantity;
+              });
+
+              // Prepare chart data - show top 10 products by quantity
+              const sortedProducts = Object.entries(productsData)
+                .map(([name, stats]) => ({
+                  name,
+                  quantity: stats.totalQuantity,
+                  revenue: stats.totalRevenue,
+                  count: stats.count,
+                }))
+                .sort((a, b) => b.quantity - a.quantity)
+                .slice(0, 10);
+
+              const productNames = sortedProducts.map((p) => p.name);
+              const productQuantities = sortedProducts.map((p) => p.quantity);
+
+              // Colors for the chart
+              const backgroundColors = [
+                "#ff7bac",
+                "#ffb347",
+                "#9d4edd",
+                "#4caf50",
+                "#2196f3",
+                "#ff9800",
+                "#795548",
+                "#607d8b",
+                "#e91e63",
+                "#00bcd4",
+              ];
+
+              // Update chart title
+              document
+                .querySelector("#cakesChart")
+                .closest(".chart-card")
+                .querySelector("h3").innerHTML =
+                '<i class="fas fa-chart-pie"></i> Top Products by Quantity Sold';
+
+              // Create or update chart
+              const ctx = document
+                .getElementById("cakesChart")
+                .getContext("2d");
+
+              if (cakesChart) {
+                cakesChart.destroy();
+              }
+
+              cakesChart = new Chart(ctx, {
+                type: "pie",
+                data: {
+                  labels: productNames,
+                  datasets: [
+                    {
+                      data: productQuantities,
+                      backgroundColor: backgroundColors,
+                      borderWidth: 1,
+                    },
+                  ],
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      display: true,
+                      position: "right",
+                    },
+                    tooltip: {
+                      callbacks: {
+                        label: function (context) {
+                          const productName = context.label;
+                          const quantity = context.raw;
+                          const product = sortedProducts.find(
+                            (p) => p.name === productName
+                          );
+                          const revenue = product ? product.revenue : 0;
+                          return `${productName}: ${quantity} units (₹${revenue.toFixed(
+                            2
+                          )})`;
+                        },
                       },
                     },
                   },
                 },
-              },
-            });
-          } else {
-            // Create empty chart
-            const ctx = document.getElementById("cakesChart").getContext("2d");
-            if (cakesChart) {
-              cakesChart.destroy();
-            }
+              });
+            } else {
+              // Create empty chart
+              const ctx = document
+                .getElementById("cakesChart")
+                .getContext("2d");
+              if (cakesChart) {
+                cakesChart.destroy();
+              }
 
-            cakesChart = new Chart(ctx, {
-              type: "pie",
-              data: {
-                labels: [],
-                datasets: [
-                  {
-                    data: [],
-                    backgroundColor: [],
-                    borderWidth: 1,
-                  },
-                ],
-              },
-              options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                  legend: {
-                    display: true,
-                    position: "right",
+              cakesChart = new Chart(ctx, {
+                type: "pie",
+                data: {
+                  labels: [],
+                  datasets: [
+                    {
+                      data: [],
+                      backgroundColor: [],
+                      borderWidth: 1,
+                    },
+                  ],
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                  plugins: {
+                    legend: {
+                      display: true,
+                      position: "right",
+                    },
                   },
                 },
-              },
-            });
+              });
+            }
+          } catch (error) {
+            console.error("Error loading products chart data:", error);
+            showNotification("Failed to load products chart data", "error");
           }
-        } catch (error) {
-          console.error("Error loading products chart data:", error);
-          showNotification("Failed to load products chart data", "error");
         }
-      }
 
-      // Load top products table (REPLACED loadTopCakes)
-      async function loadTopProducts() {
-        try {
-          // Build query for all bills
-          let query = supabase
-            .from("cake_bills")
-            .select("cake_name, total_price, created_at");
+        // Load top products table (REPLACED loadTopCakes)
+        async function loadTopProducts() {
+          try {
+            // Build query for all bills
+            let query = supabase
+              .from("cake_bills")
+              .select("cake_name, total_price, created_at");
 
-          if (currentDateRange.startDate && currentDateRange.endDate) {
-            query = query
-              .gte("created_at", currentDateRange.startDate.toISOString())
-              .lte("created_at", currentDateRange.endDate.toISOString());
-          }
+            if (currentDateRange.startDate && currentDateRange.endDate) {
+              query = query
+                .gte("created_at", currentDateRange.startDate.toISOString())
+                .lte("created_at", currentDateRange.endDate.toISOString());
+            }
 
-          const { data, error } = await query;
+            const { data, error } = await query;
 
-          if (error) throw error;
+            if (error) throw error;
 
-          const tbody = document.getElementById("topCakesBody");
-          tbody.innerHTML = "";
+            const tbody = document.getElementById("topCakesBody");
+            tbody.innerHTML = "";
 
-          if (data && data.length > 0) {
-            // Extract all products from bills
-            const allProducts = getAllProductsFromBills(data);
+            if (data && data.length > 0) {
+              // Extract all products from bills
+              const allProducts = getAllProductsFromBills(data);
 
-            // Group and calculate stats
-            const productsStats = {};
-            allProducts.forEach((product) => {
-              const productName = product.name || "Unknown Product";
-              const quantity = product.quantity || 1;
-              const unitPrice = product.unit_price || 0;
-              const totalPrice = product.total_price || unitPrice * quantity;
+              // Group and calculate stats
+              const productsStats = {};
+              allProducts.forEach((product) => {
+                const productName = product.name || "Unknown Product";
+                const quantity = product.quantity || 1;
+                const unitPrice = product.unit_price || 0;
+                const totalPrice = product.total_price || unitPrice * quantity;
 
-              if (!productsStats[productName]) {
-                productsStats[productName] = {
-                  count: 0,
-                  totalQuantity: 0,
-                  totalRevenue: 0,
-                  prices: [],
-                };
-              }
-              productsStats[productName].count++;
-              productsStats[productName].totalQuantity += quantity;
-              productsStats[productName].totalRevenue += totalPrice;
-              productsStats[productName].prices.push(unitPrice);
-            });
+                if (!productsStats[productName]) {
+                  productsStats[productName] = {
+                    count: 0,
+                    totalQuantity: 0,
+                    totalRevenue: 0,
+                    prices: [],
+                  };
+                }
+                productsStats[productName].count++;
+                productsStats[productName].totalQuantity += quantity;
+                productsStats[productName].totalRevenue += totalPrice;
+                productsStats[productName].prices.push(unitPrice);
+              });
 
-            // Convert to array and sort by quantity
-            const sortedProducts = Object.entries(productsStats)
-              .map(([name, stats]) => ({
-                name,
-                quantity: stats.totalQuantity,
-                revenue: stats.totalRevenue,
-                average: stats.totalRevenue / stats.totalQuantity,
-                orders: stats.count,
-              }))
-              .sort((a, b) => b.quantity - a.quantity)
-              .slice(0, 10); // Top 10
+              // Convert to array and sort by quantity
+              const sortedProducts = Object.entries(productsStats)
+                .map(([name, stats]) => ({
+                  name,
+                  quantity: stats.totalQuantity,
+                  revenue: stats.totalRevenue,
+                  average: stats.totalRevenue / stats.totalQuantity,
+                  orders: stats.count,
+                }))
+                .sort((a, b) => b.quantity - a.quantity)
+                .slice(0, 10); // Top 10
 
-            // Update table headers
-            document.querySelector("#topCakesTable thead tr").innerHTML = `
-          <th>Product Name</th>
-          <th>Quantity Sold</th>
-          <th>Orders</th>
-          <th>Total Revenue</th>
-          <th>Average Price</th>
-        `;
+              // Update table headers
+              document.querySelector("#topCakesTable thead tr").innerHTML = `
+                <th>Product Name</th>
+                <th>Quantity Sold</th>
+                <th>Orders</th>
+                <th>Total Revenue</th>
+                <th>Average Price</th>
+              `;
 
-            // Update card title
-            document
-              .querySelector("#topCakesTable")
-              .closest(".table-card")
-              .querySelector("h3").innerHTML =
-              '<i class="fas fa-crown"></i> Top Selling Products';
+              // Update card title
+              document
+                .querySelector("#topCakesTable")
+                .closest(".table-card")
+                .querySelector("h3").innerHTML =
+                '<i class="fas fa-crown"></i> Top Selling Products';
 
-            // Populate table
-            sortedProducts.forEach((product, index) => {
-              const row = document.createElement("tr");
-              row.innerHTML = `
-            <td class="cake-name">${product.name}</td>
-            <td>${product.quantity}</td>
-            <td>${product.orders}</td>
-            <td class="cake-price">₹${product.revenue.toFixed(2)}</td>
-<td>₹${product.average.toFixed(2)}</td>
-          `;
-              tbody.appendChild(row);
-            });
+              // Populate table
+              sortedProducts.forEach((product, index) => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                  <td class="cake-name">${product.name}</td>
+                  <td>${product.quantity}</td>
+                  <td>${product.orders}</td>
+                  <td class="cake-price">₹${product.revenue.toFixed(2)}</td>
+                  <td>₹${product.average.toFixed(2)}</td>
+                `;
+                tbody.appendChild(row);
+              });
 
-            // Show table, hide loading and no-data
-            document.getElementById("topCakesLoading").style.display = "none";
-            document.getElementById("topCakesTable").style.display = "table";
-            document.getElementById("topCakesNoData").style.display = "none";
-          } else {
-            // No data
+              // Show table, hide loading and no-data
+              document.getElementById("topCakesLoading").style.display = "none";
+              document.getElementById("topCakesTable").style.display = "table";
+              document.getElementById("topCakesNoData").style.display = "none";
+            } else {
+              // No data
+              document.getElementById("topCakesLoading").style.display = "none";
+              document.getElementById("topCakesTable").style.display = "none";
+              document.getElementById("topCakesNoData").style.display = "block";
+            }
+          } catch (error) {
+            console.error("Error loading top products:", error);
             document.getElementById("topCakesLoading").style.display = "none";
             document.getElementById("topCakesTable").style.display = "none";
             document.getElementById("topCakesNoData").style.display = "block";
           }
-        } catch (error) {
-          console.error("Error loading top products:", error);
-          document.getElementById("topCakesLoading").style.display = "none";
-          document.getElementById("topCakesTable").style.display = "none";
-          document.getElementById("topCakesNoData").style.display = "block";
         }
-      }
 
-      // Load recent orders table - UPDATED for multiple items
-      async function loadRecentOrders() {
-        try {
-          // Build query for recent orders
-          let query = supabase
-            .from("cake_bills")
-            .select("*")
-            .order("created_at", { ascending: false })
-            .limit(10);
+        // Load recent orders table - UPDATED for multiple items
+        async function loadRecentOrders() {
+          try {
+            // Build query for recent orders
+            let query = supabase
+              .from("cake_bills")
+              .select("*")
+              .order("created_at", { ascending: false })
+              .limit(10);
 
-          if (currentDateRange.startDate && currentDateRange.endDate) {
-            query = query
-              .gte("created_at", currentDateRange.startDate.toISOString())
-              .lte("created_at", currentDateRange.endDate.toISOString());
-          }
+            if (currentDateRange.startDate && currentDateRange.endDate) {
+              query = query
+                .gte("created_at", currentDateRange.startDate.toISOString())
+                .lte("created_at", currentDateRange.endDate.toISOString());
+            }
 
-          const { data, error } = await query;
+            const { data, error } = await query;
 
-          if (error) throw error;
+            if (error) throw error;
 
-          const tbody = document.getElementById("recentOrdersBody");
-          tbody.innerHTML = "";
+            const tbody = document.getElementById("recentOrdersBody");
+            tbody.innerHTML = "";
 
-          if (data && data.length > 0) {
-            // Update table headers for multiple items
-            document.querySelector("#recentOrdersTable thead tr").innerHTML = `
-          <th>Date</th>
-          <th>Customer</th>
-          <th>Items</th>
-          <th>Total Price</th>
-        `;
+            if (data && data.length > 0) {
+              // Update table headers for multiple items
+              document.querySelector(
+                "#recentOrdersTable thead tr"
+              ).innerHTML = `
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Items</th>
+                <th>Total Price</th>
+              `;
 
-            // Populate table
-            data.forEach((bill) => {
-              const date = new Date(bill.created_at).toLocaleDateString();
-              const items = parseItemsFromJSON(bill.cake_name);
+              // Populate table
+              data.forEach((bill) => {
+                const date = new Date(bill.created_at).toLocaleDateString();
+                const items = parseItemsFromJSON(bill.cake_name);
 
-              // Create items summary
-              let itemsSummary = "";
-              if (items.length === 1) {
-                itemsSummary = items[0].name;
-              } else {
-                itemsSummary = `${items.length} items`;
-              }
-
-              const row = document.createElement("tr");
-              row.innerHTML = `
-            <td>${date}</td>
-            <td>
-              <div class="customer-name">${bill.purchaser_name}</div>
-              <div class="customer-phone">${bill.purchaser_phone}</div>
-            </td>
-            <td class="cake-name">${itemsSummary}</td>
-            <td class="cake-price">₹${parseFloat(bill.total_price || 0).toFixed(
-              2
-            )}</td>
-          `;
-
-              // Add hover tooltip with item details
-              row.addEventListener("mouseenter", function () {
-                if (items.length > 1) {
-                  const tooltip = items
-                    .map(
-                      (item) =>
-                        `${item.name} x${item.quantity} - ₹${item.unit_price}`
-                    )
-                    .join("<br>");
-                  this.setAttribute("title", tooltip);
+                // Create items summary
+                let itemsSummary = "";
+                if (items.length === 1) {
+                  itemsSummary = items[0].name;
+                } else {
+                  itemsSummary = `${items.length} items`;
                 }
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                  <td>${date}</td>
+                  <td>
+                    <div class="customer-name">${bill.purchaser_name}</div>
+                    <div class="customer-phone">${bill.purchaser_phone}</div>
+                  </td>
+                  <td class="cake-name">${itemsSummary}</td>
+                  <td class="cake-price">₹${parseFloat(
+                    bill.total_price || 0
+                  ).toFixed(2)}</td>
+                `;
+
+                // Add hover tooltip with item details
+                row.addEventListener("mouseenter", function () {
+                  if (items.length > 1) {
+                    const tooltip = items
+                      .map(
+                        (item) =>
+                          `${item.name} x${item.quantity} - ₹${item.unit_price}`
+                      )
+                      .join("<br>");
+                    this.setAttribute("title", tooltip);
+                  }
+                });
+
+                tbody.appendChild(row);
               });
 
-              tbody.appendChild(row);
-            });
-
-            // Show table, hide loading and no-data
-            document.getElementById("recentOrdersLoading").style.display =
-              "none";
-            document.getElementById("recentOrdersTable").style.display =
-              "table";
-            document.getElementById("recentOrdersNoData").style.display =
-              "none";
-          } else {
-            // No data
+              // Show table, hide loading and no-data
+              document.getElementById("recentOrdersLoading").style.display =
+                "none";
+              document.getElementById("recentOrdersTable").style.display =
+                "table";
+              document.getElementById("recentOrdersNoData").style.display =
+                "none";
+            } else {
+              // No data
+              document.getElementById("recentOrdersLoading").style.display =
+                "none";
+              document.getElementById("recentOrdersTable").style.display =
+                "none";
+              document.getElementById("recentOrdersNoData").style.display =
+                "block";
+            }
+          } catch (error) {
+            console.error("Error loading recent orders:", error);
             document.getElementById("recentOrdersLoading").style.display =
               "none";
             document.getElementById("recentOrdersTable").style.display = "none";
             document.getElementById("recentOrdersNoData").style.display =
               "block";
           }
-        } catch (error) {
-          console.error("Error loading recent orders:", error);
-          document.getElementById("recentOrdersLoading").style.display = "none";
-          document.getElementById("recentOrdersTable").style.display = "none";
-          document.getElementById("recentOrdersNoData").style.display = "block";
         }
-      }
 
-      // Load all orders with pagination and filters - UPDATED
-      async function loadAllOrders(page = 1) {
-        try {
-          currentPage = page;
+        // Load all orders with pagination and filters - UPDATED
+        async function loadAllOrders(page = 1) {
+          try {
+            currentPage = page;
 
-          // Build base query
-          let query = supabase
-            .from("cake_bills")
-            .select("*", { count: "exact" });
+            // Build base query
+            let query = supabase
+              .from("cake_bills")
+              .select("*", { count: "exact" });
 
-          // Apply date filter
-          if (currentDateRange.startDate && currentDateRange.endDate) {
-            query = query
-              .gte("created_at", currentDateRange.startDate.toISOString())
-              .lte("created_at", currentDateRange.endDate.toISOString());
-          }
-
-          // Apply search filter - updated to search in JSON items
-          const searchTerm = document
-            .getElementById("searchOrders")
-            .value.trim();
-          if (searchTerm) {
-            query = query.or(
-              `purchaser_name.ilike.%${searchTerm}%,purchaser_phone.ilike.%${searchTerm}%,cake_name.ilike.%${searchTerm}%`
-            );
-          }
-
-          // NOTE: Cake filter removed since we now have multiple items
-          // You could implement a more complex search for items in JSON
-
-          // Apply price filter
-          const priceFilter = document.getElementById("filterPrice").value;
-          if (priceFilter) {
-            const [min, max] = priceFilter.split("-");
-            if (max === "+") {
-              query = query.gt("total_price", min);
-            } else {
-              query = query.gte("total_price", min).lte("total_price", max);
+            // Apply date filter
+            if (currentDateRange.startDate && currentDateRange.endDate) {
+              query = query
+                .gte("created_at", currentDateRange.startDate.toISOString())
+                .lte("created_at", currentDateRange.endDate.toISOString());
             }
-          }
 
-          // Apply sorting
-          const sortBy = document.getElementById("sortBy").value;
-          switch (sortBy) {
-            case "newest":
-              query = query.order("created_at", { ascending: false });
-              break;
-            case "oldest":
-              query = query.order("created_at", { ascending: true });
-              break;
-            case "price-high":
-              query = query.order("total_price", { ascending: false });
-              break;
-            case "price-low":
-              query = query.order("total_price", { ascending: true });
-              break;
-          }
+            // Apply search filter - updated to search in JSON items
+            const searchTerm = document
+              .getElementById("searchOrders")
+              .value.trim();
+            if (searchTerm) {
+              query = query.or(
+                `purchaser_name.ilike.%${searchTerm}%,purchaser_phone.ilike.%${searchTerm}%,cake_name.ilike.%${searchTerm}%`
+              );
+            }
 
-          // Apply pagination
-          const from = (page - 1) * pageSize;
-          const to = from + pageSize - 1;
-          query = query.range(from, to);
+            // NOTE: Cake filter removed since we now have multiple items
+            // You could implement a more complex search for items in JSON
 
-          const { data, error, count } = await query;
-
-          if (error) throw error;
-
-          const tbody = document.getElementById("allOrdersBody");
-          tbody.innerHTML = "";
-          totalOrders = count || 0;
-
-          if (data && data.length > 0) {
-            // Update table headers
-            document.querySelector("#allOrdersTable thead tr").innerHTML = `
-          <th>Bill #</th>
-          <th>Date</th>
-          <th>Customer</th>
-          <th>Phone</th>
-          <th>Items</th>
-          <th>Total</th>
-          <th>Coupon</th>
-          <th>Actions</th>
-        `;
-
-            // Populate table
-            data.forEach((bill) => {
-              const date = new Date(bill.created_at).toLocaleDateString();
-              const items = parseItemsFromJSON(bill.cake_name);
-
-              // Create items summary
-              let itemsSummary = "";
-              if (items.length === 1) {
-                itemsSummary = items[0].name;
+            // Apply price filter
+            const priceFilter = document.getElementById("filterPrice").value;
+            if (priceFilter) {
+              const [min, max] = priceFilter.split("-");
+              if (max === "+") {
+                query = query.gt("total_price", min);
               } else {
-                itemsSummary = `${items.length} items`;
+                query = query.gte("total_price", min).lte("total_price", max);
               }
+            }
 
-              const row = document.createElement("tr");
-              row.innerHTML = `
-            <td>${bill.bill_number || "N/A"}</td>
-            <td>${date}</td>
-            <td>
-              <div class="customer-name">${bill.purchaser_name}</div>
-              <div class="customer-phone">${bill.purchaser_phone}</div>
-            </td>
-            <td>${bill.purchaser_phone}</td>
-            <td class="cake-name">${itemsSummary}</td>
-            <td class="cake-price">₹${parseFloat(bill.total_price || 0).toFixed(
-              2
-            )}</td>
-            <td>${bill.coupon_code || "-"}</td>
-            <td>
-              <button class="view-btn" onclick="viewBill('${
-                bill.id
-              }')" title="View Details">
-                <i class="fas fa-eye"></i>
-              </button>
-              <button class="print-btn" onclick="printBill('${
-                bill.id
-              }')" title="Print Receipt">
-                <i class="fas fa-print"></i>
-              </button>
-            </td>
-          `;
+            // Apply sorting
+            const sortBy = document.getElementById("sortBy").value;
+            switch (sortBy) {
+              case "newest":
+                query = query.order("created_at", { ascending: false });
+                break;
+              case "oldest":
+                query = query.order("created_at", { ascending: true });
+                break;
+              case "price-high":
+                query = query.order("total_price", { ascending: false });
+                break;
+              case "price-low":
+                query = query.order("total_price", { ascending: true });
+                break;
+            }
 
-              // Add hover tooltip for items
-              if (items.length > 1) {
-                row.cells[4].addEventListener("mouseenter", function () {
-                  const tooltip = items
-                    .map(
-                      (item) =>
-                        `${item.name} x${item.quantity} - ₹${item.unit_price}`
-                    )
-                    .join("<br>");
-                  this.setAttribute("title", tooltip);
-                });
-              }
+            // Apply pagination
+            const from = (page - 1) * pageSize;
+            const to = from + pageSize - 1;
+            query = query.range(from, to);
 
-              tbody.appendChild(row);
-            });
+            const { data, error, count } = await query;
 
-            // Update pagination
-            updatePagination();
+            if (error) throw error;
 
-            // Show table, hide loading and no-data
-            document.getElementById("allOrdersLoading").style.display = "none";
-            document.getElementById("allOrdersTable").style.display = "table";
-            document.getElementById("allOrdersNoData").style.display = "none";
-            document.getElementById("pagination").style.display = "flex";
-          } else {
-            // No data
+            const tbody = document.getElementById("allOrdersBody");
+            tbody.innerHTML = "";
+            totalOrders = count || 0;
+
+            if (data && data.length > 0) {
+              // Update table headers
+              document.querySelector("#allOrdersTable thead tr").innerHTML = `
+                <th>Bill #</th>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Phone</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th>Coupon</th>
+                <th>Actions</th>
+              `;
+
+              // Populate table
+              data.forEach((bill) => {
+                const date = new Date(bill.created_at).toLocaleDateString();
+                const items = parseItemsFromJSON(bill.cake_name);
+
+                // Create items summary
+                let itemsSummary = "";
+                if (items.length === 1) {
+                  itemsSummary = items[0].name;
+                } else {
+                  itemsSummary = `${items.length} items`;
+                }
+
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                  <td>${bill.bill_number || "N/A"}</td>
+                  <td>${date}</td>
+                  <td>
+                    <div class="customer-name">${bill.purchaser_name}</div>
+                    <div class="customer-phone">${bill.purchaser_phone}</div>
+                  </td>
+                  <td>${bill.purchaser_phone}</td>
+                  <td class="cake-name">${itemsSummary}</td>
+                  <td class="cake-price">₹${parseFloat(
+                    bill.total_price || 0
+                  ).toFixed(2)}</td>
+                  <td>${bill.coupon_code || "-"}</td>
+                  <td>
+                    <button class="view-btn" onclick="viewBill('${
+                      bill.id
+                    }')" title="View Details">
+                      <i class="fas fa-eye"></i>
+                    </button>
+                    <button class="print-btn" onclick="printBill('${
+                      bill.id
+                    }')" title="Print Receipt">
+                      <i class="fas fa-print"></i>
+                    </button>
+                  </td>
+                `;
+
+                // Add hover tooltip for items
+                if (items.length > 1) {
+                  row.cells[4].addEventListener("mouseenter", function () {
+                    const tooltip = items
+                      .map(
+                        (item) =>
+                          `${item.name} x${item.quantity} - ₹${item.unit_price}`
+                      )
+                      .join("<br>");
+                    this.setAttribute("title", tooltip);
+                  });
+                }
+
+                tbody.appendChild(row);
+              });
+
+              // Update pagination
+              updatePagination();
+
+              // Show table, hide loading and no-data
+              document.getElementById("allOrdersLoading").style.display =
+                "none";
+              document.getElementById("allOrdersTable").style.display = "table";
+              document.getElementById("allOrdersNoData").style.display = "none";
+              document.getElementById("pagination").style.display = "flex";
+            } else {
+              // No data
+              document.getElementById("allOrdersLoading").style.display =
+                "none";
+              document.getElementById("allOrdersTable").style.display = "none";
+              document.getElementById("allOrdersNoData").style.display =
+                "block";
+              document.getElementById("pagination").style.display = "none";
+            }
+          } catch (error) {
+            console.error("Error loading all orders:", error);
             document.getElementById("allOrdersLoading").style.display = "none";
             document.getElementById("allOrdersTable").style.display = "none";
             document.getElementById("allOrdersNoData").style.display = "block";
             document.getElementById("pagination").style.display = "none";
           }
-        } catch (error) {
-          console.error("Error loading all orders:", error);
-          document.getElementById("allOrdersLoading").style.display = "none";
-          document.getElementById("allOrdersTable").style.display = "none";
-          document.getElementById("allOrdersNoData").style.display = "block";
-          document.getElementById("pagination").style.display = "none";
-        }
-      }
-
-      // Update pagination controls
-      function updatePagination() {
-        const totalPages = Math.ceil(totalOrders / pageSize);
-        const pageInfo = document.getElementById("pageInfo");
-        const prevBtn = document.getElementById("prevPage");
-        const nextBtn = document.getElementById("nextPage");
-
-        pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
-        prevBtn.disabled = currentPage <= 1;
-        nextBtn.disabled = currentPage >= totalPages;
-      }
-
-      // View bill details
-      function viewBill(billId) {
-        // TODO: Implement bill details view with items display
-        showNotification("View bill details - Feature coming soon!", "info");
-      }
-
-      // Print bill receipt
-      function printBill(billId) {
-        // TODO: Implement bill printing
-        showNotification("Print receipt - Feature coming soon!", "info");
-      }
-
-      // Export functions
-      function exportTopCakes() {
-        showNotification("Export top products - Feature coming soon!", "info");
-      }
-
-      function exportRecentOrders() {
-        showNotification("Export recent orders - Feature coming soon!", "info");
-      }
-
-      function exportAllOrders() {
-        showNotification("Export all orders - Feature coming soon!", "info");
-      }
-
-      function printReport() {
-        window.print();
-      }
-
-      // Database setup modal functions (same as main page)
-      function setupDatabaseModal() {
-        // Setup database button
-        document
-          .getElementById("setupDbBtn")
-          ?.addEventListener("click", function () {
-            document.getElementById("dbInfoModal").style.display = "flex";
-          });
-
-        // Close database modal
-        document
-          .getElementById("closeDbModal")
-          ?.addEventListener("click", function () {
-            document.getElementById("dbInfoModal").style.display = "none";
-          });
-
-        // Save database configuration
-        document
-          .getElementById("saveDbConfig")
-          ?.addEventListener("click", function () {
-            const url = document.getElementById("sbUrlInput").value;
-            const key = document.getElementById("sbKeyInput").value;
-
-            if (url && key) {
-              config.supabaseUrl = url;
-              config.supabaseKey = key;
-
-              // Save to localStorage
-              localStorage.setItem("cakeBlissConfig", JSON.stringify(config));
-
-              // Reinitialize Supabase
-              if (initSupabase()) {
-                showNotification(
-                  "Database configuration saved successfully!",
-                  "success"
-                );
-                document.getElementById("dbInfoModal").style.display = "none";
-              }
-            } else {
-              showNotification("Please enter both URL and Key", "error");
-            }
-          });
-      }
-
-      // DOM Ready
-      document.addEventListener("DOMContentLoaded", function () {
-        // Initialize date range (default to last 7 days)
-        setDateRange(7);
-
-        // Initialize Supabase connection
-        initSupabase();
-
-        // Setup database modal
-        setupDatabaseModal();
-
-        // Setup event listeners
-        setupEventListeners();
-
-        // Pre-fill database config if available
-        if (config.supabaseUrl) {
-          document.getElementById("sbUrlInput").value = config.supabaseUrl;
-        }
-        if (config.supabaseKey) {
-          document.getElementById("sbKeyInput").value = config.supabaseKey;
         }
 
-        // Update filter dropdown for items
-        updateProductFilter();
-      });
+        // Update pagination controls
+        function updatePagination() {
+          const totalPages = Math.ceil(totalOrders / pageSize);
+          const pageInfo = document.getElementById("pageInfo");
+          const prevBtn = document.getElementById("prevPage");
+          const nextBtn = document.getElementById("nextPage");
 
-      // Update product filter dropdown
-      async function updateProductFilter() {
-        if (!supabase) return;
+          pageInfo.textContent = `Page ${currentPage} of ${totalPages}`;
+          prevBtn.disabled = currentPage <= 1;
+          nextBtn.disabled = currentPage >= totalPages;
+        }
 
-        try {
-          // Query to get all unique product names from bills
-          const { data, error } = await supabase
-            .from("cake_bills")
-            .select("cake_name");
+        // View bill details
+        function viewBill(billId) {
+          // TODO: Implement bill details view with items display
+          showNotification("View bill details - Feature coming soon!", "info");
+        }
 
-          if (error) throw error;
+        // Print bill receipt
+        function printBill(billId) {
+          // TODO: Implement bill printing
+          showNotification("Print receipt - Feature coming soon!", "info");
+        }
 
-          if (data && data.length > 0) {
-            // Extract all unique product names
-            const allProducts = new Set();
-            data.forEach((bill) => {
-              const items = parseItemsFromJSON(bill.cake_name);
-              items.forEach((item) => {
-                if (item.name) {
-                  allProducts.add(item.name);
-                }
-              });
+        // Export functions
+        function exportTopCakes() {
+          showNotification(
+            "Export top products - Feature coming soon!",
+            "info"
+          );
+        }
+
+        function exportRecentOrders() {
+          showNotification(
+            "Export recent orders - Feature coming soon!",
+            "info"
+          );
+        }
+
+        function exportAllOrders() {
+          showNotification("Export all orders - Feature coming soon!", "info");
+        }
+
+        function printReport() {
+          window.print();
+        }
+
+        // Database setup modal functions (same as main page)
+        function setupDatabaseModal() {
+          // Setup database button
+          document
+            .getElementById("setupDbBtn")
+            ?.addEventListener("click", function () {
+              document.getElementById("dbInfoModal").style.display = "flex";
             });
 
-            // Update filter dropdown
-            const filterSelect = document.getElementById("filterCake");
-            filterSelect.innerHTML = '<option value="">All Products</option>';
+          // Close database modal
+          document
+            .getElementById("closeDbModal")
+            ?.addEventListener("click", function () {
+              document.getElementById("dbInfoModal").style.display = "none";
+            });
 
-            Array.from(allProducts)
-              .sort()
-              .forEach((product) => {
-                const option = document.createElement("option");
-                option.value = product;
-                option.textContent = product;
-                filterSelect.appendChild(option);
-              });
+          // Save database configuration
+          document
+            .getElementById("saveDbConfig")
+            ?.addEventListener("click", function () {
+              const url = document.getElementById("sbUrlInput").value;
+              const key = document.getElementById("sbKeyInput").value;
 
-            // Update label
-            filterSelect.previousElementSibling.textContent =
-              "Filter by Product";
-          }
-        } catch (error) {
-          console.error("Error updating product filter:", error);
+              if (url && key) {
+                config.supabaseUrl = url;
+                config.supabaseKey = key;
+
+                // Save to localStorage
+                localStorage.setItem("cakeBlissConfig", JSON.stringify(config));
+
+                // Reinitialize Supabase
+                if (initSupabase()) {
+                  showNotification(
+                    "Database configuration saved successfully!",
+                    "success"
+                  );
+                  document.getElementById("dbInfoModal").style.display = "none";
+                }
+              } else {
+                showNotification("Please enter both URL and Key", "error");
+              }
+            });
         }
-      }
 
-      // Setup all event listeners
-      function setupEventListeners() {
-        // Date preset buttons
-        document.querySelectorAll(".preset-btn").forEach((btn) => {
-          btn.addEventListener("click", function () {
-            const days = parseInt(this.dataset.days);
-            setDateRange(days);
+        document.addEventListener("DOMContentLoaded", function () {
+          // Initialize date range (default to last 7 days)
+          setDateRange(7);
+
+          // Initialize Supabase connection
+          initSupabase();
+
+          // Setup database modal
+          setupDatabaseModal();
+
+          // Setup event listeners
+          setupEventListeners();
+
+          // Pre-fill database config if available
+          if (config.supabaseUrl) {
+            document.getElementById("sbUrlInput").value = config.supabaseUrl;
+          }
+          if (config.supabaseKey) {
+            document.getElementById("sbKeyInput").value = config.supabaseKey;
+          }
+
+          // Mobile Menu Functionality
+          function toggleMobileMenu() {
+            const mobileNav = document.getElementById("mobileNav");
+            const menuIcon = document.querySelector(".mobile-menu-toggle i");
+
+            if (!mobileNav) {
+              console.error("Mobile nav element not found");
+              return;
+            }
+
+            // Toggle the show class
+            mobileNav.classList.toggle("show");
+
+            // Change icon
+            if (mobileNav.classList.contains("show")) {
+              menuIcon.className = "fas fa-times";
+              document.body.style.overflow = "hidden"; // Prevent scrolling
+            } else {
+              menuIcon.className = "fas fa-bars";
+              document.body.style.overflow = ""; // Restore scrolling
+            }
+
+            console.log(
+              "Mobile menu toggled, show class:",
+              mobileNav.classList.contains("show")
+            );
+          }
+
+          // Close mobile menu when clicking outside
+          document.addEventListener("click", function (event) {
+            const mobileNav = document.getElementById("mobileNav");
+            const menuToggle = document.querySelector(".mobile-menu-toggle");
+
+            if (mobileNav && menuToggle) {
+              const isClickInsideNav = mobileNav.contains(event.target);
+              const isClickOnToggle = menuToggle.contains(event.target);
+
+              if (
+                !isClickInsideNav &&
+                !isClickOnToggle &&
+                mobileNav.classList.contains("show")
+              ) {
+                toggleMobileMenu();
+              }
+            }
           });
+
+          // Close menu when clicking on a link (for mobile)
+          document.addEventListener("click", function (event) {
+            if (window.innerWidth <= 768 && event.target.closest("nav a")) {
+              setTimeout(() => {
+                const mobileNav = document.getElementById("mobileNav");
+                if (mobileNav && mobileNav.classList.contains("show")) {
+                  toggleMobileMenu();
+                }
+              }, 300); // Small delay for smooth transition
+            }
+          });
+
+          // Close menu on escape key
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+              const mobileNav = document.getElementById("mobileNav");
+              if (mobileNav && mobileNav.classList.contains("show")) {
+                toggleMobileMenu();
+              }
+            }
+          });
+
+          // Handle window resize
+          window.addEventListener("resize", function () {
+            if (window.innerWidth > 768) {
+              const mobileNav = document.getElementById("mobileNav");
+              if (mobileNav && mobileNav.classList.contains("show")) {
+                toggleMobileMenu();
+              }
+            }
+          });
+
+          // Ensure hamburger button has event listener
+          const mobileToggleBtn = document.querySelector(".mobile-menu-toggle");
+          if (mobileToggleBtn) {
+            mobileToggleBtn.addEventListener("click", toggleMobileMenu);
+          } else {
+            console.error("Mobile menu toggle button not found");
+            // Create one dynamically if missing
+            const header = document.querySelector("header");
+            if (header) {
+              const toggleBtn = document.createElement("button");
+              toggleBtn.className = "mobile-menu-toggle";
+              toggleBtn.innerHTML = '<i class="fas fa-bars"></i>';
+              toggleBtn.addEventListener("click", toggleMobileMenu);
+              header.appendChild(toggleBtn);
+            }
+          }
+
+          // Touch swipe to close menu on mobile
+          let touchStartX = 0;
+          let touchEndX = 0;
+
+          document.addEventListener("touchstart", function (e) {
+            touchStartX = e.changedTouches[0].screenX;
+          });
+
+          document.addEventListener("touchend", function (e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+          });
+
+          function handleSwipe() {
+            const mobileNav = document.getElementById("mobileNav");
+
+            // Check if menu is open and user swiped right to close
+            if (
+              mobileNav &&
+              mobileNav.classList.contains("show") &&
+              touchEndX - touchStartX > 100
+            ) {
+              toggleMobileMenu();
+            }
+          }
+
+          // Debug: Log mobile menu state
+          console.log("Mobile menu initialized");
+          console.log(
+            "Mobile nav element:",
+            document.getElementById("mobileNav")
+          );
+          console.log(
+            "Toggle button:",
+            document.querySelector(".mobile-menu-toggle")
+          );
         });
 
-        // Apply date range button
-        document
-          .getElementById("applyDateRange")
-          .addEventListener("click", function () {
-            const startDate = new Date(
-              document.getElementById("startDate").value
-            );
-            const endDate = new Date(document.getElementById("endDate").value);
+        // Update product filter dropdown
+        async function updateProductFilter() {
+          if (!supabase) return;
 
-            if (startDate && endDate && startDate <= endDate) {
-              currentDateRange = {
-                startDate: startDate,
-                endDate: endDate,
-                preset: null,
-              };
+          try {
+            // Query to get all unique product names from bills
+            const { data, error } = await supabase
+              .from("cake_bills")
+              .select("cake_name");
 
-              // Update preset buttons
-              document.querySelectorAll(".preset-btn").forEach((btn) => {
-                btn.classList.remove("active");
+            if (error) throw error;
+
+            if (data && data.length > 0) {
+              // Extract all unique product names
+              const allProducts = new Set();
+              data.forEach((bill) => {
+                const items = parseItemsFromJSON(bill.cake_name);
+                items.forEach((item) => {
+                  if (item.name) {
+                    allProducts.add(item.name);
+                  }
+                });
               });
 
+              // Update filter dropdown
+              const filterSelect = document.getElementById("filterCake");
+              if (filterSelect) {
+                filterSelect.innerHTML =
+                  '<option value="">All Products</option>';
+
+                Array.from(allProducts)
+                  .sort()
+                  .forEach((product) => {
+                    const option = document.createElement("option");
+                    option.value = product;
+                    option.textContent = product;
+                    filterSelect.appendChild(option);
+                  });
+
+                // Update label
+                filterSelect.previousElementSibling.textContent =
+                  "Filter by Product";
+              }
+            }
+          } catch (error) {
+            console.error("Error updating product filter:", error);
+          }
+        }
+
+        // Setup all event listeners
+        function setupEventListeners() {
+          // Date preset buttons
+          document.querySelectorAll(".preset-btn").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const days = parseInt(this.dataset.days);
+              setDateRange(days);
+            });
+          });
+
+          // Apply date range button
+          document
+            .getElementById("applyDateRange")
+            .addEventListener("click", function () {
+              const startDate = new Date(
+                document.getElementById("startDate").value
+              );
+              const endDate = new Date(
+                document.getElementById("endDate").value
+              );
+
+              if (startDate && endDate && startDate <= endDate) {
+                currentDateRange = {
+                  startDate: startDate,
+                  endDate: endDate,
+                  preset: null,
+                };
+
+                // Update preset buttons
+                document.querySelectorAll(".preset-btn").forEach((btn) => {
+                  btn.classList.remove("active");
+                });
+
+                loadReportsData();
+                showNotification("Date range applied successfully", "success");
+              } else {
+                showNotification("Please select a valid date range", "error");
+              }
+            });
+
+          // Refresh button
+          document
+            .getElementById("refreshReports")
+            .addEventListener("click", function () {
               loadReportsData();
-              showNotification("Date range applied successfully", "success");
-            } else {
-              showNotification("Please select a valid date range", "error");
-            }
-          });
+              updateProductFilter();
+              showNotification("Reports refreshed", "success");
+            });
 
-        // Refresh button
-        document
-          .getElementById("refreshReports")
-          .addEventListener("click", function () {
-            loadReportsData();
-            updateProductFilter();
-            showNotification("Reports refreshed", "success");
-          });
-
-        // Search button
-        document
-          .getElementById("searchBtn")
-          .addEventListener("click", function () {
-            currentPage = 1;
-            loadAllOrders(1);
-          });
-
-        // Clear search button
-        document
-          .getElementById("clearSearch")
-          .addEventListener("click", function () {
-            document.getElementById("searchOrders").value = "";
-            document.getElementById("filterCake").value = "";
-            document.getElementById("filterPrice").value = "";
-            document.getElementById("sortBy").value = "newest";
-            currentPage = 1;
-            loadAllOrders(1);
-            showNotification("Filters cleared", "success");
-          });
-
-        // Filter changes
-        document
-          .getElementById("filterCake")
-          .addEventListener("change", function () {
-            currentPage = 1;
-            loadAllOrders(1);
-          });
-
-        document
-          .getElementById("filterPrice")
-          .addEventListener("change", function () {
-            currentPage = 1;
-            loadAllOrders(1);
-          });
-
-        document
-          .getElementById("sortBy")
-          .addEventListener("change", function () {
-            currentPage = 1;
-            loadAllOrders(1);
-          });
-
-        // Search input (enter key)
-        document
-          .getElementById("searchOrders")
-          .addEventListener("keyup", function (e) {
-            if (e.key === "Enter") {
-              currentPage = 1;
-              loadAllOrders(1);
-            }
-          });
-
-        // Pagination buttons
-        document
-          .getElementById("prevPage")
-          .addEventListener("click", function () {
-            if (currentPage > 1) {
-              loadAllOrders(currentPage - 1);
-            }
-          });
-
-        document
-          .getElementById("nextPage")
-          .addEventListener("click", function () {
-            const totalPages = Math.ceil(totalOrders / pageSize);
-            if (currentPage < totalPages) {
-              loadAllOrders(currentPage + 1);
-            }
-          });
-
-        // View customers button
-        document
-          .getElementById("viewCustomersBtn")
-          .addEventListener("click", function (e) {
-            e.preventDefault();
-            showNotification(
-              "Customer management feature coming soon!",
-              "info"
-            );
-          });
-      }
+          // NOTE: Search and filter elements need to be added to the HTML first
+          // You can add these elements to your HTML structure
+        }
+      })();
     </script>
   </body>
 </html>
