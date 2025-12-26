@@ -1958,16 +1958,6 @@
         </div>
       </div>
 
-      <footer>
-        <p>&copy; 2023 Cake Bliss Billing System. All rights reserved.</p>
-        <div class="footer-links">
-          <a href="#" id="setupDbBtn"
-            ><i class="fas fa-database"></i> Setup Database</a
-          >
-          <a href="#"><i class="fas fa-question-circle"></i> Help</a>
-          <a href="#"><i class="fas fa-print"></i> Print</a>
-        </div>
-      </footer>
     </div>
 
     <!-- Notification -->
@@ -2449,7 +2439,7 @@
             const pdfHTML = `
       <div class="pdf-container" id="pdf-content">
           <div class="pdf-header">
-              <h2>🎂 Cake Bliss</h2>
+              <h2>🎂 Cymbrella's The Cake Shop, Indira nagar</h2>
               <p>Delicious Cakes & Pastries</p>
               <div class="pdf-bill-number">Bill: ${billData.bill_number}</div>
               <div style="font-size: 12px; color: #666;">
@@ -2523,8 +2513,8 @@
           </div>
           
           <div class="pdf-footer">
-              <p>Thank you for choosing Cake Bliss! 🎂</p>
-              <p>For any queries, call: ${billData.purchaser_phone}</p>
+              <p>Thank you for choosing Cymbrella! 🎂</p>
+              <p>For any queries, call: 9975157376</p>
               <p style="font-size: 10px; margin-top: 10px;">
                   Bill generated on ${new Date().toLocaleString()}
               </p>
@@ -2941,7 +2931,7 @@
             const discountAmount = subtotal - total;
 
             // Create a simpler, more WhatsApp-friendly message
-            const message = `🎂 *Cake Bliss - Bill Confirmation* 🎂
+            const message = `🎂 *Cymbrella's Cake Shop - Bill * 🎂
 
 *Bill Number:* ${billData.bill_number}
 *Customer Name:* ${billData.purchaser_name}
@@ -2958,9 +2948,9 @@ ${billData.coupon_code ? `Coupon Used: ${billData.coupon_code}` : ""}
 *Total Amount:* ₹${total.toFixed(2)}
 Thank you for your order! 🎂
 
-For any queries, please call: +91 9168281183
+For any queries, please call: +91 9975157376
 
--- Cake Bliss Team`;
+-- Cymbrella's Team`;
 
             // Encode message for URL
             const encodedMessage = encodeURIComponent(message);
